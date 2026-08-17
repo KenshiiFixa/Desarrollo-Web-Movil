@@ -39,6 +39,7 @@
                 <div class="card-body text-center">
                     <h3 class="h5 card-title">Contacto</h3>
                     <p class="card-text text-muted mb-1">E-mail: i.arroyovillanueva@uandresbello.edu</p>
+                    <p class="card-text text-muted mb-1">E-mail: a.martnezhernndez@uandresbello.edu</p>
                     <p class="card-text text-muted mb-1">Telefono: (2) 2456-7890</p>
                     <p class="card-text text-muted mb-0">Hora de atención: Lunes a Viernes</p>
                 </div>
