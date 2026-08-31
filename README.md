@@ -25,6 +25,24 @@ Sitio web básico construido con PHP y Bootstrap, compuesto por:
 - Página de características
 - Página de contacto
 
+### Semana 3
+
+Mejoras acerca de la semana 2, creando nuestra "empresa":
+
+- Página principal + imagenes
+- Página de características + imagenes
+- Página de contacto
+- Más profesional tratando de hacerlo lo mas similiar a una web.
+
+### Semana 4
+
+Creación de boceto + representacion para pagina web "Aroma & Café":
+
+- Página principal
+- Página de Catalogo
+- Página de Inicio de sesión cliente
+- Página de Carrito
+
 ## Tecnologías
 
 - HTML5
