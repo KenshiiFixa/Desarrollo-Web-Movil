@@ -6,7 +6,6 @@ Repositorio de actividades y proyectos desarrollados para la asignatura
 ## Autor
 
 - **Nombre:** Ian Arroyo - Alejandro Martinez
-- **RUT:** 21.906.291-5 - 21.860.811-6
 - **NRC:** 8479
 
 ## Contenido
