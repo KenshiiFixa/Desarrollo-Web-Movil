@@ -42,12 +42,21 @@ Creación de boceto + representacion para pagina web "Aroma & Café":
 - Página de Inicio de sesión cliente
 - Página de Carrito
 
+### Semana 5
+
+Desarrollo del Backend: Creación de una API con GraphQL para un sistema de gestión corporativa:
+
+* Implementación de un servidor local utilizando Node.js y Express.
+* Creación de esquemas (Types, Queries y Mutations) con Apollo Server.
+* Modelado de base de datos para perfiles de empleados.
+* Conexión a base de datos en la nube mediante MongoDB Atlas y Mongoose.
+
 ## Tecnologías
 
-- HTML5
-- PHP
-- Bootstrap 5
-
+- Node.js
+- Express.js
+- GraphQL (Apollo Server)
+- MongoDB (Atlas y Mongoose)
 
 
 ## Estado
