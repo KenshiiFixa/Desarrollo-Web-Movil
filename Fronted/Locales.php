@@ -12,7 +12,7 @@
 <body>
 
 <header class="topbar">
-  <a class="logo" href="Index.php">Aroma &amp; Café <span>Maipú</span></a>
+  <a class="logo" href="Index.php">Aroma &amp; Café <span>Santiago</span></a>
   <div class="search">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input type="text" placeholder="Buscar espresso, latte, tartas…">
@@ -43,28 +43,28 @@
   <div>
     <h1 style="margin-bottom:22px;">Nuestros locales</h1>
 
-    <div class="locale-card" data-lat="-33.5110" data-lng="-70.7580" data-nombre="Local Maipú Centro">
-      <h4>Local Maipú Centro</h4>
+    <div class="locale-card" data-lat="-33.4235" data-lng="-70.6120" data-nombre="Local Providencia Norte">
+      <h4>Local Providencia Norte</h4>
       <div class="meta">
-        Av. Pajaritos 1234, Maipú<br>
+        Av. Nueva Providencia 2000, Providencia<br>
         +56 9 1234 5678<br>
         Lun a vie, 8:00 a 20:00 · Sáb y dom, 9:00 a 16:00
       </div>
     </div>
 
-    <div class="locale-card" data-lat="-33.5190" data-lng="-70.7690" data-nombre="Local Plaza Maipú">
-      <h4>Local Plaza Maipú</h4>
+    <div class="locale-card" data-lat="-33.4422" data-lng="-70.6268" data-nombre="Local Barrio Italia">
+      <h4>Local Barrio Italia</h4>
       <div class="meta">
-        Av. 5 de Abril 456, Maipú<br>
+        Av. Italia 1200, Providencia<br>
         +56 9 8765 4321<br>
         Lun a sáb, 9:00 a 21:00
       </div>
     </div>
 
-    <div class="locale-card" data-lat="-33.4520" data-lng="-70.6800" data-nombre="Local Estación Central">
-      <h4>Local Estación Central</h4>
+    <div class="locale-card" data-lat="-33.3857" data-lng="-70.6158" data-nombre="Local Ciudad Empresarial">
+      <h4>Local Ciudad Empresarial</h4>
       <div class="meta">
-        Alameda 7890, Estación Central<br>
+        Av. Santa Clara 400, Ciudad Empresarial, Huechuraba<br>
         +56 9 5555 1122<br>
         Lun a vie, 7:30 a 19:00 · Sáb, 10:00 a 14:00
       </div>
@@ -105,7 +105,8 @@
     var mapEl = document.getElementById('map');
     if (!mapEl || typeof L === 'undefined') return;
 
-    var map = L.map('map').setView([-33.4950, -70.7350], 12);
+    // Mapa centrado entre Providencia y Huechuraba
+    var map = L.map('map').setView([-33.4150, -70.6150], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: 18

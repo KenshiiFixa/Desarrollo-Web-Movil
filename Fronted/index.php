@@ -56,13 +56,14 @@
     </div>
   </section>
 
+ 
   <aside class="featured">
     <h2>Los más pedidos</h2>
     <div class="product-list">
 
       <div class="product-card">
         <div class="product-thumb">
-          <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="#F2E7E0"/><circle cx="30" cy="30" r="28" fill="none" stroke="#3E2723" stroke-width="2"/><circle cx="30" cy="30" r="16" fill="#4E342E"/><path d="M18 22 q12 -8 24 0" stroke="#FF813E" stroke-width="2" fill="none"/></svg>
+          <img src="espresso.png" alt="Espresso Doble" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0px 4px 4px rgba(62,39,35,0.2));">
         </div>
         <div class="product-info">
           <div class="name">Espresso Doble</div>
@@ -73,7 +74,7 @@
 
       <div class="product-card">
         <div class="product-thumb">
-          <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="#FFFFFF"/><circle cx="30" cy="30" r="28" fill="none" stroke="#3E2723" stroke-width="2"/><circle cx="30" cy="30" r="18" fill="#C89F80"/><path d="M30 16 q8 10 0 28 q-8 -18 0 -28" fill="#FFF6F0"/></svg>
+          <img src="latte.png" alt="Latte Art" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0px 4px 4px rgba(62,39,35,0.2));">
         </div>
         <div class="product-info">
           <div class="name">Latte Art</div>
@@ -84,7 +85,7 @@
 
       <div class="product-card">
         <div class="product-thumb">
-          <svg viewBox="0 0 60 60"><rect x="18" y="12" width="24" height="38" rx="4" fill="#F2E7E0" stroke="#3E2723" stroke-width="2"/><rect x="20" y="24" width="20" height="24" rx="3" fill="#5D4037"/><circle cx="26" cy="20" r="3" fill="#D7CCC8"/><circle cx="34" cy="18" r="3" fill="#D7CCC8"/></svg>
+          <img src="cold-brew.png" alt="Cold Brew" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0px 4px 4px rgba(62,39,35,0.2));">
         </div>
         <div class="product-info">
           <div class="name">Cold Brew</div>
@@ -96,7 +97,6 @@
     </div>
     <a href="catalogo.php" class="see-all">Ver toda la carta</a>
   </aside>
-</main>
 
 <footer>
   <div>
