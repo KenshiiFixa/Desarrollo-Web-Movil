@@ -6,12 +6,12 @@
   <title>Aroma &amp; Café - Carta</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="Index.css" rel="stylesheet">
+  <link href="index.css" rel="stylesheet">
 </head>
 <body>
 
 <header class="topbar">
-  <a class="logo" href="Index.php">Aroma &amp; Café <span>Santiago</span></a>
+  <a class="logo" href="index.php">Aroma &amp; Café <span>Maipú</span></a>
   <div class="search">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input type="text" placeholder="Buscar espresso, latte, tartas…">
@@ -24,12 +24,12 @@
 
 <nav class="mainnav">
   <ul>
-    <li><a href="Index.php">Inicio</a></li>
+    <li><a href="index.php">Inicio</a></li>
     <li class="active"><a href="catalogo.php">Carta</a></li>
     <li><a href="Locales.php">Locales</a></li>
     <li><a href="Contacto.php">Contacto</a></li>
     <li class="nav-right">
-      <a href="Carrito.php">
+      <a href="carrito.php">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         <span>Pedido</span>
         <span class="cart-count"></span>
@@ -162,6 +162,6 @@
   <div class="foot-bottom">© 2026 Aroma &amp; Café. Todos los derechos reservados.</div>
 </footer>
 
-<script src="App.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

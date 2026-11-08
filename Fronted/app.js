@@ -120,7 +120,7 @@
 
   function updateSummary(total) {
     var totalEl = document.getElementById('cart-total');
-    var envio = total > 0 && total < 15000 ? 1500 : 0;
+    var envio = 0;   // Caso 19: el despacho es gratis (dentro de 3 km del local)
 
     var subtotalEl = document.getElementById('cart-subtotal');
     if (subtotalEl) subtotalEl.textContent = money(total);

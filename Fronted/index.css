@@ -150,7 +150,8 @@
   .mainnav li.active a{ color: #fff; font-weight: 700; }
   .mainnav li.active a::after{ transform: scaleX(1); background: var(--naranja); }
 
-  .nav-right{
+  /* ".mainnav .nav-right" para que le gane a ".mainnav li" (antes quedaba encima de "Contacto") */
+  .mainnav .nav-right{
     position:absolute;
     right:40px;
     padding: 0;
@@ -178,6 +179,7 @@
     margin-left: 2px;
     padding: 0 4px;
   }
+  .cart-count:empty{ display:none; }   /* sin productos no se muestra el circulo vacio */
 
   /* ---------- Layout genérico ---------- */
   main{
@@ -685,7 +687,7 @@
     aside.featured{ border-left:none; border-top:1px solid var(--linea); padding-left:0; padding-top:28px; }
     .topbar{ flex-wrap: wrap; padding: 16px 22px; }
     .mainnav{ padding: 0 22px; }
-    .nav-right{ position: static; }
+    .mainnav .nav-right{ position: static; }
     .mainnav ul{ flex-wrap: wrap; }
     footer{ grid-template-columns: 1fr; padding: 32px 22px 22px; }
     .page-layout{ grid-template-columns: 1fr; padding: 32px 22px; }
