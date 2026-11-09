@@ -1,0 +1,182 @@
+{
+  "entorno": {
+    "fecha": "2026-11-09 21:22",
+    "cpus": 4,
+    "python": "3.13.18",
+    "tipo": "MEDICION en un solo equipo, con TLS en todos los tramos HTTP y gRPC; no es una proyeccion de produccion"
+  },
+  "resultados": [
+    {
+      "escenario": "catalogo",
+      "concurrencia": 20,
+      "duracion_s": 20.0,
+      "solicitudes": 5027,
+      "throughput_rps": 250.8,
+      "p50_ms": 70.8,
+      "p95_ms": 146.7,
+      "max_ms": 368.4,
+      "errores": 0,
+      "tasa_error_pct": 0.0,
+      "codigos": {
+        "200": 5027
+      },
+      "cpu_max_pct": {
+        "vault": 1.0,
+        "gateway": 99.7,
+        "auth": 0.3,
+        "inventory": 59.4,
+        "orders": 0.3,
+        "clients": 0.3,
+        "payments": 0.3,
+        "graphql": 0.5,
+        "analitica": 0.5,
+        "notificaciones": 0.3,
+        "proveedor": 0.5,
+        "mongo": 10.93
+      },
+      "memoria_ultima": {
+        "vault": "142.2MiB",
+        "gateway": "88.5MiB",
+        "auth": "81.1MiB",
+        "inventory": "95.1MiB",
+        "orders": "82.1MiB",
+        "clients": "80.6MiB",
+        "payments": "80.4MiB",
+        "graphql": "85.0MiB",
+        "analitica": "80.2MiB",
+        "notificaciones": "80.1MiB",
+        "proveedor": "77.1MiB",
+        "mongo": "180.3MiB"
+      }
+    },
+    {
+      "escenario": "mis_pedidos",
+      "concurrencia": 20,
+      "duracion_s": 20.1,
+      "solicitudes": 3395,
+      "throughput_rps": 169.2,
+      "p50_ms": 108.6,
+      "p95_ms": 198.6,
+      "max_ms": 315.2,
+      "errores": 0,
+      "tasa_error_pct": 0.0,
+      "codigos": {
+        "200": 3395
+      },
+      "cpu_max_pct": {
+        "vault": 0.7,
+        "gateway": 99.1,
+        "auth": 45.1,
+        "inventory": 0.5,
+        "orders": 57.4,
+        "clients": 0.3,
+        "payments": 0.3,
+        "graphql": 0.3,
+        "analitica": 0.3,
+        "notificaciones": 0.3,
+        "proveedor": 0.3,
+        "mongo": 17.37
+      },
+      "memoria_ultima": {
+        "vault": "142.7MiB",
+        "gateway": "90.8MiB",
+        "auth": "88.8MiB",
+        "inventory": "95.4MiB",
+        "orders": "91.1MiB",
+        "clients": "80.6MiB",
+        "payments": "80.4MiB",
+        "graphql": "85.0MiB",
+        "analitica": "80.2MiB",
+        "notificaciones": "80.1MiB",
+        "proveedor": "77.1MiB",
+        "mongo": "182.2MiB"
+      }
+    },
+    {
+      "escenario": "graphql",
+      "concurrencia": 20,
+      "duracion_s": 20.3,
+      "solicitudes": 1363,
+      "throughput_rps": 67.3,
+      "p50_ms": 292.0,
+      "p95_ms": 415.3,
+      "max_ms": 558.9,
+      "errores": 0,
+      "tasa_error_pct": 0.0,
+      "codigos": {
+        "200": 1363
+      },
+      "cpu_max_pct": {
+        "vault": 0.7,
+        "gateway": 52.4,
+        "auth": 22.4,
+        "inventory": 16.1,
+        "orders": 20.7,
+        "clients": 0.3,
+        "payments": 18.1,
+        "graphql": 94.3,
+        "analitica": 0.3,
+        "notificaciones": 0.3,
+        "proveedor": 0.3,
+        "mongo": 12.34
+      },
+      "memoria_ultima": {
+        "vault": "144.1MiB",
+        "gateway": "93.2MiB",
+        "auth": "88.7MiB",
+        "inventory": "95.1MiB",
+        "orders": "90.9MiB",
+        "clients": "80.6MiB",
+        "payments": "83.6MiB",
+        "graphql": "105.5MiB",
+        "analitica": "80.2MiB",
+        "notificaciones": "80.1MiB",
+        "proveedor": "77.1MiB",
+        "mongo": "183.5MiB"
+      }
+    },
+    {
+      "escenario": "crear_pedido",
+      "concurrencia": 20,
+      "duracion_s": 20.1,
+      "solicitudes": 2965,
+      "throughput_rps": 147.8,
+      "p50_ms": 126.1,
+      "p95_ms": 212.3,
+      "max_ms": 418.6,
+      "errores": 0,
+      "tasa_error_pct": 0.0,
+      "codigos": {
+        "201": 2965
+      },
+      "cpu_max_pct": {
+        "vault": 0.7,
+        "gateway": 92.4,
+        "auth": 37.2,
+        "inventory": 28.2,
+        "orders": 48.9,
+        "clients": 0.3,
+        "payments": 0.3,
+        "graphql": 1.0,
+        "analitica": 0.3,
+        "notificaciones": 0.3,
+        "proveedor": 0.5,
+        "mongo": 27.57
+      },
+      "memoria_ultima": {
+        "vault": "144.6MiB",
+        "gateway": "93.7MiB",
+        "auth": "88.7MiB",
+        "inventory": "93.8MiB",
+        "orders": "96.9MiB",
+        "clients": "80.6MiB",
+        "payments": "84.1MiB",
+        "graphql": "105.9MiB",
+        "analitica": "80.2MiB",
+        "notificaciones": "80.1MiB",
+        "proveedor": "77.1MiB",
+        "mongo": "188MiB"
+      }
+    }
+  ]
+}

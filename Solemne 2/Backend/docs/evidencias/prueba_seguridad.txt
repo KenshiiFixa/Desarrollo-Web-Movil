@@ -1,0 +1,26 @@
+Prueba de seguridad y aislamiento (2026-11-09 21:25)
+
+  [OK]    m7_1_catalogo_anonimo: CASO M7-1: un visitante sin sesion ve el catalogo, solo con campos publicos (sin stock).
+  [OK]    m7_2_operacion_protegida_sin_sesion: CASO M7-2: crear pedido sin token o con token falso -> 401.
+  [OK]    m7_3_administracion_desde_rol_sin_permiso: CASO M7-3: un cliente (y otros funcionarios) no pueden administrar productos ni usuarios -> 403.
+  [OK]    m7_4_pedido_ajeno: CASO M7-4: Pedro no puede ver, anular ni pagar el pedido de Ana (404, no revela que existe).
+  [OK]    m7_5_acceso_directo_a_servicio_interno: CASO M7-5: los servicios internos no se publican y rechazan llamadas sin su secreto.
+  [OK]    m7_5_grpc_sin_credencial: CASO M7-5 (gRPC): llamar a inventory por gRPC (con TLS) sin el secreto de orders -> PERMISSION_DENIED.
+  [OK]    m7_6_pago_alterado_desde_el_frontend: CASO M7-6: el navegador intenta marcar el pedido como pagado o falsificar el aviso del proveedor.
+  [OK]    precio_lo_decide_el_servidor: El precio y el total los calcula el servidor; un "precio" enviado se ignora.
+  [OK]    monto_del_pago_lo_decide_el_servidor: El monto del pago sale del pedido; un "monto" enviado se ignora.
+  [OK]    rutas_no_listadas: Las rutas que no estan en la tabla del gateway (incluidas las /internal) responden 404.
+  [OK]    login_incorrecto: Login con clave incorrecta responde 401.
+  [OK]    cabeceras_de_identidad_del_navegador_se_ignoran: Si el navegador manda X-Authenticated-Roles: admin, el gateway la descarta.
+  [OK]    despacho_ve_datos_minimos_del_cliente: Despacho ve solo los datos de entrega del cliente; el admin ve la ficha completa.
+  [OK]    graphql_pedido_ajeno: GraphQL: un cliente no puede ver el pedido de otro.
+  [OK]    graphql_campo_restringido: GraphQL: el campo cliente solo lo ven despacho y admin, y user_id no existe en el schema (es privado).
+  [OK]    graphql_sin_sesion_y_limites: GraphQL: exige sesion y aplica los limites de alias y de tamano.
+  [OK]    vault_cada_servicio_solo_lee_su_secreto: Con el token de Vault del gateway se lee secret/gateway, pero NO secret/payments.
+  [OK]    mongo_cada_servicio_solo_accede_a_su_base: El usuario de MongoDB de orders puede leer la base orders, pero NO la base payments.
+  [OK]    graphql_sin_introspeccion: GraphQL: la introspeccion esta desactivada (no se puede pedir el schema completo).
+  [OK]    tls_http_sin_cifrar_rechazado: TLS: el gateway no atiende HTTP sin cifrar.
+  [OK]    tls_certificado_no_confiable_rechazado: TLS: un cliente que no confia en la CA local no puede conectarse (no se acepta cualquier certificado).
+  [OK]    tls_grpc_sin_cifrar_rechazado: TLS: inventory no acepta llamadas gRPC sin cifrar.
+
+Resultado: 22 de 22 pruebas OK

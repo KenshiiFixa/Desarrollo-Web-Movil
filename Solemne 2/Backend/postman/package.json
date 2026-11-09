@@ -1,0 +1,11 @@
+{
+  "name": "aroma-cafe-postman",
+  "private": true,
+  "description": "Node.js solo como herramienta: Newman ejecuta la coleccion de Postman por consola",
+  "scripts": {
+    "test": "newman run AromaCafe.postman_collection.json -e AromaCafe.postman_environment.json --env-var password=$TEST_PASSWORD --reporters cli"
+  },
+  "devDependencies": {
+    "newman": "6.2.1"
+  }
+}

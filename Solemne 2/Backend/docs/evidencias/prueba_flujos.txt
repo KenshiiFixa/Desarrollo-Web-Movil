@@ -1,0 +1,21 @@
+Prueba de flujos del caso (2026-11-09 21:25)
+
+  [OK]    despacho_gratis_solo_dentro_del_radio: Caso 19: el despacho es gratuito y solo dentro de 3 km del local (comunas configuradas).
+  [OK]    pago_completo_boleta_y_aviso_repetido: RF2 y RF8: pago aprobado, boleta con caja web y aviso repetido sin duplicar.
+  [OK]    pago_rechazado: Pago rechazado: el pedido sigue pendiente y se puede volver a pagar.
+  [OK]    ciclo_de_vida_por_despacho: RF2: despacho solo avanza pedidos pagados y por transiciones validas.
+  [OK]    anular_devuelve_stock_y_no_borra: RF3: anular con motivo devuelve el stock y no borra el pedido.
+  [OK]    sin_stock_no_descuenta_nada: RF7: si un producto no alcanza, no se descuenta nada (todo o nada).
+  [OK]    registro_con_verificacion_de_correo_y_logout: RF5 y RF11: registro con los datos del Caso 19; sin verificar el correo no se puede entrar.
+  [OK]    contacto_publico_y_listado_admin: Formulario de contacto publico; solo el admin ve los mensajes.
+  [OK]    graphql_agrega_subsistemas: GraphQL resumenPedido junta pedidos, productos y pagos.
+  [OK]    graphql_sin_n_mas_1: GraphQL sin N+1: misPedidos con varios pedidos y productos hace UNA llamada a inventory y UNA a payments (se cuentan en los logs con el id de correlacion de la consulta).
+  [OK]    graphql_reporte_dueno: GraphQL: reporteVentas solo para dueno y admin.
+  [OK]    reporte_de_ventas_del_dueno: RF9: el dueno ve las ventas de un periodo.
+  [OK]    admin_registra_cliente_en_el_local: RF6: el administrador registra al cliente; igual queda pendiente la verificacion del correo.
+  [OK]    mantenedor_de_usuarios_y_perfiles: RF10 y RF12: el admin crea funcionarios y cambia su perfil; el cambio cierra sus sesiones.
+  [OK]    ordenes_de_despacho_en_orden_de_llegada: RF13: el encargado de despacho obtiene las ordenes pagadas, de la mas antigua a la mas nueva.
+  [OK]    ventas_de_la_caja_del_cajero_virtual: RF4: las ventas web quedan asociadas a la caja del cajero virtual.
+  [OK]    ofertas: El catalogo muestra ofertas y se cobra el precio de oferta. El dueno administra productos (CU4).
+
+Resultado: 17 de 17 pruebas OK

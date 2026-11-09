@@ -1,0 +1,39 @@
+// Contrato gRPC entre orders (cliente) e inventory (servidor).
+// Solo se usa dentro de la red privada; el navegador nunca habla gRPC.
+syntax = "proto3";
+
+service Inventario {
+  // Descuenta el stock de los productos de un pedido y devuelve los precios oficiales.
+  rpc ReservarStock (ReservaRequest) returns (ReservaReply);
+  // Devuelve el stock de un pedido anulado.
+  rpc LiberarStock (LiberarRequest) returns (LiberarReply);
+}
+
+message Item {
+  string product_id = 1;
+  int32 cantidad = 2;
+}
+
+message ReservaRequest {
+  string order_id = 1;
+  repeated Item items = 2;
+}
+
+message Linea {
+  string product_id = 1;
+  string nombre = 2;
+  int32 precio = 3;      // precio en pesos, lo decide inventory (no el navegador)
+  int32 cantidad = 4;
+}
+
+message ReservaReply {
+  repeated Linea lineas = 1;
+}
+
+message LiberarRequest {
+  string order_id = 1;
+}
+
+message LiberarReply {
+  int32 liberados = 1;
+}

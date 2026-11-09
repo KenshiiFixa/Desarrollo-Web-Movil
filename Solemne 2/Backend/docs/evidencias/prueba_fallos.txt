@@ -1,0 +1,7 @@
+Prueba de fallos, desconexiones y concurrencia (2026-11-09 21:27)
+
+  [OK]    inventory_caido_error_controlado_y_recuperacion: Con inventory apagado: el catalogo responde un error controlado (sin datos falsos) y GraphQL entrega lo de orders con un aviso de respuesta incompleta. Al restaurarlo, todo vuelve a funcionar.
+  [OK]    auth_caido_falla_cerrado_y_recuperacion: Con auth apagado las rutas protegidas se rechazan (falla cerrado), el catalogo publico sigue y, al volver auth, la misma sesion sigue valida porque vive en MongoDB.
+  [OK]    compras_simultaneas_con_poco_stock: 10 compras al mismo tiempo sobre un producto con stock 2: se crean exactamente 2 pedidos y el stock queda en 0 (la reserva es atomica: $inc con la condicion stock >= cantidad).
+
+Resultado: 3 de 3 pruebas OK

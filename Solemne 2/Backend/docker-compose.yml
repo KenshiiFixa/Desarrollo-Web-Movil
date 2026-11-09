@@ -1,0 +1,18 @@
+# Solo MongoDB corre en Docker. Los servicios y Vault corren en el computador (los inicia iniciar.py).
+# El puerto se publica solo en 127.0.0.1, asi no se puede entrar desde otro equipo de la red.
+# La clave del usuario root sale del archivo .env (no se escribe aqui).
+name: aroma-cafe
+
+services:
+  mongo:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?Falta MONGO_ROOT_PASSWORD en .env}
+    ports:
+      - "127.0.0.1:27018:27017"
+    volumes:
+      - mongo_datos:/data/db
+
+volumes:
+  mongo_datos:

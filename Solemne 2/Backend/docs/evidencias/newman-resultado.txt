@@ -1,0 +1,376 @@
+newman
+
+Aroma & Cafe - Backend seguro (Evaluacion 2)
+
+❏ 1. Anonimo (visitante)
+↳ S01 Catalogo publico
+  GET https://127.0.0.1:8000/api/v1/products [200 OK, 1.9kB, 56ms]
+  ✓  Responde 200
+  ✓  Hay productos
+  ✓  No muestra el stock (dato interno)
+
+↳ S01 Catalogo filtrado por categoria
+  GET https://127.0.0.1:8000/api/v1/products?categoria=frio [200 OK, 576B, 19ms]
+  ✓  Responde 200
+  ✓  Solo bebidas frias
+
+↳ S01 Productos en oferta
+  GET https://127.0.0.1:8000/api/v1/products?ofertas=true [200 OK, 362B, 19ms]
+  ✓  Responde 200
+  ✓  Todos tienen precio de oferta
+
+↳ S02 Detalle de producto
+  GET https://127.0.0.1:8000/api/v1/products/latte-art [200 OK, 354B, 16ms]
+  ✓  Responde 200
+  ✓  Precio lo informa el servidor
+
+↳ S08 Formulario de contacto
+  POST https://127.0.0.1:8000/api/v1/contact [201 Created, 188B, 20ms]
+  ✓  Responde 201
+
+↳ S09 Crear pedido sin sesion -> 401
+  POST https://127.0.0.1:8000/api/v1/orders [401 Unauthorized, 198B, 10ms]
+  ✓  Sin sesion: 401
+
+↳ S03 Registro de cliente (queda pendiente de verificar el correo)
+  POST https://127.0.0.1:8000/api/v1/auth/register [201 Created, 253B, 107ms]
+  ✓  Responde 201
+
+↳ S04 Login sin verificar el correo -> 403
+  POST https://127.0.0.1:8000/api/v1/auth/login [403 Forbidden, 222B, 101ms]
+  ✓  Correo no verificado: 403
+
+↳ S28 Verificar correo con codigo incorrecto -> 400
+  POST https://127.0.0.1:8000/api/v1/auth/verify-email [400 Bad Request, 200B, 26ms]
+  ✓  Codigo invalido: 400
+
+↳ S04 Login con clave incorrecta -> 401
+  POST https://127.0.0.1:8000/api/v1/auth/login [401 Unauthorized, 200B, 91ms]
+  ✓  Credenciales incorrectas: 401
+
+❏ 2. Cliente
+↳ S04 Login cliente (Ana)
+  POST https://127.0.0.1:8000/api/v1/auth/login [200 OK, 271B, 98ms]
+  ✓  Login correcto (200)
+  ✓  Entrega token Bearer
+
+↳ S04 Login cliente (Pedro)
+  POST https://127.0.0.1:8000/api/v1/auth/login [200 OK, 271B, 97ms]
+  ✓  Login correcto (200)
+  ✓  Entrega token Bearer
+
+↳ S06 Mi perfil
+  GET https://127.0.0.1:8000/api/v1/clients/me [200 OK, 331B, 23ms]
+  ✓  Responde 200
+  ✓  Es el perfil de Ana
+
+↳ S07 Actualizar perfil (RUN valido)
+  PUT https://127.0.0.1:8000/api/v1/clients/me [200 OK, 402B, 23ms]
+  ✓  Responde 200
+  ✓  RUN normalizado
+
+↳ S07 Actualizar perfil (RUN invalido) -> 422
+  PUT https://127.0.0.1:8000/api/v1/clients/me [422 Unprocessable Content, 197B, 26ms]
+  ✓  RUN invalido: 422
+
+↳ S09 Crear pedido (envia precio falso)
+  POST https://127.0.0.1:8000/api/v1/orders [201 Created, 417B, 33ms]
+  ✓  Responde 201
+  ✓  El total lo calcula el servidor (2 x 3200)
+  ✓  Queda pendiente de pago
+
+↳ S10 Mis pedidos
+  GET https://127.0.0.1:8000/api/v1/orders [200 OK, 5.93kB, 22ms]
+  ✓  Responde 200
+  ✓  Incluye el pedido creado
+
+↳ S11 Ver mi pedido
+  GET https://127.0.0.1:8000/api/v1/orders/ORD-09B4B55D [200 OK, 412B, 22ms]
+  ✓  Responde 200
+
+↳ S13 Boleta antes de pagar -> 409
+  GET https://127.0.0.1:8000/api/v1/orders/ORD-09B4B55D/receipt [409 Conflict, 200B, 21ms]
+  ✓  Sin pago no hay boleta: 409
+
+↳ S14 Iniciar pago (envia monto falso)
+  POST https://127.0.0.1:8000/api/v1/payments [201 Created, 310B, 40ms]
+  ✓  Responde 201
+  ✓  El monto lo decide el servidor
+
+↳ S16 Simular pago aprobado (aviso repetido 2 veces)
+  POST https://127.0.0.1:8000/api/v1/payments/PAY-1BB6B030/simular [202 Accepted, 286B, 88ms]
+  ✓  Responde 202
+  ✓  Primer aviso aprueba el pago
+  ✓  Aviso repetido no se procesa dos veces
+
+↳ S15 Ver pago
+  GET https://127.0.0.1:8000/api/v1/payments/PAY-1BB6B030 [200 OK, 233B, 25ms]
+  ✓  Responde 200
+  ✓  Pago aprobado
+
+↳ S13 Boleta digital
+  GET https://127.0.0.1:8000/api/v1/orders/ORD-09B4B55D/receipt [200 OK, 368B, 24ms]
+  ✓  Responde 200
+  ✓  Neto + IVA = total
+  ✓  Tiene folio
+  ✓  Venta asociada a la caja web
+
+↳ S18 GraphQL resumenPedido (agrega orders + inventory + payments)
+  POST https://127.0.0.1:8000/api/v1/graphql [200 OK, 322B, 66ms]
+  ✓  Responde 200
+  ✓  Estado desde orders
+  ✓  Producto desde inventory
+  ✓  Pago desde payments
+
+↳ S09 Pedido para anular
+  POST https://127.0.0.1:8000/api/v1/orders [201 Created, 453B, 40ms]
+  ✓  Responde 201
+  ✓  Despacho gratis (total = precio del croissant)
+
+↳ S09 Delivery fuera del radio de 3 km -> 422
+  POST https://127.0.0.1:8000/api/v1/orders [422 Unprocessable Content, 237B, 39ms]
+  ✓  Fuera del radio de despacho: 422
+
+↳ S12 Anular sin motivo -> 422
+  POST https://127.0.0.1:8000/api/v1/orders/ORD-F0487711/cancel [422 Unprocessable Content, 261B, 24ms]
+  ✓  El motivo es obligatorio
+
+↳ S12 Anular pedido pendiente (con motivo)
+  POST https://127.0.0.1:8000/api/v1/orders/ORD-F0487711/cancel [200 OK, 193B, 36ms]
+  ✓  Responde 200
+  ✓  Queda ANULADO (no se borra)
+
+↳ S12 Anular pedido ya pagado -> 409
+  POST https://127.0.0.1:8000/api/v1/orders/ORD-09B4B55D/cancel [409 Conflict, 203B, 28ms]
+  ✓  Pagado no se anula: 409
+
+❏ 3. Seguridad (casos del Modulo 7)
+↳ M7-4 Pedro ve el pedido de Ana -> 404
+  GET https://127.0.0.1:8000/api/v1/orders/ORD-09B4B55D [404 Not Found, 193B, 25ms]
+  ✓  Pedido ajeno: 404
+
+↳ M7-4 Pedro paga el pedido de Ana -> 404
+  POST https://127.0.0.1:8000/api/v1/payments [404 Not Found, 193B, 26ms]
+  ✓  Pedido ajeno: 404
+
+↳ M7-4 GraphQL pedido ajeno -> null
+  POST https://127.0.0.1:8000/api/v1/graphql [200 OK, 184B, 32ms]
+  ✓  Responde 200
+  ✓  No entrega el pedido de otro
+
+↳ M7-3 Cliente crea producto -> 403
+  POST https://127.0.0.1:8000/api/v1/admin/products [403 Forbidden, 193B, 20ms]
+  ✓  Rol sin permiso: 403
+
+↳ M7-3 Cliente cambia estado de pedido -> 403
+  PUT https://127.0.0.1:8000/api/v1/admin/orders/ORD-09B4B55D/status [403 Forbidden, 193B, 19ms]
+  ✓  Rol sin permiso: 403
+
+↳ M7-3 Cliente con cabecera de rol falsa -> 403
+  GET https://127.0.0.1:8000/api/v1/admin/products [403 Forbidden, 193B, 18ms]
+  ✓  El gateway ignora cabeceras de identidad del navegador
+
+↳ M7-2 Token inventado -> 401
+  GET https://127.0.0.1:8000/api/v1/orders [401 Unauthorized, 201B, 17ms]
+  ✓  Token invalido: 401
+
+↳ M7-5 Ruta interna no publicada -> 404
+  GET https://127.0.0.1:8000/api/v1/internal/products [404 Not Found, 191B, 16ms]
+  ✓  Ruta interna: 404
+
+↳ M7-6 Webhook con firma falsa -> 401
+  POST https://127.0.0.1:8000/api/v1/payments/webhook [401 Unauthorized, 190B, 17ms]
+  ✓  Firma HMAC invalida: 401
+
+↳ M7-6 GraphQL campo restringido (cliente) -> error
+  POST https://127.0.0.1:8000/api/v1/graphql [200 OK, 318B, 44ms]
+  ✓  Responde 200
+  ✓  Devuelve error
+  ✓  Campo cliente en null
+
+↳ GraphQL limite de alias -> error
+  POST https://127.0.0.1:8000/api/v1/graphql [200 OK, 231B, 26ms]
+  ✓  Responde 200
+  ✓  Rechaza demasiados alias
+
+❏ 4. Encargado de despacho
+↳ S04 Login despacho
+  POST https://127.0.0.1:8000/api/v1/auth/login [200 OK, 272B, 84ms]
+  ✓  Login correcto (200)
+  ✓  Entrega token Bearer
+
+↳ S29 Ordenes de despacho (orden de llegada)
+  GET https://127.0.0.1:8000/api/v1/admin/dispatch-orders [200 OK, 1.44kB, 25ms]
+  ✓  Responde 200
+  ✓  Ordenadas por fecha de pago
+  ✓  Incluye el pedido pagado
+
+↳ S23 Pasar a EN_PREPARACION
+  PUT https://127.0.0.1:8000/api/v1/admin/orders/ORD-09B4B55D/status [200 OK, 200B, 24ms]
+  ✓  Responde 200
+
+↳ S23 Saltarse un estado -> 409
+  PUT https://127.0.0.1:8000/api/v1/admin/orders/ORD-09B4B55D/status [409 Conflict, 219B, 25ms]
+  ✓  Transicion invalida: 409
+
+↳ S23 Pasar a LISTO
+  PUT https://127.0.0.1:8000/api/v1/admin/orders/ORD-09B4B55D/status [200 OK, 191B, 21ms]
+  ✓  Responde 200
+
+↳ S23 Retiro: pasar a ENTREGADO
+  PUT https://127.0.0.1:8000/api/v1/admin/orders/ORD-09B4B55D/status [200 OK, 195B, 23ms]
+  ✓  Responde 200
+
+↳ S24 Datos del cliente (minimos)
+  GET https://127.0.0.1:8000/api/v1/admin/clients/USR-003 [200 OK, 285B, 20ms]
+  ✓  Responde 200
+  ✓  Despacho no ve RUN ni fecha de nacimiento
+
+↳ S18 GraphQL campo cliente (despacho si puede)
+  POST https://127.0.0.1:8000/api/v1/graphql [200 OK, 265B, 43ms]
+  ✓  Responde 200
+  ✓  Ve el correo del cliente
+
+↳ S19 Despacho administra productos -> 403
+  GET https://127.0.0.1:8000/api/v1/admin/products [403 Forbidden, 193B, 19ms]
+  ✓  Solo admin/dueno: 403
+
+❏ 5. Cajero virtual
+↳ S04 Login cajero
+  POST https://127.0.0.1:8000/api/v1/auth/login [200 OK, 270B, 83ms]
+  ✓  Login correcto (200)
+  ✓  Entrega token Bearer
+
+↳ S30 Ventas de la caja web
+  GET https://127.0.0.1:8000/api/v1/admin/sales [200 OK, 1.09kB, 20ms]
+  ✓  Responde 200
+  ✓  Ventas de la CAJA-WEB-01
+  ✓  Incluye la venta del pedido pagado
+
+↳ S26 Cajero ve reportes del dueno -> 403
+  GET https://127.0.0.1:8000/api/v1/admin/reports/sales [403 Forbidden, 193B, 14ms]
+  ✓  Solo dueno/admin: 403
+
+❏ 6. Dueno
+↳ S04 Login dueno
+  POST https://127.0.0.1:8000/api/v1/auth/login [200 OK, 269B, 77ms]
+  ✓  Login correcto (200)
+  ✓  Entrega token Bearer
+
+↳ S26 Reporte de ventas por periodo
+  GET https://127.0.0.1:8000/api/v1/admin/reports/sales?desde=2026-01-01&hasta=2030-12-31 [200 OK, 612B, 22ms]
+  ✓  Responde 200
+  ✓  Tiene ventas
+
+↳ S19 Dueno ve la carta con stock
+  GET https://127.0.0.1:8000/api/v1/admin/products [200 OK, 2.47kB, 21ms]
+  ✓  Responde 200
+
+↳ S33 Dueno administra usuarios -> 403
+  GET https://127.0.0.1:8000/api/v1/admin/users [403 Forbidden, 193B, 19ms]
+  ✓  Solo admin: 403
+
+❏ 7. Admin
+↳ S04 Login admin
+  POST https://127.0.0.1:8000/api/v1/auth/login [200 OK, 269B, 87ms]
+  ✓  Login correcto (200)
+  ✓  Entrega token Bearer
+
+↳ S19 Productos con stock
+  GET https://127.0.0.1:8000/api/v1/admin/products [200 OK, 2.47kB, 22ms]
+  ✓  Responde 200
+  ✓  Ve el stock
+
+↳ S20 Crear producto
+  POST https://127.0.0.1:8000/api/v1/admin/products [201 Created, 362B, 26ms]
+  ✓  Responde 201
+
+↳ S21 Modificar producto
+  PUT https://127.0.0.1:8000/api/v1/admin/products/postman-1794259706381 [200 OK, 357B, 26ms]
+  ✓  Responde 200
+  ✓  Precio actualizado
+
+↳ S22 Dar de baja producto (baja logica)
+  DELETE https://127.0.0.1:8000/api/v1/admin/products/postman-1794259706381 [204 No Content, 141B, 24ms]
+  ✓  Responde 204
+
+↳ S02 Producto dado de baja ya no esta en el catalogo -> 404
+  GET https://127.0.0.1:8000/api/v1/products/postman-1794259706381 [404 Not Found, 195B, 18ms]
+  ✓  Responde 404
+
+↳ S24 Datos completos del cliente
+  GET https://127.0.0.1:8000/api/v1/admin/clients/USR-003 [200 OK, 402B, 25ms]
+  ✓  Responde 200
+  ✓  Admin ve el RUN
+
+↳ S31 Registrar cliente en el local
+  POST https://127.0.0.1:8000/api/v1/admin/clients [201 Created, 253B, 107ms]
+  ✓  Responde 201
+
+↳ S32 Editar cliente
+  PUT https://127.0.0.1:8000/api/v1/admin/clients/USR-33C9C1A3 [200 OK, 360B, 27ms]
+  ✓  Responde 200
+  ✓  Datos actualizados
+
+↳ S33 Usuarios y perfiles
+  GET https://127.0.0.1:8000/api/v1/admin/users [200 OK, 1.26kB, 25ms]
+  ✓  Responde 200
+  ✓  Cliente local pendiente de verificar correo
+  ✓  Nunca devuelve el hash de la clave
+
+↳ S34 Crear funcionario
+  POST https://127.0.0.1:8000/api/v1/admin/users [201 Created, 245B, 88ms]
+  ✓  Responde 201
+
+↳ S35 Cambiar perfil del funcionario
+  PUT https://127.0.0.1:8000/api/v1/admin/users/USR-71AF8532/role [200 OK, 194B, 24ms]
+  ✓  Responde 200
+  ✓  Nuevo perfil
+
+↳ S25 Mensajes de contacto
+  GET https://127.0.0.1:8000/api/v1/admin/contact [200 OK, 559B, 23ms]
+  ✓  Responde 200
+
+↳ S26 Reporte de ventas (analitica)
+  GET https://127.0.0.1:8000/api/v1/admin/reports/sales [200 OK, 612B, 23ms]
+  ✓  Responde 200
+  ✓  Tiene ventas
+  ✓  Sin datos personales
+
+↳ S27 Correos enviados (boletas)
+  GET https://127.0.0.1:8000/api/v1/admin/notifications [200 OK, 2.16kB, 24ms]
+  ✓  Responde 200
+  ✓  Correo enmascarado
+
+↳ S18 GraphQL reporteVentas
+  POST https://127.0.0.1:8000/api/v1/graphql [200 OK, 396B, 32ms]
+  ✓  Responde 200
+  ✓  Reporte con pedidos
+
+↳ S05 Logout
+  POST https://127.0.0.1:8000/api/v1/auth/logout [200 OK, 184B, 23ms]
+  ✓  Responde 200
+
+↳ S19 Token revocado -> 401
+  GET https://127.0.0.1:8000/api/v1/admin/products [401 Unauthorized, 201B, 19ms]
+  ✓  Despues del logout el token no sirve
+
+┌─────────────────────────┬───────────────────┬───────────────────┐
+│                         │          executed │            failed │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              iterations │                 1 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│                requests │                74 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│            test-scripts │                74 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│      prerequest-scripts │                 4 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              assertions │               124 │                 0 │
+├─────────────────────────┴───────────────────┴───────────────────┤
+│ total run duration: 3.9s                                        │
+├─────────────────────────────────────────────────────────────────┤
+│ total data received: 25.4kB (approx)                            │
+├─────────────────────────────────────────────────────────────────┤
+│ average response time: 36ms [min: 10ms, max: 107ms, s.d.: 26ms] │
+└─────────────────────────────────────────────────────────────────┘
