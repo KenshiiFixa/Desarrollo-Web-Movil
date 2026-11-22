@@ -1,0 +1,11 @@
+{
+  "name": "aroma-cafe-prueba-frontend",
+  "private": true,
+  "description": "Node.js solo como herramienta: Playwright recorre el frontend en Chromium contra el sistema en Docker",
+  "scripts": {
+    "test": "node prueba_frontend.js"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

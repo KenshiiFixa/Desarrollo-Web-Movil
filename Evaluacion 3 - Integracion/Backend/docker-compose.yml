@@ -1,0 +1,192 @@
+# Aroma & Cafe - todo el sistema en contenedores (Evaluacion 3).
+#
+#   docker compose up -d --build     levanta todo (la primera vez construye la imagen del backend)
+#   docker compose logs -f gateway   log de un contenedor (gateway, auth, inventory, clients, frontend, mongo, ...)
+#   docker compose down              detiene todo (los datos de MongoDB quedan en el volumen)
+#   docker compose down -v           detiene todo y borra la base de datos
+#
+# Redes:
+#   publica : frontend y API Gateway. Son los UNICOS puertos publicados, y solo en 127.0.0.1:
+#             frontend en http://localhost:8080 y gateway en https://127.0.0.1:8000.
+#   privada : el resto (servicios, Vault y MongoDB). "internal: true" = sin acceso desde el computador ni a Internet.
+# Todo el trafico entre contenedores va con TLS (certificados de la CA local, carpeta certs/).
+#
+# iniciar.py (modo local, el que usan los scripts de pruebas/) sigue usando SOLO el contenedor mongo:
+#   docker compose up -d mongo
+name: aroma-cafe
+
+networks:
+  publica: {}
+  privada:
+    internal: true
+  mongo_local: {}    # solo para publicar MongoDB en 127.0.0.1:27018 (lo usa iniciar.py)
+
+# Configuracion comun de los 10 servicios FastAPI (misma imagen, cambia la variable SERVICIO)
+x-servicio: &servicio
+  image: aroma-cafe-backend:3.0
+  pull_policy: never        # imagen propia: se construye (build en gateway), no se descarga
+  restart: unless-stopped
+  networks: [privada]
+  depends_on:
+    preparar:
+      condition: service_completed_successfully
+    mongo:
+      condition: service_healthy
+  healthcheck:
+    test: ["CMD", "python", "-c", "import ssl,urllib.request as u; u.urlopen('https://localhost:8000/health', timeout=3, context=ssl.create_default_context(cafile='/certs/ca.crt'))"]
+    interval: 10s
+    timeout: 5s
+    retries: 12
+    start_period: 10s
+
+services:
+  # ---------------------------------------------------------------- Frontend
+  frontend:
+    image: php:8.3-cli-alpine
+    command: ["php", "-S", "0.0.0.0:8080", "-t", "/app"]
+    volumes:
+      - ../Frontend:/app:ro
+    networks: [publica]
+    ports: ["127.0.0.1:8080:8080"]
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------- Preparacion (se ejecutan una vez y terminan)
+  certificados:
+    image: aroma-cafe-backend:3.0
+    pull_policy: never
+    user: root               # escribe en certs/ y le entrega la clave privada al usuario app (uid 1000)
+    command: ["python", "preparacion.py", "certificados"]
+    network_mode: none
+    volumes:
+      - ./certs:/certs       # carpeta del computador: ahi queda ca.crt para el navegador y Postman
+
+  preparar:
+    image: aroma-cafe-backend:3.0
+    pull_policy: never
+    user: root
+    command: ["python", "preparacion.py", "secretos"]
+    depends_on:
+      vault:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    environment:
+      VAULT_ROOT_TOKEN: ${VAULT_ROOT_TOKEN:?Falta VAULT_ROOT_TOKEN en .env}
+      MONGO_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?Falta MONGO_ROOT_PASSWORD en .env}
+      SEED_PASSWORD: ${SEED_PASSWORD:?Falta SEED_PASSWORD en .env}
+    networks: [privada]
+    volumes:
+      - ./certs:/certs:ro
+      - token_gateway:/tokens/gateway
+      - token_auth:/tokens/auth
+      - token_inventory:/tokens/inventory
+      - token_orders:/tokens/orders
+      - token_clients:/tokens/clients
+      - token_payments:/tokens/payments
+      - token_graphql:/tokens/graphql
+      - token_analitica:/tokens/analitica
+      - token_notificaciones:/tokens/notificaciones
+      - token_proveedor:/tokens/proveedor
+
+  # ---------------------------------------------------------------- Infraestructura
+  vault:
+    image: hashicorp/vault:1.15
+    entrypoint: ["vault"]
+    command: ["server", "-dev", "-dev-root-token-id=${VAULT_ROOT_TOKEN:?Falta VAULT_ROOT_TOKEN en .env}",
+              "-dev-listen-address=127.0.0.1:8210", "-config=/vault/tls.hcl"]
+    cap_add: [IPC_LOCK]
+    depends_on:
+      certificados:
+        condition: service_completed_successfully
+    networks: [privada]
+    volumes:
+      - ./vault/tls.hcl:/vault/tls.hcl:ro
+      - ./certs:/certs:ro
+    healthcheck:
+      test: ["CMD", "vault", "status", "-address=https://127.0.0.1:8200", "-ca-cert=/certs/ca.crt"]
+      interval: 3s
+      retries: 20
+
+  mongo:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?Falta MONGO_ROOT_PASSWORD en .env}
+    networks: [privada, mongo_local]
+    ports: ["127.0.0.1:27018:27017"]
+    volumes:
+      - mongo_datos:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand({ping: 1})"]
+      interval: 5s
+      retries: 20
+
+  # ---------------------------------------------------------------- Servicios del backend
+  gateway:
+    <<: *servicio
+    build: .                 # la imagen se construye una vez y la usan todos los servicios
+    environment:
+      SERVICIO: gateway
+      LIMITE_POR_MINUTO: ${LIMITE_POR_MINUTO:-120}
+    networks: [publica, privada]
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: [./certs:/certs:ro, token_gateway:/run/vault:ro]
+
+  auth:
+    <<: *servicio
+    environment: { SERVICIO: auth_service }
+    volumes: [./certs:/certs:ro, token_auth:/run/vault:ro]
+
+  inventory:
+    <<: *servicio
+    environment: { SERVICIO: inventory }
+    volumes: [./certs:/certs:ro, token_inventory:/run/vault:ro]
+
+  orders:
+    <<: *servicio
+    environment: { SERVICIO: orders }
+    volumes: [./certs:/certs:ro, token_orders:/run/vault:ro]
+
+  clients:
+    <<: *servicio
+    environment: { SERVICIO: clients }
+    volumes: [./certs:/certs:ro, token_clients:/run/vault:ro]
+
+  payments:
+    <<: *servicio
+    environment: { SERVICIO: payments }
+    volumes: [./certs:/certs:ro, token_payments:/run/vault:ro]
+
+  graphql:
+    <<: *servicio
+    environment: { SERVICIO: graphql_gateway }
+    volumes: [./certs:/certs:ro, token_graphql:/run/vault:ro]
+
+  analitica:
+    <<: *servicio
+    environment: { SERVICIO: analitica }
+    volumes: [./certs:/certs:ro, token_analitica:/run/vault:ro]
+
+  notificaciones:
+    <<: *servicio
+    environment: { SERVICIO: notificaciones }
+    volumes: [./certs:/certs:ro, token_notificaciones:/run/vault:ro]
+
+  # Proveedor de pagos SIMULADO (en la realidad es un sistema externo)
+  proveedor:
+    <<: *servicio
+    environment: { SERVICIO: proveedor_pagos }
+    volumes: [./certs:/certs:ro, token_proveedor:/run/vault:ro]
+
+volumes:
+  mongo_datos:
+  token_gateway:
+  token_auth:
+  token_inventory:
+  token_orders:
+  token_clients:
+  token_payments:
+  token_graphql:
+  token_analitica:
+  token_notificaciones:
+  token_proveedor:

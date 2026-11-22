@@ -1,0 +1,10 @@
+# Solo entra a la imagen el codigo de backend/ y requirements.txt
+.env
+certs
+datos
+logs
+docs
+postman
+pruebas
+**/__pycache__
+**/*.pyc

@@ -1,0 +1,13 @@
+# Una solicitud POST /api/v1/orders (por HTTPS) seguida por su id de correlacion (X-Request-ID).
+# El navegador mando 'X-Request-ID: id-inventado-por-el-navegador' y el gateway lo descarto.
+# Comando:  grep "req=afb8927de7ea" logs/*.log
+# En PowerShell:  Select-String -Path logs\*.log -Pattern "req=afb8927de7ea"
+
+[auth] req=afb8927de7ea POST /introspect -> 200 (2 ms)
+[gateway] req=afb8927de7ea POST /api/v1/orders -> 201 (21 ms)
+[inventory-grpc] req=afb8927de7ea llamada de orders
+[orders] req=afb8927de7ea POST /orders -> 201 (9 ms)
+
+# Veces que aparece el id inventado en los logs: 0
+# Lineas de log con 'Bearer' o con la clave de prueba: 0
+# Lineas de log con parametros de consulta (?...): 0

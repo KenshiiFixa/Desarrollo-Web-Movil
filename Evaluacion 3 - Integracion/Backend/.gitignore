@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+node_modules/
+# Los crea iniciar.py: tokens de Vault, logs y certificados TLS (las claves privadas nunca se suben)
+datos/
+logs/
+certs/
