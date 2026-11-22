@@ -1,15 +1,7 @@
-"""Preparacion del backend antes de que arranquen los servicios. La usan los dos modos:
-  - iniciar.py (todo en local): importa estas funciones.
-  - Docker (docker-compose.yml): los contenedores 'certificados' y 'preparar' ejecutan este archivo:
-        python preparacion.py certificados   -> genera la CA local y el certificado TLS en /certs
-        python preparacion.py secretos       -> crea secretos, politicas y tokens en Vault y los usuarios de MongoDB
-
-Lo que hace:
-  1. Certificados TLS: una CA local y un certificado del servidor (localhost, 127.0.0.1 y el nombre de cada contenedor).
-  2. Secretos ALEATORIOS en Vault: uno por cada par de servicios y una clave de MongoDB por servicio.
-  3. Una politica y un token de Vault por servicio (cada uno solo puede leer su propio secreto).
-  4. Un usuario de MongoDB por servicio, con permiso solo sobre su base.
-"""
+"""Prepara el backend antes de iniciar los servicios: certificados TLS, secretos y tokens en Vault y
+usuarios de MongoDB. Lo usan iniciar.py (modo local) y los contenedores de Docker:
+    python preparacion.py certificados   -> genera la CA local y el certificado TLS en /certs
+    python preparacion.py secretos       -> crea secretos, politicas y tokens en Vault y los usuarios de MongoDB"""
 import datetime
 import ipaddress
 import os
@@ -34,9 +26,8 @@ NOMBRES_CERTIFICADO = ["localhost", *SERVICIOS, "vault"]
 
 
 def generar_certificados(carpeta):
-    """CA local + certificado del servidor. Se generan solo si no existen, si vencen en menos de 7 dias
-    o si al certificado le falta algun nombre. Las claves privadas no se suben (.gitignore).
-    Devuelve True si se generaron nuevos."""
+    """Genera la CA local y el certificado del servidor si no existen, vencen en menos de 7 dias
+    o les falta un nombre. Devuelve True si genero nuevos."""
     os.makedirs(carpeta, exist_ok=True)
     ruta_crt = os.path.join(carpeta, "servidor.crt")
     if os.path.exists(ruta_crt) and os.path.exists(os.path.join(carpeta, "ca.crt")):
@@ -91,7 +82,7 @@ def generar_certificados(carpeta):
     guardar("servidor.key", clave_srv.private_bytes(serialization.Encoding.PEM,
                                                     serialization.PrivateFormat.TraditionalOpenSSL,
                                                     serialization.NoEncryption()))
-    # La clave de la CA no se guarda: solo se necesitaba para firmar. Para renovar se genera todo de nuevo.
+    # La clave privada de la CA no se guarda (solo se usa para firmar)
     return True
 
 
@@ -100,8 +91,8 @@ def rnd():
 
 
 def armar_secretos(seed):
-    """Secretos ALEATORIOS: uno por cada par de servicios (quien llama -> a quien llama) y una clave de
-    MongoDB por servicio. Cada servicio recibe SOLO lo que necesita."""
+    """Genera secretos aleatorios: uno por cada par de servicios y una clave de MongoDB por servicio.
+    Cada servicio recibe solo los suyos."""
     par = {k: rnd() for k in ["GW_AUTH", "GW_INV", "GW_ORD", "GW_CLI", "GW_PAY", "GW_GQL", "GW_ANA", "GW_NOT",
                               "GQL_ORD", "GQL_INV", "GQL_CLI", "GQL_PAY", "GQL_ANA", "ORD_INV", "ORD_NOT",
                               "ORD_ANA", "PAY_ORD", "PAY_PRV", "AUTH_CLI", "AUTH_NOT", "NOT_CLI", "WEBHOOK"]}
@@ -153,8 +144,7 @@ def preparar_vault(vault_url, root, seed, ruta_token, contexto_tls):
 
 
 def preparar_mongo(url, root_clave, claves):
-    """Un usuario de MongoDB por servicio, con readWrite solo sobre su base.
-    El usuario root lo crea el contenedor de MongoDB la primera vez, con MONGO_ROOT_PASSWORD del .env."""
+    """Crea un usuario de MongoDB por servicio, con permiso solo sobre su base."""
     root = MongoClient(url, username="root", password=root_clave, authSource="admin", serverSelectionTimeoutMS=5000)
     try:
         root.admin.command("ping")
@@ -172,7 +162,7 @@ def preparar_mongo(url, root_clave, claves):
 
 # ---------------------------------------------------------------------------------- Modo Docker
 def entregar_a_app(ruta, modo):
-    """En Docker los servicios corren con el usuario 'app' (uid 1000), no como root: se le entrega el archivo."""
+    """Deja el archivo legible para el usuario 'app' (uid 1000) con el que corren los servicios en Docker."""
     try:
         if hasattr(os, "chown") and os.geteuid() == 0:
             os.chown(ruta, 1000, 1000)
@@ -201,8 +191,7 @@ def docker_secretos():
         time.sleep(1)
     else:
         sys.exit("Vault no respondio a tiempo")
-    # Vault en modo desarrollo guarda todo en memoria: si ya tiene los secretos (por ejemplo al reiniciar solo
-    # un contenedor) no se crean de nuevo, porque los servicios que ya estan corriendo usan los actuales.
+    # Si Vault ya tiene los secretos (se reinicio solo un contenedor), se mantienen los actuales
     r = httpx.get(f"{vault_url}/v1/secret/data/gateway", headers={"X-Vault-Token": root}, verify=contexto)
     if r.status_code == 200:
         print("Vault ya estaba configurado: se mantienen los secretos y tokens actuales", flush=True)

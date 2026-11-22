@@ -1,18 +1,12 @@
-# Aroma & Cafe - todo el sistema en contenedores (Evaluacion 3).
-#
-#   docker compose up -d --build     levanta todo (la primera vez construye la imagen del backend)
-#   docker compose logs -f gateway   log de un contenedor (gateway, auth, inventory, clients, frontend, mongo, ...)
-#   docker compose down              detiene todo (los datos de MongoDB quedan en el volumen)
-#   docker compose down -v           detiene todo y borra la base de datos
+# Aroma & Cafe: todo el sistema en contenedores.
+#   docker compose up -d --build     levanta todo
+#   docker compose logs -f gateway   muestra el log de un contenedor
+#   docker compose down              detiene todo (con -v tambien borra la base de datos)
 #
 # Redes:
-#   publica : frontend y API Gateway. Son los UNICOS puertos publicados, y solo en 127.0.0.1:
-#             frontend en http://localhost:8080 y gateway en https://127.0.0.1:8000.
-#   privada : el resto (servicios, Vault y MongoDB). "internal: true" = sin acceso desde el computador ni a Internet.
-# Todo el trafico entre contenedores va con TLS (certificados de la CA local, carpeta certs/).
-#
-# iniciar.py (modo local, el que usan los scripts de pruebas/) sigue usando SOLO el contenedor mongo:
-#   docker compose up -d mongo
+#   publica : frontend (http://localhost:8080) y API Gateway (https://127.0.0.1:8000), los unicos puertos publicados.
+#   privada : servicios, Vault y MongoDB, sin acceso desde el computador ni a Internet.
+# El trafico entre contenedores va con TLS. iniciar.py (modo local) usa solo el contenedor mongo.
 name: aroma-cafe
 
 networks:
@@ -24,7 +18,7 @@ networks:
 # Configuracion comun de los 10 servicios FastAPI (misma imagen, cambia la variable SERVICIO)
 x-servicio: &servicio
   image: aroma-cafe-backend:3.0
-  pull_policy: never        # imagen propia: se construye (build en gateway), no se descarga
+  pull_policy: never        # imagen propia: se construye, no se descarga
   restart: unless-stopped
   networks: [privada]
   depends_on:

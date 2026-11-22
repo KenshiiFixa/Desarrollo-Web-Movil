@@ -80,7 +80,7 @@
       .btn-add:disabled { opacity: .5; cursor: not-allowed; }
     </style>
 
-    <!-- Los productos ya no estan escritos aqui: app.js los pide al API Gateway (GET /api/v1/products) -->
+    <!-- app.js llena la carta con los productos del API Gateway (GET /api/v1/products) -->
     <div class="catalog-status" id="catalog-status" role="status">Cargando la carta…</div>
 
     <p class="empty-state" id="empty-state">No hay productos que coincidan con los filtros seleccionados.</p>

@@ -1,4 +1,4 @@
-"""Prueba de carga (Modulo 9). Mide latencia p50/p95, throughput, errores y CPU/memoria de cada servicio.
+"""Prueba de carga. Mide latencia p50/p95, throughput, errores y CPU/memoria de cada servicio.
 
 Escenarios (todos a traves del API Gateway, como un cliente real):
   1. catalogo   : GET /products sin sesion (la consulta de mayor demanda del caso).

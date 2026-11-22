@@ -1,14 +1,8 @@
-"""Auth Service: registro, verificacion de correo, login, introspect, logout y mantenedor de usuarios.
+"""Auth Service: registro con verificacion de correo, login, validacion de tokens (introspect), logout
+y mantenedor de usuarios.
 
-Basado en auth_service.py del ejemplo de clase (Semana 9). Cambios:
-  - Los usuarios y sesiones se guardan en MongoDB (no en un diccionario en memoria).
-  - Las claves se guardan con hash argon2id (con sal), nunca en texto plano.
-  - En la base se guarda el SHA-256 del token, no el token (si se filtra la base, no sirve).
-  - Caso 19 (RF5, RF6, RF11): el correo del cliente se valida con un codigo enviado por el servicio de
-    notificaciones (API de mensajeria simulada). Sin correo verificado no se puede iniciar sesion.
-  - Caso 19 (RF10, RF12): el administrador mantiene los usuarios y les asigna el perfil (rol).
-  - Solo el gateway puede llamar a este servicio (secreto propio del par gateway -> auth).
-"""
+- Usuarios y sesiones en MongoDB; claves con hash argon2id; de cada token solo se guarda su SHA-256.
+- Solo lo puede llamar el gateway."""
 import hashlib
 import re
 import secrets
@@ -48,7 +42,7 @@ async def lifespan(app: FastAPI):
     leer_secretos("auth")
     db = conectar_mongo("auth")
     db.usuarios.create_index("email", unique=True)
-    # Usuarios de prueba FICTICIOS (uno por perfil del Caso 19). Su clave viene de Vault, no del codigo.
+    # Usuarios de prueba, uno por perfil (su clave viene de Vault)
     for user_id, email, rol in [("USR-001", "admin@aromaycafe.test", "admin"),
                                 ("USR-002", "despacho@aromaycafe.test", "despacho"),
                                 ("USR-003", "ana@aromaycafe.test", "cliente"),
@@ -67,7 +61,7 @@ solo_gateway = Depends(verificar_servicio("gateway"))
 
 
 class RegistroRequest(BaseModel):
-    """Datos del cliente del Caso 19 (RF5). Los opcionales tambien se pueden completar despues en el perfil."""
+    """Datos del cliente para registrarse. Los opcionales se pueden completar despues en el perfil."""
     email: str = Field(max_length=254)
     nombre: str = Field(min_length=2, max_length=80)
     password: str = Field(min_length=8, max_length=128)
@@ -96,7 +90,7 @@ class VerificacionRequest(BaseModel):
 
 
 def registrar_cliente(datos: RegistroRequest):
-    """Lo usan el registro web (S03) y el administrador en el local (S31). En ambos casos se valida el correo."""
+    """Crea el usuario y su perfil y envia el codigo de verificacion. Lo usan el registro web y el administrador."""
     email = datos.email.strip().lower()
     if not correo_valido(email):
         raise HTTPException(status_code=422, detail="Correo invalido")
@@ -117,7 +111,7 @@ def registrar_cliente(datos: RegistroRequest):
         detalle = respuesta.json().get("detail") if respuesta.status_code == 422 else None
         raise HTTPException(status_code=422 if detalle else 503,
                             detail=detalle or "No fue posible completar el registro")
-    # El codigo se envia al correo mediante el servicio de notificaciones (API de mensajeria)
+    # El codigo se envia por el servicio de notificaciones
     llamar_servicio("auth", "notificaciones", "POST", "/internal/verificacion",
                     json={"email": email, "nombre": datos.nombre, "codigo": codigo})
     log(f"registro: usuario {user_id} creado en auth.usuarios (correo sin verificar); perfil guardado en clients "
@@ -132,7 +126,7 @@ def register(request: RegistroRequest):
 
 @app.post("/admin/clientes", status_code=201, dependencies=[solo_gateway])
 def registrar_en_local(request: RegistroRequest, usuario=Depends(usuario_actual)):
-    """RF6: el administrador registra al cliente en el restaurant. Igual se valida su correo."""
+    """El administrador registra a un cliente en el local (igual se valida su correo)."""
     exigir_rol(usuario, "admin")
     return registrar_cliente(request)
 
@@ -197,7 +191,7 @@ def logout(request: TokenRequest):
     return {"message": "Sesion finalizada"}
 
 
-# ------------------------------------------------------------------ Mantenedor de usuarios (RF10, RF12)
+# ------------------------------------------------------------------ Mantenedor de usuarios
 class FuncionarioNuevo(BaseModel):
     email: str = Field(max_length=254)
     password: str = Field(min_length=8, max_length=128)

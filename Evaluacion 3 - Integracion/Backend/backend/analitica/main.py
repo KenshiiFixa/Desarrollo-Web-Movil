@@ -1,10 +1,8 @@
-"""Analitica: reportes de ventas para el administrador. Separado de los servicios transaccionales.
+"""Analitica: reportes de ventas para el dueno y el administrador.
 
-- Origen de los datos: orders envia cada pedido pagado a POST /internal/ventas.
-- Actualizacion: inmediata; si analitica no responde, orders reintenta cada 30 s (retraso aceptado).
-- Datos personales: NINGUNO. El mensaje no trae user_id, nombre ni direccion.
-- Agregaciones: total vendido, cantidad de pedidos, ticket promedio, ventas por dia, productos mas vendidos.
-"""
+- orders envia cada pedido pagado a POST /internal/ventas, sin datos personales.
+- Si analitica no responde, orders reintenta cada 30 s.
+- Reporte: total vendido, cantidad de pedidos, ticket promedio, ventas por dia y productos mas vendidos."""
 from collections import defaultdict
 from contextlib import asynccontextmanager
 from typing import Optional

@@ -1,14 +1,8 @@
-"""Demostracion: un contenedor que NO es el gateway intenta llamar directo a inventory.
+"""Demostracion: otro contenedor llama directo a inventory sin el secreto del gateway y despues con uno falso.
+En los dos casos inventory responde 403 y lo registra como "llamada RECHAZADA".
 
-Uso con Docker (desde la carpeta Backend):
-    docker compose exec clients python llamada_sin_secreto.py
-
-Hace dos intentos desde dentro de la red privada de Docker:
-  1. sin ningun secreto;
-  2. diciendo que es el gateway, pero con un secreto inventado.
-En los dos casos inventory compara con el secreto que tiene en Vault y responde 403.
-En el log de inventory queda cada intento como "llamada RECHAZADA (403)".
-"""
+Uso:
+    docker compose exec clients python llamada_sin_secreto.py"""
 import ssl
 import urllib.error
 import urllib.request

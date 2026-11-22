@@ -1,13 +1,8 @@
-"""Notificaciones (mensajeria/correo): la "API de mensajeria" del Caso 19.
+"""Notificaciones: envio de correos (simulado).
 
-- auth llama POST /internal/verificacion: envia el codigo para validar que el correo existe (RF11).
-- orders llama POST /internal/boletas con el pedido pagado: envia la boleta digital (RF8).
-- Este servicio pide a clients SOLO el nombre y correo del cliente.
-- El envio de correo es SIMULADO: el correo se guarda en la base 'notificaciones' en vez de
-  mandarlo por SMTP (no hay un servidor de correo en el proyecto). El contrato queda listo para
-  cambiarlo por un proveedor real.
-- El administrador puede revisar los correos enviados (GET /notificaciones), con el correo enmascarado.
-"""
+- auth pide enviar el codigo de verificacion y orders la boleta de un pedido pagado.
+- Los correos se guardan en la base 'notificaciones' en vez de enviarse por SMTP.
+- El administrador puede ver los correos enviados, con el correo enmascarado y sin el cuerpo."""
 import secrets
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone

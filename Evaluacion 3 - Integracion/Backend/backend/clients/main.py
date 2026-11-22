@@ -1,10 +1,7 @@
 """Clients: perfil de los clientes y mensajes de contacto.
 
-Datos del cliente segun el Caso 19 (RF5): run, nombre completo, direccion, comuna, provincia, region,
-fecha de nacimiento, sexo, correo electronico y telefono.
-Son datos personales: solo los ve el propio cliente, el encargado de despacho (lo necesario para
-entregar el pedido) y el administrador. Nunca aparecen en el catalogo ni en la analitica.
-"""
+Los datos personales solo los ve el propio cliente, el encargado de despacho (lo necesario para la entrega)
+y el administrador."""
 import re
 from contextlib import asynccontextmanager
 from datetime import date, datetime, timezone
@@ -72,7 +69,7 @@ async def lifespan(app: FastAPI):
     global db
     leer_secretos("clients")
     db = conectar_mongo("clients")
-    # Perfiles FICTICIOS de los usuarios de prueba
+    # Perfiles de los usuarios de prueba
     for user_id, nombre, email in [("USR-001", "Admin Aroma", "admin@aromaycafe.test"),
                                    ("USR-002", "Encargado Despacho", "despacho@aromaycafe.test"),
                                    ("USR-003", "Ana Pérez", "ana@aromaycafe.test"),
@@ -164,13 +161,13 @@ def ver_cliente(user_id: str, usuario=Depends(usuario_actual)):
 
 @app.put("/clients/{user_id}", dependencies=[solo_gateway])
 def editar_cliente(user_id: str, datos: Perfil, usuario=Depends(usuario_actual)):
-    """Mantenedor de clientes (RF10): el administrador corrige los datos de un cliente."""
+    """El administrador corrige los datos de un cliente."""
     exigir_rol(usuario, "admin")
     return guardar_perfil(user_id, datos)
 
 
 class Contacto(BaseModel):
-    """Formulario de Contacto.php"""
+    """Datos del formulario de contacto."""
     nombre: str = Field(min_length=2, max_length=80)
     email: str = Field(max_length=254, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]{2,}$")
     telefono: Optional[str] = Field(default=None, max_length=20)

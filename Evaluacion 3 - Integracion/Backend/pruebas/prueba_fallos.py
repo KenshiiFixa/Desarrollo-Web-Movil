@@ -1,12 +1,11 @@
-"""Pruebas de fallos, desconexiones y concurrencia (Modulos 3, 9 y 10):
+"""Pruebas de fallos, desconexiones y concurrencia:
   1. inventory detenido: error controlado, GraphQL parcial y recuperacion.
   2. auth detenido: las rutas protegidas fallan cerradas, el catalogo sigue y la sesion sobrevive.
   3. compras simultaneas: con stock 2, de 10 compras al mismo tiempo solo se crean 2 pedidos.
 
 Uso, con el backend corriendo (python iniciar.py en otra terminal):
     TEST_PASSWORD=<SEED_PASSWORD del .env> python pruebas/prueba_fallos.py
-El resultado queda en docs/evidencias/prueba_fallos.txt.
-"""
+El resultado queda en docs/evidencias/prueba_fallos.txt."""
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor

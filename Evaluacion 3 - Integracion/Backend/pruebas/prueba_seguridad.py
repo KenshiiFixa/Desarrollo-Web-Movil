@@ -1,10 +1,8 @@
-"""Pruebas de seguridad: los casos de validacion del Modulo 7, permisos, GraphQL, TLS y aislamiento de
-secretos y bases de datos.
+"""Pruebas de seguridad: validaciones, permisos, GraphQL, TLS y aislamiento de secretos y bases de datos.
 
 Uso, con el backend corriendo (python iniciar.py en otra terminal):
     TEST_PASSWORD=<SEED_PASSWORD del .env> python pruebas/prueba_seguridad.py
-El resultado queda en docs/evidencias/prueba_seguridad.txt.
-"""
+El resultado queda en docs/evidencias/prueba_seguridad.txt."""
 import socket
 
 import httpx

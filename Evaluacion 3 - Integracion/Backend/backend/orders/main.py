@@ -23,10 +23,9 @@ from comun import (ID_SOLICITUD, canal_inventory, registrar_logs, SECRETOS, cone
                    verificar_servicio)
 from proto import inventario_pb2, inventario_pb2_grpc
 
-# Caso 19: el despacho es GRATIS y solo dentro de 3 km del local. Se controla con la lista de comunas
-# que quedan dentro de ese radio (configurable con la variable COMUNAS_DESPACHO).
+# Comunas con despacho gratis (dentro de 3 km del local); se cambian con COMUNAS_DESPACHO
 COMUNAS_DESPACHO = [c.strip() for c in os.getenv("COMUNAS_DESPACHO", "maipu").split(",")]
-CAJA_WEB = "CAJA-WEB-01"   # RF4: las ventas web se asocian a la caja del cajero virtual
+CAJA_WEB = "CAJA-WEB-01"   # Caja del cajero virtual, donde se registran las ventas web
 MINUTOS_PARA_PAGAR = 30
 # Cambios de estado que puede hacer el encargado de despacho (o el admin)
 TRANSICIONES = {"PAGADO": ["EN_PREPARACION"], "EN_PREPARACION": ["LISTO"],
@@ -84,7 +83,7 @@ _stub_inventario = None
 
 
 def inventario():
-    """Cliente gRPC hacia inventory, con TLS. Se crea una vez y se reutiliza (como el cliente HTTP)."""
+    """Cliente gRPC hacia inventory, con TLS. Se crea una vez y se reutiliza."""
     global _stub_inventario
     if _stub_inventario is None:
         _stub_inventario = inventario_pb2_grpc.InventarioStub(canal_inventory())
@@ -246,7 +245,7 @@ def ver_boleta(order_id: str, usuario=Depends(usuario_actual)):
 
 
 class Anulacion(BaseModel):
-    motivo: str = Field(min_length=5, max_length=200)   # RF3: se indica el motivo de la anulacion
+    motivo: str = Field(min_length=5, max_length=200)   # se exige el motivo de la anulacion
 
 
 @app.post("/orders/{order_id}/cancel", dependencies=[gateway_o_graphql])
@@ -282,7 +281,7 @@ def cambiar_estado(order_id: str, cambio: CambioEstado, usuario=Depends(usuario_
 
 @app.get("/despacho", dependencies=[Depends(verificar_servicio("gateway"))])
 def ordenes_de_despacho(usuario=Depends(usuario_actual)):
-    """RF13: ordenes de despacho para imprimir y llevar a cocina, en el orden en que se pagaron."""
+    """Ordenes de despacho para cocina, en el orden en que se pagaron."""
     exigir_rol(usuario, "despacho", "admin")
     pendientes = db.pedidos.find({"estado": {"$in": ["PAGADO", "EN_PREPARACION", "LISTO", "EN_CAMINO"]}})
     return [{"id": p["_id"], "pagado_en": p["pagado_en"], "estado": p["estado"], "tipo_entrega": p["tipo_entrega"],
@@ -293,7 +292,7 @@ def ordenes_de_despacho(usuario=Depends(usuario_actual)):
 
 @app.get("/ventas", dependencies=[Depends(verificar_servicio("gateway"))])
 def ventas_de_la_caja(usuario=Depends(usuario_actual), limit: int = Query(50, ge=1, le=200)):
-    """RF4: ventas web registradas en la caja del cajero virtual (pedidos pagados con boleta)."""
+    """Ventas web registradas en la caja del cajero virtual (pedidos pagados con boleta)."""
     exigir_rol(usuario, "cajero", "admin")
     ventas = db.pedidos.find({"caja": CAJA_WEB}).sort("pagado_en", -1).limit(limit)
     return [{"folio": p["folio"], "pedido": p["_id"], "fecha": p["pagado_en"], "total": p["total"],

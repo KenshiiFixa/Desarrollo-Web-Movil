@@ -1,14 +1,7 @@
-"""Funciones que usan todos los servicios.
+"""Funciones comunes a todos los servicios: TLS, lectura de secretos desde Vault, verificacion del secreto
+de quien llama, llamadas a otros servicios, conexion a MongoDB y logs.
 
-Es lo mismo que vimos en el ejemplo de clase (Semana 9/apigateway), puesto en un solo lugar:
-  - leer_secretos()      -> como get_gateway_secrets(): lee el secreto del servicio desde Vault.
-  - verificar_servicio() -> como verify_gateway(): rechaza con 403 a quien no trae su secreto.
-  - llamar_servicio()    -> como el proxy del gateway: llama a otro servicio agregando su secreto.
-  - conectar_mongo()     -> como el MongoClient de la Semana 6, pero con usuario y clave propios.
-
-Diferencia con el ejemplo de clase: aqui CADA par de servicios tiene su propio secreto.
-Ej.: el secreto que usa el gateway para hablar con orders no sirve para hablar con inventory.
-"""
+Cada par de servicios tiene su propio secreto: el que usa el gateway para llamar a orders no sirve para inventory."""
 import contextvars
 import os
 import re
@@ -26,13 +19,11 @@ from pymongo import MongoClient
 # Identificador de correlacion de la solicitud actual (lo crea el gateway y viaja en X-Request-ID)
 ID_SOLICITUD = contextvars.ContextVar("id_solicitud", default="-")
 
-# Dos formas de correr el backend (en las dos, todas las llamadas van cifradas con TLS):
-#   - Local (iniciar.py): los servicios escuchan solo en 127.0.0.1, cada uno en su puerto.
-#   - Docker (docker-compose.yml, EN_DOCKER=1): cada servicio es un contenedor que escucha en el puerto 8000
-#     y los demas lo encuentran por su nombre (https://inventory:8000) dentro de la red privada de Docker.
+# Local (iniciar.py): cada servicio escucha en 127.0.0.1 con su puerto.
+# Docker (EN_DOCKER=1): cada servicio es un contenedor en el puerto 8000 y se llama por su nombre.
 EN_DOCKER = os.getenv("EN_DOCKER") == "1"
 VAULT_ADDR = os.getenv("VAULT_ADDR", "https://127.0.0.1:8200")
-# El token de Vault NO esta en el codigo: iniciar.py lo deja en un archivo distinto para cada servicio.
+# Archivo con el token de Vault de este servicio
 VAULT_TOKEN_FILE = os.getenv("VAULT_TOKEN_FILE", "")
 
 # Puerto de cada servicio (solo el gateway es la entrada para el navegador)
@@ -44,29 +35,25 @@ if EN_DOCKER:
     URLS = {s: f"https://{s}:8000" for s in PUERTOS}
 else:
     URLS = {s: f"https://127.0.0.1:{p}" for s, p in PUERTOS.items()}
-# gRPC de inventory (solo lo usa orders). En Docker inventory escucha en todas sus interfaces, pero el puerto
-# solo existe dentro de la red privada (no se publica hacia el computador).
+# gRPC de inventory (solo lo usa orders)
 GRPC_INVENTORY = "inventory:50051" if EN_DOCKER else "127.0.0.1:50051"
 GRPC_ESCUCHA = "0.0.0.0:50051" if EN_DOCKER else GRPC_INVENTORY
 
-# Certificados que genera iniciar.py en la carpeta certs/ (no se suben al repositorio):
-#   ca.crt = nuestra autoridad certificadora local; servidor.crt/.key = certificado de 127.0.0.1 y localhost.
-#   vault/vault-ca.pem = la CA que crea Vault en modo desarrollo con TLS.
+# Certificados TLS: ca.crt (CA local), servidor.crt/.key y vault/vault-ca.pem (CA de Vault en modo local)
 CERTS = os.getenv("CERTS_DIR", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "certs"))
 CA = os.path.join(CERTS, "ca.crt")
 CA_VAULT = os.path.join(CERTS, "vault", "vault-ca.pem")
 
 
 def contexto_tls():
-    """Contexto TLS que solo confia en nuestras CA (la local y la de Vault), no en cualquier certificado."""
+    """Contexto TLS que solo confia en la CA local y en la de Vault."""
     contexto = ssl.create_default_context(cafile=CA) if os.path.exists(CA) else ssl.create_default_context()
     if os.path.exists(CA_VAULT):
         contexto.load_verify_locations(CA_VAULT)
     return contexto
 
 
-# Un solo cliente HTTPS por servicio, reutilizado en todas las llamadas internas. Crear uno por llamada
-# cuesta ~10 ms de CPU (carga los certificados cada vez) y lo medimos como cuello de botella en la prueba de carga.
+# Cliente HTTPS compartido para las llamadas a otros servicios
 CLIENTE_HTTP = httpx.Client(timeout=8.0, verify=contexto_tls())
 
 
@@ -81,22 +68,20 @@ def credenciales_grpc_servidor():
     certificado = open(os.path.join(CERTS, "servidor.crt"), "rb").read()
     return grpc.ssl_server_credentials([(clave, certificado)])
 
-# Secretos de ESTE servicio. Se llenan al iniciar con leer_secretos().
+# Secretos de este servicio (los llena leer_secretos)
 SECRETOS = {}
-# Nombre de ESTE servicio (lo fija leer_secretos) para que los mensajes del log digan quien los escribe
+# Nombre de este servicio, para los mensajes del log
 SERVICIO = {"nombre": "-"}
 
 
 def log(mensaje):
-    """Escribe en el log del servicio un paso de la solicitud actual, con su id de correlacion.
-    Nunca se escriben tokens, claves ni secretos, solo lo que se hizo y el resultado."""
+    """Escribe en el log un paso de la solicitud actual, con su id de correlacion (sin tokens, claves ni secretos)."""
     print(f"[{SERVICIO['nombre']}] req={ID_SOLICITUD.get()} {mensaje}", flush=True)
 
 
 def registrar_logs(app, nombre_servicio, aceptar_id_entrante=True):
-    """Escribe una linea de log por solicitud con el id de correlacion, para seguir una misma
-    solicitud por todos los servicios. NO se registran cuerpos, cabeceras, tokens ni parametros.
-    El gateway usa aceptar_id_entrante=False: siempre crea un id nuevo y no confia en el del navegador."""
+    """Escribe una linea de log por solicitud con su id de correlacion (sin cuerpos, cabeceras ni tokens).
+    Con aceptar_id_entrante=False (gateway) siempre crea un id nuevo."""
     @app.middleware("http")
     async def log_solicitud(request: Request, call_next):
         recibido = request.headers.get("x-request-id", "") if aceptar_id_entrante else ""
@@ -149,8 +134,7 @@ def verificar_servicio(*permitidos):
 def usuario_actual(x_servicio: str = Header(default=""),
                    x_authenticated_user: str = Header(default=""),
                    x_authenticated_roles: str = Header(default="")):
-    """Identidad del usuario que verifico el gateway (mismas cabeceras del ejemplo de clase).
-    Solo se cree si la llamada viene del gateway o del graphql (que ya pasaron verificar_servicio)."""
+    """Identidad del usuario que verifico el gateway. Solo se acepta si la llamada viene del gateway o de graphql."""
     if x_servicio not in ("gateway", "graphql") or not x_authenticated_user:
         return None
     return {"user_id": x_authenticated_user, "rol": x_authenticated_roles}
@@ -178,8 +162,7 @@ def llamar_servicio(yo, destino, metodo, ruta, usuario=None, **kwargs):
 
 
 def conectar_mongo(nombre_servicio):
-    """Cada servicio tiene SU base de datos y SU usuario de MongoDB (solo puede usar su base).
-    La clave viene de Vault (secreto 'mongo_clave'), nunca del codigo."""
+    """Conecta a la base de este servicio con su propio usuario de MongoDB (la clave viene de Vault)."""
     host = os.getenv("MONGO_HOST", "127.0.0.1:27018")
     url = (f"mongodb://{nombre_servicio}:{quote_plus(SECRETOS['mongo_clave'])}@{host}/"
            f"{nombre_servicio}?authSource={nombre_servicio}")

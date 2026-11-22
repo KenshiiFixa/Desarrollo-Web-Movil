@@ -34,8 +34,7 @@
 
   @media (prefers-reduced-motion: reduce){
     *{ animation: none !important; transition: none !important; }
-    /* Sin animaciones (Windows con "Efectos de animacion" desactivados), lo que aparecia con una
-       animacion de entrada se muestra directamente; si no, quedaba invisible con opacity 0. */
+    /* Sin animaciones, lo que entraba con una animacion se muestra directo */
     .hero-art, .hero-copy, .product-card-lg{ opacity: 1 !important; transform: none !important; }
     .seal{ opacity: 1 !important; transform: rotate(-10deg) !important; }
   }
@@ -154,7 +153,7 @@
   .mainnav li.active a{ color: #fff; font-weight: 700; }
   .mainnav li.active a::after{ transform: scaleX(1); background: var(--naranja); }
 
-  /* ".mainnav .nav-right" para que le gane a ".mainnav li" (antes quedaba encima de "Contacto") */
+  /* Mas especifico que ".mainnav li" para quedar a la derecha del menu */
   .mainnav .nav-right{
     position:absolute;
     right:40px;
@@ -700,8 +699,8 @@
     .form-grid{ grid-template-columns: 1fr; }
     .contact-layout{ padding: 32px 22px 48px; }
   }
-  /* ---------- Sesion: login, registro, mi cuenta (Evaluacion 3) ---------- */
-  /* Lo que app.js oculta con el atributo hidden queda oculto aunque su clase tenga display:flex o grid */
+  /* ---------- Sesion: login, registro, mi cuenta ---------- */
+  /* Lo que app.js oculta con el atributo hidden queda oculto aunque su clase use display:flex o grid */
   [hidden]{ display: none !important; }
   .auth-actions .saludo{
     font-size: 0.85rem; color: var(--cafe); font-weight: 700;
@@ -732,7 +731,7 @@
   .aviso.ok{ background: #E3F1E0; color: #24501C; }
   .aviso a{ font-weight: 700; text-decoration: underline; }
 
-  /* ---------- Inventario (duenio y admin) ---------- */
+  /* ---------- Inventario (dueño y admin) ---------- */
   .inv-layout{ max-width: 1100px; margin: 0 auto; padding: 48px 40px 64px; }
   .inv-tabla-wrap{ overflow-x: auto; margin-bottom: 28px; }
   .inv-tabla{ width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 760px; }

@@ -42,7 +42,7 @@
   <h1>Crear cuenta</h1>
   <p class="aviso" id="registro-aviso" role="status"></p>
 
-  <!-- Paso 1: datos del cliente (Caso 19). El correo se valida con un codigo en el paso 2. -->
+  <!-- Paso 1: datos del cliente -->
   <form id="registro-form" class="auth-form" novalidate>
     <p class="auth-sub">Paso 1 de 2: tus datos. Los marcados con * son obligatorios.</p>
     <label>Nombre completo * <input type="text" name="nombre" autocomplete="name" minlength="2" maxlength="80" required></label>
@@ -63,7 +63,7 @@
     <button type="submit" class="btn-primary">Crear cuenta</button>
   </form>
 
-  <!-- Paso 2: codigo de 6 digitos que llega al correo (API de mensajeria simulada) -->
+  <!-- Paso 2: codigo de 6 digitos que llega al correo -->
   <form id="verificar-form" class="auth-form" novalidate hidden>
     <p class="auth-sub">Paso 2 de 2: te enviamos un código de 6 dígitos a tu correo. Escríbelo para activar tu cuenta.</p>
     <label>Correo <input type="email" name="email" maxlength="254" required></label>

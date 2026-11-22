@@ -41,7 +41,6 @@
 <main>
   <section class="hero">
     <div class="hero-art">
-      <!-- Imagen real de café insertada con enlace directo y borde estilo boceto -->
       <img src="cafe_index.png" alt="Café de especialidad y repostería" style="width: 100%; max-width: 580px; height: auto; display: block; margin: 0 auto;">
     </div>
 

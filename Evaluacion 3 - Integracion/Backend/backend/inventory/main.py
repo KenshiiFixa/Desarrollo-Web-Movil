@@ -1,9 +1,7 @@
-"""Inventory: catalogo, precios y stock de Aroma & Cafe.
+"""Inventory: catalogo, precios y stock.
 
-- REST (como la API de la Semana 6): catalogo publico (con ofertas) y administracion de productos.
-- gRPC (puerto 50051): ReservarStock y LiberarStock. Solo lo puede llamar orders.
-Inventory es el UNICO que decide el precio y el stock de un producto.
-"""
+- REST: catalogo publico y administracion de productos (dueno y admin).
+- gRPC (puerto 50051): ReservarStock y LiberarStock, solo para orders."""
 import re
 import secrets
 from concurrent.futures import ThreadPoolExecutor
@@ -20,7 +18,7 @@ from proto import inventario_pb2, inventario_pb2_grpc
 db = None
 servidor_grpc = None
 
-# Carta FICTICIA de prueba (la misma que muestra el frontend en catalogo.php)
+# Productos iniciales de prueba
 PRODUCTOS_INICIALES = [
     {"_id": "espresso-doble", "nombre": "Espresso Doble", "categoria": "cafe", "precio": 2500, "imagen": "espresso.png",
      "descripcion": "Doble shot de café de especialidad, intenso y de cuerpo completo."},
@@ -96,7 +94,7 @@ def liberar_stock(order_id):
 
 
 class InventarioGrpc(inventario_pb2_grpc.InventarioServicer):
-    """Servidor gRPC. Igual que verify_gateway, pero el secreto viaja en la 'metadata' de gRPC."""
+    """Servidor gRPC. Verifica el secreto de orders, que viaja en la metadata de la llamada."""
 
     def verificar(self, context):
         metadata = dict(context.invocation_metadata())
@@ -230,7 +228,7 @@ def eliminar_producto(product_id: str, usuario=Depends(usuario_actual)):
 
 @app.get("/internal/products", dependencies=[Depends(verificar_servicio("graphql"))])
 def productos_por_lote(ids: str = Query(max_length=1000)):
-    """Para el GraphQL gateway: varios productos en UNA llamada (incluye los dados de baja)."""
+    """Para GraphQL: varios productos en una sola llamada (incluye los dados de baja)."""
     lista = [i for i in ids.split(",") if re.fullmatch(r"[a-z0-9-]{2,40}", i)][:50]
     return [producto_publico(d) for d in db.productos.find({"_id": {"$in": lista}})]
 

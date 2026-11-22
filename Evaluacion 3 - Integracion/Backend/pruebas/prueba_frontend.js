@@ -1,14 +1,12 @@
-// Prueba del frontend en el navegador (Playwright + Chromium), de punta a punta contra el sistema en Docker.
-// Recorre lo que hace un usuario: login, registro con codigo, mi cuenta, inventario, cerrar sesion,
-// sesion vencida y contacto, en escritorio y en celular emulado (Pixel 7).
+// Prueba del frontend en Chromium (Playwright) contra el sistema en Docker, en escritorio y en celular (Pixel 7):
+// login, registro con codigo, mi cuenta, inventario, cerrar sesion, sesion vencida y contacto.
 //
-// Uso (con 'docker compose up -d' corriendo, desde la carpeta Backend):
+// Uso (con 'docker compose up -d' corriendo):
 //   cd pruebas && npm install && npx playwright install chromium
 //   TEST_PASSWORD=<SEED_PASSWORD del .env> npm test          (PowerShell: $env:TEST_PASSWORD="..."; npm test)
 //
-// Declarado: el navegador de la prueba acepta el certificado de la CA local sin instalarlo (ignoreHTTPSErrors).
-// Una persona lo instala o lo acepta una vez en https://127.0.0.1:8000/health.
-// Crea datos de prueba (un usuario nuevo y el producto 'mocaccino-<hora>') y cambia oferta y stock del Latte.
+// El navegador de la prueba acepta el certificado de la CA local sin instalarlo (ignoreHTTPSErrors).
+// Crea un usuario y un producto nuevos y cambia la oferta y el stock del Latte.
 const fs = require('fs');
 const path = require('path');
 const { chromium, devices } = require('playwright');

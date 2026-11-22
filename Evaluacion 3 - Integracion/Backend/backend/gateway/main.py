@@ -1,19 +1,9 @@
-"""API Gateway: el UNICO servicio publicado hacia afuera (puerto 8000).
+"""API Gateway: unico servicio publicado hacia afuera (puerto 8000).
 
-Basado en gateway.py del ejemplo de clase (Semana 9). Igual que en clase:
-  - recibe el token Bearer, lo valida con el Auth Service (/introspect),
-  - lee sus secretos desde Vault,
-  - llama al backend privado agregando su secreto y la identidad del usuario.
-Lo que se agrego para la evaluacion:
-  - En vez del proxy generico /api/{path}, una TABLA de rutas permitidas con el rol que exige cada una.
-    Lo que no esta en la tabla responde 404 (no se publica ningun endpoint interno por error).
-  - Las cabeceras del navegador NO se reenvian: el gateway arma cabeceras nuevas con datos verificados.
-  - Limite de solicitudes por IP, tamano maximo del cuerpo, tiempo de espera y errores controlados.
-  - Id de correlacion (X-Request-ID) que se propaga a los servicios y aparece en sus logs.
-Evaluacion 3 (integracion con el frontend):
-  - CORS: el navegador solo puede llamar al gateway desde el origen del frontend (FRONTEND_ORIGENES).
-  - El log dice cada paso: que ruta encontro, si pidio validacion al Auth Service y a que servicio enruto.
-"""
+- Busca cada ruta en la tabla RUTAS; lo que no esta responde 404.
+- En las rutas con sesion valida el token con el Auth Service (/introspect) y revisa el rol.
+- Llama al servicio interno con su secreto de Vault y cabeceras nuevas (no reenvia las del navegador).
+- Limita las solicitudes por IP y el tamano del cuerpo, aplica CORS y crea el id de correlacion (X-Request-ID)."""
 import json
 import os
 import re
@@ -29,7 +19,7 @@ from comun import ID_SOLICITUD, SECRETOS, URLS, contexto_tls, leer_secretos, log
 
 security = HTTPBearer(auto_error=False)
 
-# Roles del sistema (actores del Caso 19)
+# Roles que puede exigir cada ruta
 PUBLICO = None                       # no exige sesion
 CUALQUIERA = ("cliente", "cajero", "despacho", "dueno", "admin")
 CLIENTE = ("cliente",)
@@ -79,10 +69,10 @@ RUTAS = [
 
 LIMITE_POR_MINUTO = int(os.getenv("LIMITE_POR_MINUTO", "120"))   # solicitudes por IP por minuto
 LIMITE_LOGIN_POR_MINUTO = 10     # login, registro, contacto y verificacion: mas estricto
-MAX_CUERPO = 64 * 1024           # 64 KB
+MAX_CUERPO = 64 * 1024
 solicitudes = {}                 # {(ip, grupo): [tiempos]}
-# Cliente HTTP reutilizado (crear uno por solicitud costaba ~10 ms de CPU cada vez)
-cliente_backend = httpx.AsyncClient(timeout=10.0, verify=contexto_tls())   # TLS hacia los servicios
+# Cliente HTTPS hacia los servicios internos
+cliente_backend = httpx.AsyncClient(timeout=10.0, verify=contexto_tls())
 
 
 def buscar_ruta(metodo, ruta):
@@ -113,21 +103,19 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="API Gateway Aroma & Cafe", lifespan=lifespan, docs_url=None, redoc_url=None)
 
-# CORS: el frontend (php -S en el puerto 8080) es otro origen distinto al gateway (https://127.0.0.1:8000),
-# asi que el navegador solo deja leer la respuesta si el gateway lo autoriza. Se permite SOLO el origen del
-# frontend (no "*"), solo los metodos de la tabla de rutas y solo las cabeceras que manda el frontend.
-# No se usan cookies (el token va en Authorization), por eso allow_credentials queda en False.
+# CORS: el navegador solo puede llamar al gateway desde el frontend, con los metodos de la tabla y las cabeceras
+# Authorization y Content-Type. El token va en Authorization, no en cookies.
 FRONTEND_ORIGENES = os.getenv("FRONTEND_ORIGENES", "http://localhost:8080,http://127.0.0.1:8080").split(",")
 app.add_middleware(CORSMiddleware, allow_origins=FRONTEND_ORIGENES, allow_credentials=False,
                    allow_methods=["GET", "POST", "PUT", "DELETE"],
                    allow_headers=["Authorization", "Content-Type"],
                    expose_headers=["X-Request-ID"], max_age=600)
-# Log por solicitud con id de correlacion NUEVO (no se acepta el X-Request-ID que mande el navegador)
+# Log por solicitud; el id de correlacion lo crea siempre el gateway
 registrar_logs(app, "gateway", aceptar_id_entrante=False)
 
 
 async def authenticate_client(credentials: HTTPAuthorizationCredentials):
-    """Igual que en clase: pregunta al Auth Service si el token esta activo."""
+    """Pregunta al Auth Service si el token esta activo y devuelve el usuario y su rol."""
     if credentials is None:
         log("sin token: se responde 401 sin llamar al Auth Service")
         raise HTTPException(status_code=401, detail="Bearer token requerido")
@@ -140,7 +128,7 @@ async def authenticate_client(credentials: HTTPAuthorizationCredentials):
     except httpx.RequestError:
         raise HTTPException(status_code=503, detail="Authentication Service no disponible")
     if response.status_code == 422:
-        # Auth rechaza el formato (ej. un token de menos de 10 caracteres): es un token invalido, no una falla
+        # Auth responde 422 si el token no tiene un formato valido: se trata como token invalido
         log("Auth Service respondio: el token no tiene un formato valido -> 401")
         raise HTTPException(status_code=401, detail="Token invalido o expirado")
     if response.status_code != 200:
@@ -184,7 +172,7 @@ async def proxy(path: str, request: Request,
     if len(body) > MAX_CUERPO:
         raise HTTPException(status_code=413, detail="Cuerpo demasiado grande")
 
-    # Cabeceras NUEVAS: nada de lo que mande el navegador (ej. un X-Authenticated-User falso) pasa.
+    # Cabeceras nuevas: no se reenvia nada de lo que manda el navegador
     gateway_headers = {"X-Servicio": "gateway", "X-Servicio-Secreto": SECRETOS[f"hacia_{destino}"],
                        "Content-Type": "application/json", "X-Request-ID": ID_SOLICITUD.get()}
     if roles is not PUBLICO:

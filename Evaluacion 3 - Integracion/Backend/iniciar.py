@@ -1,20 +1,12 @@
-"""Levanta TODO el backend en este computador.
+"""Levanta todo el backend en este computador (modo local, el que usan los scripts de pruebas/).
 
-Uso (desde la carpeta del proyecto):
+Uso:
     python iniciar.py            # inicia; Ctrl+C detiene todo
     python iniciar.py --limpiar  # borra la base de datos local y parte de cero
 
-Pasos:
-  1. Genera los certificados TLS en certs/ si no existen: una CA local y un certificado para 127.0.0.1.
-  2. Inicia MongoDB en Docker (docker compose, solo en 127.0.0.1:27018) y Vault en modo desarrollo con TLS.
-  3. Genera secretos ALEATORIOS, uno por cada par de servicios, y una clave de Mongo por servicio.
-  4. Crea una politica y un token de Vault por servicio (cada uno solo lee su propio secreto).
-  5. Crea un usuario de MongoDB por servicio, con permiso solo sobre su base.
-  6. Inicia los 10 servicios con uvicorn y HTTPS, cada uno en su puerto de 127.0.0.1 (el gateway en el 8000).
-
-Requisitos: Python con requirements.txt instalado, Docker Desktop abierto y el programa `vault` instalado.
-Si vault no esta en el PATH, se puede indicar su ruta con la variable VAULT_BIN.
-"""
+Genera los certificados, inicia MongoDB (Docker) y Vault, crea secretos, tokens y usuarios de MongoDB
+e inicia los 10 servicios con HTTPS en 127.0.0.1 (el gateway en el 8000).
+Requisitos: requirements.txt instalado, Docker abierto y el programa vault (o su ruta en VAULT_BIN)."""
 import glob
 import json
 import os
@@ -35,11 +27,11 @@ LOGS = os.path.join(CARPETA, "logs")         # un log por servicio (no se sube)
 CERTS = os.path.join(CARPETA, "certs")       # CA local y certificado TLS (no se sube)
 
 sys.path.insert(0, BACKEND)
-from comun import PUERTOS   # noqa: E402  (los mismos puertos que usan los servicios)
-import preparacion   # noqa: E402  (certificados, Vault y MongoDB: lo mismo que usa Docker)
+from comun import PUERTOS   # noqa: E402
+import preparacion   # noqa: E402
 
 VAULT = "https://127.0.0.1:8200"
-MONGO_PUERTO = 27018        # puerto publicado por docker-compose.yml (no el 27017, por si ya hay un MongoDB instalado)
+MONGO_PUERTO = 27018        # puerto de MongoDB publicado por docker-compose.yml
 GRPC_PUERTO = 50051
 
 # Carpeta de codigo de cada servicio
@@ -78,7 +70,7 @@ def buscar_programa(nombre, variable, rutas_windows):
 
 
 def generar_certificados():
-    """CA local + certificado del servidor (la funcion esta en backend/preparacion.py, la misma que usa Docker)."""
+    """Genera la CA local y el certificado del servidor (backend/preparacion.py)."""
     if preparacion.generar_certificados(CERTS):
         print("Certificados TLS generados en certs/ (CA local valida por 1 ano, servidor por 90 dias).")
 
@@ -117,8 +109,7 @@ def iniciar_proceso(nombre, comando, env=None, cwd=None):
 
 
 def preparar_vault(root, seed):
-    """Secretos, politicas y un token por servicio (backend/preparacion.py). Cada vez que se inicia se crean
-    secretos nuevos (Vault en modo desarrollo los guarda en memoria)."""
+    """Crea los secretos, politicas y un token por servicio en Vault (backend/preparacion.py)."""
     return preparacion.preparar_vault(VAULT, root, seed, lambda servicio: os.path.join(DATOS, "tokens", servicio),
                                       contexto_tls())
 
@@ -184,7 +175,7 @@ def main():
         for servicio, puerto in PUERTOS.items():
             esperar(servicio, lambda p=puerto: httpx.get(f"https://127.0.0.1:{p}/health", verify=tls).status_code == 200)
 
-        def guardar_estado():   # lo usan las pruebas (para saber que el backend corre) y la prueba de carga (PIDs)
+        def guardar_estado():   # estado del backend para las pruebas (puertos y PID de cada proceso)
             with open(os.path.join(DATOS, "en_ejecucion.json"), "w") as f:
                 json.dump({"modo": "local", "puertos": PUERTOS,
                            "pids": {nombre: p.pid for nombre, p in procesos.items()}}, f)

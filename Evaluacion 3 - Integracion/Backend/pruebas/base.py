@@ -1,10 +1,7 @@
-"""Funciones que usan los scripts de prueba. No es una prueba: lo importan prueba_seguridad.py,
-prueba_flujos.py y prueba_fallos.py.
+"""Funciones comunes de los scripts de prueba.
 
-Cada prueba es una funcion con assert. Si sus parametros se llaman ana, pedro, admin, despacho, cajero o
-dueno, recibe el token de ese usuario. ejecutar() las corre en orden, imprime [OK] o [FALLA] y guarda
-el resultado en docs/evidencias/.
-"""
+Cada prueba es una funcion con assert; si sus parametros se llaman ana, pedro, admin, despacho, cajero o dueno,
+recibe el token de ese usuario. ejecutar() las corre, imprime [OK] o [FALLA] y guarda el resultado en docs/evidencias/."""
 import inspect
 import os
 import socket
@@ -45,8 +42,7 @@ def api(metodo, ruta, token=None, **kwargs):
         r = cliente().request(metodo, BASE + ruta, headers=cabeceras, **kwargs)
         if r.status_code != 429:
             return r
-        # El gateway limita a 120 solicitudes por minuto por IP (10 en login y registro) y tambien cuenta
-        # las rechazadas. Si las pruebas van muy rapido, se espera a que pase el minuto, sin subir el limite.
+        # Si el gateway responde 429 (limite por minuto), se espera un minuto y se reintenta
         time.sleep(61)
     return r
 

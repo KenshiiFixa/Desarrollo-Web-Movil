@@ -35,7 +35,7 @@ def pago_completo_boleta_y_aviso_repetido(ana, admin):
     assert api("GET", f"/payments/{payment_id}", ana).json()["estado"] == "APROBADO"
     boleta = api("GET", f"/orders/{order_id}/receipt", ana).json()
     assert boleta["folio"].startswith("B-") and boleta["neto"] + boleta["iva"] == boleta["total"] == 6000
-    assert boleta["caja"] == "CAJA-WEB-01"                                     # RF4: venta asociada a la caja web
+    assert boleta["caja"] == "CAJA-WEB-01"                                     # venta asociada a la caja web
     # notificaciones envio la boleta (correo simulado, con el correo enmascarado para el admin)
     correos = api("GET", "/admin/notifications", admin).json()
     assert any(c["id"] == order_id and c["para"] == "a***@aromaycafe.test" for c in correos)
@@ -66,7 +66,7 @@ def anular_devuelve_stock_y_no_borra(ana, admin):
     antes = stock(admin, "cold-brew")
     order_id = crear_pedido(ana, [{"product_id": "cold-brew", "cantidad": 2}]).json()["id"]
     assert stock(admin, "cold-brew") == antes - 2
-    assert api("POST", f"/orders/{order_id}/cancel", ana, json={}).status_code == 422   # RF3: falta el motivo
+    assert api("POST", f"/orders/{order_id}/cancel", ana, json={}).status_code == 422   # falta el motivo
     assert anular(ana, order_id).status_code == 200
     assert stock(admin, "cold-brew") == antes
     assert api("GET", f"/orders/{order_id}", ana).json()["estado"] == "ANULADO"   # sigue existiendo
@@ -168,7 +168,7 @@ def admin_registra_cliente_en_el_local(admin):
     nuevo = next(u for u in usuarios if u["email"] == email)
     assert nuevo["rol"] == "cliente" and nuevo["correo_verificado"] is False
     assert "clave_hash" not in str(usuarios)
-    # RF10: el admin corrige los datos del cliente
+    # el admin corrige los datos del cliente
     editado = api("PUT", f"/admin/clients/{nuevo['user_id']}", admin, json={"nombre": "Cliente Local", "comuna": "Maipú"})
     assert editado.status_code == 200 and editado.json()["comuna"] == "Maipú"
 

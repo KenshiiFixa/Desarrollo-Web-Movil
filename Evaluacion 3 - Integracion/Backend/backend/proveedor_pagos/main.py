@@ -1,10 +1,7 @@
-"""Proveedor de pagos SIMULADO (no es parte de nuestro sistema; reemplaza a Webpay/Flow/etc. en pruebas).
+"""Proveedor de pagos simulado (reemplaza a un proveedor real en las pruebas).
 
-Respeta el contrato tipico de un proveedor real:
-  1. payments crea un "checkout" usando su API key (secreto del par payments -> proveedor).
-  2. Cuando el cliente paga, el proveedor envia un aviso (webhook) a la URL PUBLICA del gateway,
-     firmado con HMAC-SHA256. payments verifica la firma antes de creer el aviso.
-"""
+1. payments crea un checkout con su API key.
+2. Cuando el cliente paga, el proveedor envia un aviso (webhook) firmado con HMAC-SHA256 a la URL publica del gateway."""
 import hashlib
 import hmac
 import json

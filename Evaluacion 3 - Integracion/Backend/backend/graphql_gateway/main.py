@@ -1,17 +1,10 @@
-"""GraphQL Gateway PRIVADO (Strawberry). Misma idea que el servidor GraphQL de la Semana 5
-(types + Query + resolvers), pero en Python y sin base de datos propia:
-cada resolver le pregunta al servicio dueno del dato (orders, inventory, payments, clients, analitica).
+"""GraphQL Gateway privado (Strawberry): junta en una consulta datos de orders, inventory, payments, clients
+y analitica. Cada resolver le pregunta al servicio dueno del dato.
 
-Agregacion principal: resumenPedido / misPedidos = estado (orders) + productos (inventory) + pago (payments).
-
-Seguridad:
-  - Solo lo llama el API Gateway, que ya verifico el token (POST /api/v1/graphql).
-  - Cada servicio vuelve a revisar la identidad: si un cliente pide un pedido ajeno, orders responde 404.
-  - El campo 'cliente' (datos personales) solo lo ven despacho/admin; 'reporteVentas' solo dueno/admin.
-  - Limite de profundidad, de alias y de tamano de la consulta, y sin introspeccion.
-  - Si inventory o payments fallan, se responde lo que se pudo armar MAS un aviso en 'errors'
-    (no se presenta una respuesta parcial como si estuviera completa).
-"""
+- Solo lo llama el API Gateway, que ya valido el token; cada servicio vuelve a revisar los permisos.
+- El campo 'cliente' solo lo ven despacho y admin; 'reporteVentas' solo dueno y admin.
+- Limites de profundidad, alias y tamano de la consulta, y sin introspeccion.
+- Si inventory o payments fallan, responde lo que pudo armar con un aviso en 'errors'."""
 from contextlib import asynccontextmanager
 from typing import Optional
 

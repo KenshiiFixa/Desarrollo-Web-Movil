@@ -1,12 +1,11 @@
 (function () {
   var CART_KEY = 'aroma_cart';
-  // Direccion del API Gateway: es la UNICA entrada al backend (los demas servicios no se llaman directo).
+  // Direccion del API Gateway (unica entrada al backend)
   var API_URL = 'https://127.0.0.1:8000/api/v1';
   var SESION_KEY = 'aroma_sesion';
 
   // ---------- Sesion ----------
-  // El token se guarda en sessionStorage (no en localStorage): se borra al cerrar el navegador.
-  // Dura 15 minutos; despues el backend responde 401 y se pide iniciar sesion de nuevo.
+  // El token se guarda en sessionStorage, que se borra al cerrar el navegador.
   function leerSesion() {
     try {
       var s = JSON.parse(sessionStorage.getItem(SESION_KEY));
@@ -32,8 +31,7 @@
     location.href = 'login.php?' + (motivo ? motivo + '=1&' : '') + 'volver=' + encodeURIComponent(paginaActual());
   }
 
-  // Todas las llamadas al backend pasan por aqui y van SOLO al API Gateway.
-  // conSesion = true agrega el token; si el gateway responde 401 (token vencido o invalido) se cierra la sesion.
+  // Llama al API Gateway. Con conSesion agrega el token y, si la respuesta es 401, cierra la sesion.
   function llamarApi(metodo, ruta, cuerpo, conSesion) {
     var opciones = { method: metodo, headers: { 'Accept': 'application/json' } };
     if (cuerpo !== undefined) {
@@ -281,7 +279,7 @@
 
   function updateSummary(total) {
     var totalEl = document.getElementById('cart-total');
-    var envio = 0;   // Caso 19: el despacho es gratis (dentro de 3 km del local)
+    var envio = 0;   // el despacho es gratis
 
     var subtotalEl = document.getElementById('cart-subtotal');
     if (subtotalEl) subtotalEl.textContent = money(total);
@@ -312,8 +310,7 @@
   }
 
   // ---------- Carta desde el API Gateway (GET /api/v1/products) ----------
-  // Las tarjetas se arman con createElement/textContent (no innerHTML) para que un texto que venga
-  // de la API nunca se ejecute como HTML.
+  // Las tarjetas se arman con textContent para que un texto de la API nunca se ejecute como HTML.
   function crearTarjeta(p) {
     var card = document.createElement('div');
     card.className = 'product-card-lg';
@@ -382,7 +379,7 @@
         setupAddButtons(grid);
       })
       .catch(function (error) {
-        // Sin conexion, certificado no confiable o CORS bloqueado: no se inventan productos.
+        // Sin conexion con el backend se muestra el error, sin inventar productos.
         console.error('No se pudo cargar la carta:', error);
         mostrarEstado(estado, 'No pudimos cargar la carta. Revisa que el backend esté encendido. ');
         var reintentar = document.createElement('button');
