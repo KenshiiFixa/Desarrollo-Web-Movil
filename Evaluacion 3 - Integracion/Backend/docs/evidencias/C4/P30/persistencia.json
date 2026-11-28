@@ -1,0 +1,20 @@
+[
+ {
+  "descripcion": "Mensaje guardado",
+  "hora": "2026-11-28T17:51:21+00:00",
+  "servicio": "clients",
+  "coleccion": "contacto",
+  "filtro": {
+   "nombre": "Visita C4 79154"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "6b0b1497435ecbfa22d27f77",
+    "nombre": "Visita C4 79154",
+    "motivo": "sugerencia",
+    "creado_en": "2026-11-28T17:51:19+00:00"
+   }
+  ]
+ }
+]

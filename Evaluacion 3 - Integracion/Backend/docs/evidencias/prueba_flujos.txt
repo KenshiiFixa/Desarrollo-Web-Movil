@@ -1,4 +1,4 @@
-Prueba de flujos del caso (2026-11-16 19:41)
+Prueba de flujos del caso (2026-11-28 17:33)
 
   [OK]    despacho_gratis_solo_dentro_del_radio: Caso 19: el despacho es gratuito y solo dentro de 3 km del local (comunas configuradas).
   [OK]    pago_completo_boleta_y_aviso_repetido: RF2 y RF8: pago aprobado, boleta con caja web y aviso repetido sin duplicar.

@@ -1,0 +1,23 @@
+clients-1  | [clients] req=af9cd2cd0151 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1  | [clients] req=af9cd2cd0151 MongoDB: lee clients.clientes del usuario de la sesion (USR-003)
+clients-1  | [clients] req=af9cd2cd0151 GET /clients/me -> 200 (3 ms)
+clients-1  | [clients] req=64cf9c186156 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1  | [clients] req=64cf9c186156 PUT /clients/me -> 422 (4 ms)
+auth-1       | [auth] req=af9cd2cd0151 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=af9cd2cd0151 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=af9cd2cd0151 POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=64cf9c186156 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=64cf9c186156 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=64cf9c186156 POST /introspect -> 200 (2 ms)
+gateway-1    | [gateway] req=af9cd2cd0151 ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=af9cd2cd0151 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=af9cd2cd0151 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=af9cd2cd0151 enrutando a clients GET /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=af9cd2cd0151 clients respondio 200
+gateway-1    | [gateway] req=af9cd2cd0151 GET /api/v1/clients/me -> 200 (16 ms)
+gateway-1    | [gateway] req=64cf9c186156 ruta S07: PUT /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=64cf9c186156 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=64cf9c186156 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=64cf9c186156 enrutando a clients PUT /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=64cf9c186156 clients respondio 422
+gateway-1    | [gateway] req=64cf9c186156 PUT /api/v1/clients/me -> 422 (15 ms)

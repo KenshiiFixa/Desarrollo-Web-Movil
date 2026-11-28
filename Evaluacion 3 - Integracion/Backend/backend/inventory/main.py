@@ -96,15 +96,17 @@ def liberar_stock(order_id):
 class InventarioGrpc(inventario_pb2_grpc.InventarioServicer):
     """Servidor gRPC. Verifica el secreto de orders, que viaja en la metadata de la llamada."""
 
-    def verificar(self, context):
+    def verificar(self, context, metodo):
         metadata = dict(context.invocation_metadata())
+        req = metadata.get("x-request-id", "-")[:32]
         if metadata.get("x-servicio") != "orders" or not secrets.compare_digest(
                 metadata.get("x-servicio-secreto", ""), SECRETOS["desde_orders"]):
+            print(f"[inventory-grpc] req={req} {metodo} RECHAZADA: el secreto no es el de orders", flush=True)
             context.abort(grpc.StatusCode.PERMISSION_DENIED, "No autorizado")
-        print(f"[inventory-grpc] req={metadata.get('x-request-id', '-')[:32]} llamada de orders", flush=True)
+        print(f"[inventory-grpc] req={req} {metodo} desde orders: secreto verificado con el de Vault", flush=True)
 
     def ReservarStock(self, request, context):
-        self.verificar(context)
+        self.verificar(context, "ReservarStock")
         items = [(i.product_id, i.cantidad) for i in request.items]
         if not items or len(items) > 20 or any(c < 1 or c > 20 for _, c in items):
             context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Pedido invalido")
@@ -115,7 +117,7 @@ class InventarioGrpc(inventario_pb2_grpc.InventarioServicer):
         return inventario_pb2.ReservaReply(lineas=[inventario_pb2.Linea(**l) for l in lineas])
 
     def LiberarStock(self, request, context):
-        self.verificar(context)
+        self.verificar(context, "LiberarStock")
         return inventario_pb2.LiberarReply(liberados=liberar_stock(request.order_id))
 
 

@@ -1,0 +1,38 @@
+[
+ {
+  "hora": "2026-11-28T17:44:27+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "81cc71e9d3f1",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":true},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:44:29+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/orders",
+  "estado": 201,
+  "request_id": "339079a32284",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"items\":[{\"product_id\":\"tarta-frambuesa\",\"cantidad\":1}],\"tipo_entrega\":\"retiro\",\"clave\":\"PRUEBA-C3-1795887869437\"}",
+  "respuesta": "{\"id\":\"ORD-899665FB\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"precio\":4500,\"cantidad\":1}],\"total\":4500,\"creado_en\":\"2026-11-28T17:44:29+00:00\",\"pagado_en\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:44:33+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/orders",
+  "estado": 200,
+  "request_id": "fe1425b9c386",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"items\":[{\"product_id\":\"tarta-frambuesa\",\"cantidad\":1}],\"tipo_entrega\":\"retiro\",\"clave\":\"PRUEBA-C3-1795887869437\"}",
+  "respuesta": "{\"id\":\"ORD-899665FB\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"precio\":4500,\"cantidad\":1}],\"total\":4500,\"creado_en\":\"2026-11-28T17:44:29+00:00\",\"pagado_en\":null,\"repetido\":true}"
+ }
+]

@@ -1,0 +1,62 @@
+[
+ {
+  "hora": "2026-11-28T17:30:49+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "5efc23aa9e18",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"ana@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"cliente\"}"
+ },
+ {
+  "hora": "2026-11-28T17:30:49+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "147365569879",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:30:59+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "8e45680f7d77",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:30:59+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/graphql",
+  "estado": 200,
+  "request_id": "ceb2900c5ffa",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"query\":\"query { misPedidos(limite: 20) { id estado tipoEntrega total creadoEn lineas { cantidad precio producto { nombre } } pago { estado monto } } }\"}",
+  "respuesta": "{\"data\":{\"misPedidos\":[{\"id\":\"ORD-BA89DC5F\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":3000,\"creadoEn\":\"2026-11-28T17:28:24+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":3000,\"producto\":null}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":3000}},{\"id\":\"ORD-62213FEF\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":3500,\"creadoEn\":\"2026-11-28T17:28:07+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":3500,\"producto\":null}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":3500}},{\"id\":\"ORD-71CE63AF\",\"estado\":\"ANULADO\",\"tipoEntrega\":\"retiro\",\"total\":2500,\"creadoEn\":\"2026-11-28T17:26:59+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2500,\"producto\":null}],\"pago\":null},{\"id\":\"ORD-FA30EA98\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":2500,\"creadoEn\":\"2026-11-28T17:26:51+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2500,\"producto\":null}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":2500}},{\"id\":\"ORD-5E9B5C13\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":2800,\"creadoEn\":\"2026-11-28T17:26:33+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2800,\"producto\":null}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":2800}},{\"id\":\"ORD-7FBFF781\",\"estado\":\"PENDIENTE_PAGO\",\"tipoEntrega\":\"retiro\",\"total\":4500,\"creadoEn\":\"2026-11-28T17:26:19+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":4500,\"producto\":null}],\"pago\":null},{\"id\":\"ORD-E73B8F93\",\"estado\":\"ENTREGADO\",\"tipoEntrega\":\"retiro\",\"total\":9200,\"creadoEn\":\"2026-11-28T17:25:48+00:00\",\"lineas\":[{\"cantidad\":2,\"precio\":3200,\"producto\":null},{\"cantidad\":1,\"precio\":2800,\"producto\":null}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":9200}}]},\"errors\":[{\"message\":\"Servicio inventory no disponible: la respuesta esta incompleta\",\"path\":null}]}"
+ },
+ {
+  "hora": "2026-11-28T17:31:07+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/graphql",
+  "estado": 200,
+  "request_id": "5a3978bd0d51",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"query\":\"query { misPedidos(limite: 20) { id estado tipoEntrega total creadoEn lineas { cantidad precio producto { nombre } } pago { estado monto } } }\"}",
+  "respuesta": "{\"data\":{\"misPedidos\":[{\"id\":\"ORD-BA89DC5F\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":3000,\"creadoEn\":\"2026-11-28T17:28:24+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":3000,\"producto\":{\"nombre\":\"Cappuccino\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":3000}},{\"id\":\"ORD-62213FEF\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":3500,\"creadoEn\":\"2026-11-28T17:28:07+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":3500,\"producto\":{\"nombre\":\"Cold Brew\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":3500}},{\"id\":\"ORD-71CE63AF\",\"estado\":\"ANULADO\",\"tipoEntrega\":\"retiro\",\"total\":2500,\"creadoEn\":\"2026-11-28T17:26:59+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2500,\"producto\":{\"nombre\":\"Espresso Doble\"}}],\"pago\":null},{\"id\":\"ORD-FA30EA98\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":2500,\"creadoEn\":\"2026-11-28T17:26:51+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2500,\"producto\":{\"nombre\":\"Espresso Doble\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":2500}},{\"id\":\"ORD-5E9B5C13\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":2800,\"creadoEn\":\"2026-11-28T17:26:33+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2800,\"producto\":{\"nombre\":\"Croissant de Mantequilla\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":2800}},{\"id\":\"ORD-7FBFF781\",\"estado\":\"PENDIENTE_PAGO\",\"tipoEntrega\":\"retiro\",\"total\":4500,\"creadoEn\":\"2026-11-28T17:26:19+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":4500,\"producto\":{\"nombre\":\"Tarta de Frambuesa\"}}],\"pago\":null},{\"id\":\"ORD-E73B8F93\",\"estado\":\"ENTREGADO\",\"tipoEntrega\":\"retiro\",\"total\":9200,\"creadoEn\":\"2026-11-28T17:25:48+00:00\",\"lineas\":[{\"cantidad\":2,\"precio\":3200,\"producto\":{\"nombre\":\"Latte Art\"}},{\"cantidad\":1,\"precio\":2800,\"producto\":{\"nombre\":\"Croissant de Mantequilla\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":9200}}]}}"
+ }
+]

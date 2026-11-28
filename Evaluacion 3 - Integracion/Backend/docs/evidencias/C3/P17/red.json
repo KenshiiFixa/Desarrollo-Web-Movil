@@ -1,0 +1,86 @@
+[
+ {
+  "hora": "2026-11-28T17:45:42+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "13826be73add",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"nombre\":\"Ana Pérez\",\"email\":\"ana@aromaycafe.test\",\"telefono\":null,\"run\":null,\"direccion\":null,\"comuna\":null,\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:45:43+00:00",
+  "metodo": "PUT",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "634932e3d32d",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"nombre\":\"Ana Pérez\",\"run\":null,\"telefono\":\"+56 9 5555 3123\",\"direccion\":null,\"comuna\":\"Maipú\",\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}",
+  "respuesta": "{\"nombre\":\"Ana Pérez\",\"email\":\"ana@aromaycafe.test\",\"telefono\":\"+56 9 5555 3123\",\"run\":null,\"direccion\":null,\"comuna\":\"Maipú\",\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:45:43+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "a1a6b4489f5b",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"nombre\":\"Ana Pérez\",\"email\":\"ana@aromaycafe.test\",\"telefono\":\"+56 9 5555 3123\",\"run\":null,\"direccion\":null,\"comuna\":\"Maipú\",\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:45:45+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "755d4b5706e7",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"ana@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"cliente\"}"
+ },
+ {
+  "hora": "2026-11-28T17:45:45+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "a0c6d516f964",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"nombre\":\"Ana Pérez\",\"email\":\"ana@aromaycafe.test\",\"telefono\":\"+56 9 5555 3123\",\"run\":null,\"direccion\":null,\"comuna\":\"Maipú\",\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:45:45+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "d3b45d4c20fd",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:45:45+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "09a323bda166",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"nombre\":\"Ana Pérez\",\"email\":\"ana@aromaycafe.test\",\"telefono\":\"+56 9 5555 3123\",\"run\":null,\"direccion\":null,\"comuna\":\"Maipú\",\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ }
+]

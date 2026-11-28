@@ -1,0 +1,38 @@
+[
+ {
+  "descripcion": "Usuarios creados",
+  "hora": "2026-11-28T17:47:08+00:00",
+  "servicio": "auth",
+  "coleccion": "usuarios",
+  "filtro": {
+   "email": {
+    "$in": [
+     "cajero.c3.1795888025811@aromaycafe.test",
+     "luis.c3.1795888025811@correo.cl",
+     "admin@aromaycafe.test"
+    ]
+   }
+  },
+  "total": 3,
+  "resultado": [
+   {
+    "_id": "USR-001",
+    "email": "admin@aromaycafe.test",
+    "rol": "admin",
+    "correo_verificado": true
+   },
+   {
+    "_id": "USR-70D2436D",
+    "email": "cajero.c3.1795888025811@aromaycafe.test",
+    "rol": "despacho",
+    "correo_verificado": true
+   },
+   {
+    "_id": "USR-9CDBF1CB",
+    "email": "luis.c3.1795888025811@correo.cl",
+    "rol": "cliente",
+    "correo_verificado": false
+   }
+  ]
+ }
+]

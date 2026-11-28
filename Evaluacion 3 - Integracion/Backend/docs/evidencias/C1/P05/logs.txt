@@ -1,0 +1,18 @@
+orders-1  | [orders] req=e8a5ec77b70b secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1  | [orders] req=e8a5ec77b70b POST /orders -> 422 (3 ms)
+gateway-1  | [gateway] req=34ffc8f92ae6 ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1  | [gateway] req=34ffc8f92ae6 enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1  | [gateway] req=34ffc8f92ae6 inventory respondio 200
+gateway-1  | [gateway] req=34ffc8f92ae6 GET /api/v1/products -> 200 (12 ms)
+gateway-1  | [gateway] req=e8a5ec77b70b ruta S09: POST /orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1  | [gateway] req=e8a5ec77b70b pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1  | [gateway] req=e8a5ec77b70b Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=e8a5ec77b70b enrutando a orders POST /orders con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=e8a5ec77b70b orders respondio 422
+inventory-1  | [inventory] req=34ffc8f92ae6 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+gateway-1    | [gateway] req=e8a5ec77b70b POST /api/v1/orders -> 422 (18 ms)
+inventory-1  | [inventory] req=34ffc8f92ae6 MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+inventory-1  | [inventory] req=34ffc8f92ae6 GET /products -> 200 (3 ms)
+auth-1       | [auth] req=e8a5ec77b70b secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=e8a5ec77b70b introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=e8a5ec77b70b POST /introspect -> 200 (2 ms)

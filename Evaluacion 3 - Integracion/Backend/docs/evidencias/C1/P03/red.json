@@ -1,0 +1,122 @@
+[
+ {
+  "hora": "2026-11-28T17:35:26+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "787eafae15f7",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":true},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:35:27+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "345c21c8baf0",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"ana@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"cliente\"}"
+ },
+ {
+  "hora": "2026-11-28T17:35:27+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "b6ff1055fbbf",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:35:27+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/orders",
+  "estado": 201,
+  "request_id": "cb8f6c023b72",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"items\":[{\"product_id\":\"latte-art\",\"cantidad\":2},{\"product_id\":\"croissant\",\"cantidad\":1}],\"tipo_entrega\":\"retiro\",\"clave\":\"PED-mx0oy2ot-ae9q3y3p\"}",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:35:27+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-30400C33",
+  "estado": 200,
+  "request_id": "311078c6ba5a",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-30400C33\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"latte-art\",\"nombre\":\"Latte Art\",\"precio\":3200,\"cantidad\":2},{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":9200,\"creado_en\":\"2026-11-28T17:35:27+00:00\",\"pagado_en\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:35:33+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-30400C33",
+  "estado": 200,
+  "request_id": "b679ce115244",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-30400C33\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"latte-art\",\"nombre\":\"Latte Art\",\"precio\":3200,\"cantidad\":2},{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":9200,\"creado_en\":\"2026-11-28T17:35:27+00:00\",\"pagado_en\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:35:34+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "5b469a171e04",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"ana@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"cliente\"}"
+ },
+ {
+  "hora": "2026-11-28T17:35:34+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "9cd6878d0afc",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:35:34+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-30400C33",
+  "estado": 200,
+  "request_id": "bd151959fae1",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-30400C33\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"latte-art\",\"nombre\":\"Latte Art\",\"precio\":3200,\"cantidad\":2},{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":9200,\"creado_en\":\"2026-11-28T17:35:27+00:00\",\"pagado_en\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:35:34+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "52895820bf93",
+  "origin": null,
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ }
+]

@@ -1,0 +1,50 @@
+[
+ {
+  "hora": "2026-11-28T17:49:31+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "5093ae7ad721",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"pedro@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"cliente\"}"
+ },
+ {
+  "hora": "2026-11-28T17:49:31+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "71d44e2a866c",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"nombre\":\"Pedro Soto\",\"email\":\"pedro@aromaycafe.test\",\"telefono\":null,\"run\":null,\"direccion\":null,\"comuna\":null,\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:49:31+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-BF9EE529",
+  "estado": 404,
+  "request_id": "3c023af6dd59",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"detail\":\"Pedido no encontrado\"}"
+ },
+ {
+  "hora": "2026-11-28T17:49:33+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/graphql",
+  "estado": 200,
+  "request_id": "e2deb3feda3c",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"query\":\"query($id: String!) { resumenPedido(id: $id) { id estado total } }\",\"variables\":{\"id\":\"ORD-BF9EE529\"}}",
+  "respuesta": "{\"data\":{\"resumenPedido\":null}}"
+ }
+]

@@ -1,0 +1,28 @@
+clients-1         | [clients] req=8c8e6d9bfd1e secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1         | [clients] req=8c8e6d9bfd1e MongoDB: mensaje de contacto (sugerencia) guardado en clients.contacto
+clients-1         | [clients] req=8c8e6d9bfd1e POST /contact -> 201 (15 ms)
+clients-1         | [clients] req=5d5b139cecad secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1         | [clients] req=5d5b139cecad GET /contact -> 200 (2 ms)
+auth-1            | [auth] req=5d5b139cecad secreto de gateway verificado con el de Vault: OK, se permite la llamada[auth] req=ac0054ad67a6 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=5d5b139cecad introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=5d5b139cecad POST /introspect -> 200 (2 ms)
+auth-1            | [auth] req=ac0054ad67a6 introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=ac0054ad67a6 POST /introspect -> 200 (8 ms)
+auth-1            | [auth] req=ac0054ad67a6 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=ac0054ad67a6 GET /usuarios -> 200 (2 ms)
+gateway-1         | [gateway] req=8c8e6d9bfd1e ruta S08: POST /contact -> clients (publica, origen http://localhost:8080)
+gateway-1         | [gateway] req=8c8e6d9bfd1e enrutando a clients POST /contact con el secreto gateway->clients leido de Vault
+gateway-1         | [gateway] req=8c8e6d9bfd1e clients respondio 201
+gateway-1         | [gateway] req=8c8e6d9bfd1e POST /api/v1/contact -> 201 (21 ms)
+gateway-1         | [gateway] req=ac0054ad67a6 ruta S33: GET /admin/users -> auth (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=5d5b139cecad ruta S25: GET /admin/contact -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=ac0054ad67a6 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=5d5b139cecad pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=5d5b139cecad Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=5d5b139cecad enrutando a clients GET /contact con el secreto gateway->clients leido de Vault
+gateway-1         | [gateway] req=ac0054ad67a6 Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=ac0054ad67a6 enrutando a auth GET /usuarios con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=5d5b139cecad clients respondio 200
+gateway-1         | [gateway] req=5d5b139cecad GET /api/v1/admin/contact -> 200 (16 ms)
+gateway-1         | [gateway] req=ac0054ad67a6 auth respondio 200
+gateway-1         | [gateway] req=ac0054ad67a6 GET /api/v1/admin/users -> 200 (19 ms)

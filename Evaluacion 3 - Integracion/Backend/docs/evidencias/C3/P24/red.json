@@ -1,0 +1,62 @@
+[
+ {
+  "hora": "2026-11-28T17:46:07+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "2e3e1d6e3652",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"ana@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"cliente\"}"
+ },
+ {
+  "hora": "2026-11-28T17:46:07+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "40af16f08da5",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"nombre\":\"Ana Pérez\",\"email\":\"ana@aromaycafe.test\",\"telefono\":\"+56 9 5555 3123\",\"run\":null,\"direccion\":null,\"comuna\":\"Maipú\",\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:46:07+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "24b3fe2ed5b9",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:46:08+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/products",
+  "estado": 403,
+  "request_id": "b9b73c01067b",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"detail\":\"Permiso insuficiente\"}"
+ },
+ {
+  "hora": "2026-11-28T17:46:08+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/dispatch-orders",
+  "estado": 403,
+  "request_id": "5d60022221e0",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"detail\":\"Permiso insuficiente\"}"
+ }
+]

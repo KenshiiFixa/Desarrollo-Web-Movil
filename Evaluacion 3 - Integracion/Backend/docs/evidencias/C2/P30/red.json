@@ -1,0 +1,38 @@
+[
+ {
+  "hora": "2026-11-28T17:42:43+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/contact",
+  "estado": 201,
+  "request_id": "45d88143f445",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"visita@correo.cl\",\"nombre\":\"Visita C2 62733\",\"telefono\":null,\"motivo\":\"sugerencia\",\"mensaje\":\"Me gustaria que tuvieran leche de avena\"}",
+  "respuesta": "{\"message\":\"Mensaje recibido\"}"
+ },
+ {
+  "hora": "2026-11-28T17:42:43+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/users",
+  "estado": 200,
+  "request_id": "d176484d7d8b",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"user_id\":\"USR-001\",\"email\":\"admin@aromaycafe.test\",\"rol\":\"admin\",\"correo_verificado\":true},{\"user_id\":\"USR-002\",\"email\":\"despacho@aromaycafe.test\",\"rol\":\"despacho\",\"correo_verificado\":true},{\"user_id\":\"USR-003\",\"email\":\"ana@aromaycafe.test\",\"rol\":\"cliente\",\"correo_verificado\":true},{\"user_id\":\"USR-004\",\"email\":\"pedro@aromaycafe.test\",\"rol\":\"cliente\",\"correo_verificado\":true},{\"user_id\":\"USR-005\",\"email\":\"dueno@aromaycafe.test\",\"rol\":\"dueno\",\"correo_verificado\":true},{\"user_id\":\"USR-006\",\"email\":\"cajero@aromaycafe.test\",\"rol\":\"cajero\",\"correo_verificado\":true},{\"user_id\":\"USR-0EFDF31B\",\"email\":\"cajero.c2.1795887760388@aromaycafe.test\",\"rol\":\"despacho\",\"correo_verificado\":true},{\"user_id\":\"USR-6C361E55\",\"email\":\"camila.c2.1795887690971@correo.cl\",\"rol\":\"cliente\",\"correo_verificado\":true},{\"user_id\":\"USR-DA62C243\",\"email\":\"luis.c2.1795887760388@correo.cl\",\"rol\":\"cliente\",\"correo_verificado\":false}]"
+ },
+ {
+  "hora": "2026-11-28T17:42:43+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/contact",
+  "estado": 200,
+  "request_id": "c9425b849f92",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"nombre\":\"Visita C2 62733\",\"email\":\"visita@correo.cl\",\"telefono\":null,\"motivo\":\"sugerencia\",\"mensaje\":\"Me gustaria que tuvieran leche de avena\",\"creado_en\":\"2026-11-28T17:42:43+00:00\",\"id\":\"6b0b1293d6d436147bebc4cf\"}]"
+ }
+]

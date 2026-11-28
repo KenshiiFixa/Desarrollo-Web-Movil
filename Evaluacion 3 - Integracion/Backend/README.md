@@ -64,7 +64,7 @@ Esta entrega es **solo el backend**. La conexión con el frontend la dejamos par
 ## Cómo ejecutar el proyecto
 
 > **Evaluación 3:** ahora también se puede levantar todo en contenedores con `docker compose up -d --build`
-> (frontend, gateway, los 9 servicios, Vault y MongoDB). Está explicado en el `README.md` de la carpeta
+> (frontend, gateway, los 9 servicios, Vault y MongoDB). Está explicado en el `Informe.md` de la carpeta
 > `Evaluacion 3 - Integracion`. Lo de esta sección es el modo local, que es el que usan los scripts de `pruebas/`.
 
 Los servicios y Vault corren directamente en el computador. Solo MongoDB corre en Docker. Se necesita:

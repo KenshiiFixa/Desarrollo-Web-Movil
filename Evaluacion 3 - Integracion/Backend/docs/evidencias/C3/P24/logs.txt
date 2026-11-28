@@ -1,0 +1,42 @@
+clients-1  | [clients] req=40af16f08da5 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1  | [clients] req=40af16f08da5 MongoDB: lee clients.clientes del usuario de la sesion (USR-003)
+clients-1  | [clients] req=40af16f08da5 GET /clients/me -> 200 (2 ms)
+inventory-1  | [inventory] req=24b3fe2ed5b9 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=24b3fe2ed5b9 MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+inventory-1  | [inventory] req=24b3fe2ed5b9 GET /products -> 200 (2 ms)
+gateway-1    | [gateway] req=2e3e1d6e3652 ruta S04: POST /auth/login -> auth (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=2e3e1d6e3652 enrutando a auth POST /login con el secreto gateway->auth leido de Vault
+gateway-1    | [gateway] req=2e3e1d6e3652 auth respondio 200
+gateway-1    | [gateway] req=2e3e1d6e3652 POST /api/v1/auth/login -> 200 (109 ms)
+gateway-1    | [gateway] req=40af16f08da5 ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=40af16f08da5 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=40af16f08da5 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=40af16f08da5 enrutando a clients GET /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=40af16f08da5 clients respondio 200
+gateway-1    | [gateway] req=40af16f08da5 GET /api/v1/clients/me -> 200 (15 ms)
+gateway-1    | [gateway] req=24b3fe2ed5b9 ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=24b3fe2ed5b9 enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=24b3fe2ed5b9 inventory respondio 200
+gateway-1    | [gateway] req=24b3fe2ed5b9 GET /api/v1/products -> 200 (6 ms)
+gateway-1    | [gateway] req=b9b73c01067b ruta S19: GET /admin/products -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=b9b73c01067b pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=b9b73c01067b Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=b9b73c01067b rol cliente no tiene permiso para S19 -> 403 (no se enruta)
+gateway-1    | [gateway] req=b9b73c01067b GET /api/v1/admin/products -> 403 (8 ms)
+gateway-1    | [gateway] req=5d60022221e0 ruta S29: GET /admin/dispatch-orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=5d60022221e0 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=5d60022221e0 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=5d60022221e0 rol cliente no tiene permiso para S29 -> 403 (no se enruta)
+gateway-1    | [gateway] req=5d60022221e0 GET /api/v1/admin/dispatch-orders -> 403 (8 ms)
+auth-1       | [auth] req=2e3e1d6e3652 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=2e3e1d6e3652 login correcto: clave verificada (argon2id), sesion de USR-003 creada en auth.sesiones, rol=cliente, dura 15 min
+auth-1       | [auth] req=2e3e1d6e3652 POST /login -> 200 (105 ms)
+auth-1       | [auth] req=40af16f08da5 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=40af16f08da5 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=40af16f08da5 POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=b9b73c01067b secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=b9b73c01067b introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=b9b73c01067b POST /introspect -> 200 (3 ms)
+auth-1       | [auth] req=5d60022221e0 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=5d60022221e0 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=5d60022221e0 POST /introspect -> 200 (3 ms)

@@ -19,7 +19,7 @@ from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 from pymongo.errors import DuplicateKeyError
 
-from comun import registrar_logs, SECRETOS, conectar_mongo, exigir_rol, leer_secretos, llamar_servicio, usuario_actual, verificar_servicio
+from comun import log, registrar_logs, SECRETOS, conectar_mongo, exigir_rol, leer_secretos, llamar_servicio, usuario_actual, verificar_servicio
 
 db = None
 
@@ -69,6 +69,7 @@ def iniciar_pago(datos: PagoNuevo, usuario=Depends(usuario_actual)):
         raise HTTPException(status_code=409, detail="El pedido no esta pendiente de pago")
     existente = db.pagos.find_one({"order_id": datos.order_id, "estado": "PENDIENTE"})
     if existente:
+        log(f"ya existe el pago pendiente {existente['_id']} para {datos.order_id}: se devuelve el mismo")
         return pago_para_cliente(existente)
     payment_id = "PAY-" + secrets.token_hex(4).upper()
     # Se pide al proveedor un "checkout" con el monto del SERVIDOR
@@ -79,6 +80,7 @@ def iniciar_pago(datos: PagoNuevo, usuario=Depends(usuario_actual)):
     db.pagos.insert_one({"_id": payment_id, "order_id": datos.order_id, "user_id": usuario["user_id"],
                          "monto": pedido["total"], "estado": "PENDIENTE",
                          "checkout_id": r.json()["checkout_id"], "creado_en": ahora()})
+    log(f"MongoDB: pago {payment_id} creado en payments.pagos para {datos.order_id} con el monto de orders ({pedido['total']})")
     return {"id": payment_id, "order_id": datos.order_id, "estado": "PENDIENTE", "monto": pedido["total"],
             "url_pago": r.json()["url_pago"]}
 
@@ -138,6 +140,7 @@ async def webhook(request: Request, x_firma: str = Header(default="")):
     """Aviso del proveedor, recibido a traves del gateway. Lo que lo autentica es la firma HMAC."""
     cuerpo = await request.body()
     if not firma_valida(cuerpo, x_firma):
+        log("aviso del proveedor RECHAZADO: firma HMAC invalida -> 401")
         raise HTTPException(status_code=401, detail="Firma invalida")
     try:
         aviso = Aviso(**json.loads(cuerpo))
@@ -154,11 +157,13 @@ async def webhook(request: Request, x_firma: str = Header(default="")):
         # event_id es el _id: MongoDB no deja guardar dos veces el mismo aviso
         db.avisos.insert_one({"_id": aviso.event_id, "payment_id": aviso.payment_id, "recibido_en": ahora()})
     except DuplicateKeyError:
+        log(f"aviso {aviso.event_id} repetido: ya se habia procesado, no se cobra de nuevo")
         return {"ok": True, "repetido": True}
     if pago["estado"] != "PENDIENTE":
         return {"ok": True, "ignorado": True}
     if aviso.resultado == "rechazado":
         db.pagos.update_one({"_id": pago["_id"]}, {"$set": {"estado": "RECHAZADO"}})
+        log(f"MongoDB: pago {pago['_id']} RECHAZADO por el proveedor")
         return {"ok": True, "estado": "RECHAZADO"}
     # payments es quien autoriza el cambio: le avisa a orders que el pedido esta pagado
     r = llamar_servicio("payments", "orders", "POST", f"/internal/orders/{pago['order_id']}/paid",
@@ -171,6 +176,7 @@ async def webhook(request: Request, x_firma: str = Header(default="")):
         db.avisos.delete_one({"_id": aviso.event_id})   # el proveedor reintentara
         raise HTTPException(status_code=503, detail="No fue posible confirmar el pedido")
     db.pagos.update_one({"_id": pago["_id"]}, {"$set": {"estado": estado}})
+    log(f"aviso con firma HMAC valida: pago {pago['_id']} {estado}; orders confirmo el pedido {pago['order_id']}")
     return {"ok": True, "estado": estado}
 
 

@@ -645,6 +645,7 @@
     transform: translateY(20px);
     opacity: 0;
     transition: transform .3s ease, opacity .3s ease;
+    pointer-events: none;   /* el aviso no bloquea los clics de lo que queda debajo */
     pointer-events: none;
     z-index: 50;
   }
@@ -749,8 +750,56 @@
   .inv-nuevo summary{ cursor: pointer; font-weight: 700; color: var(--cafe); margin-bottom: 16px; }
   .inv-nuevo .auth-form{ max-width: 560px; }
 
+  /* ---------- Carrito: entrega ---------- */
+  .cart-item .art img{ width:100%; height:100%; object-fit: contain; }
+  .entrega{ margin-top: 18px; display:flex; flex-direction:column; gap: 12px; }
+  .entrega fieldset{ border: 0; padding: 0; margin: 0; display:flex; flex-direction:column; gap: 8px; }
+  .entrega legend{ font-weight: 700; color: var(--cafe); margin-bottom: 6px; font-size: 0.9rem; }
+  .entrega .opcion{ display:flex; align-items:center; gap: 8px; font-size: 0.9rem; cursor: pointer; }
+  .cart-summary .aviso{ margin: 14px 0 0; }
+  .nota-total{ font-size: 0.78rem; color: var(--tinta-suave); margin-top: 14px; text-align: center; }
+
+  /* ---------- Pedido, pago, boleta y mis pedidos ---------- */
+  .pedido-layout{ max-width: 860px; margin: 0 auto; padding: 48px 40px 64px; display:flex; flex-direction:column; gap: 22px; }
+  .pedido-layout h1{ margin: 0; }
+  .pedido-layout h2{ font-size: 1.25rem; margin-bottom: 10px; }
+  .ped-bloque{ background: #fff; border: 1px solid var(--linea); border-radius: 10px; padding: 22px; }
+  .ped-cabecera{ display:flex; flex-wrap: wrap; align-items:center; gap: 10px 18px; margin-bottom: 14px; color: var(--tinta-suave); font-size: 0.9rem; }
+  .ped-tabla{ min-width: 480px; }
+  .ped-total{ text-align: right; margin-top: 12px; font-size: 1.05rem; }
+  .chip{ display:inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 700;
+         background: var(--fondo-card); color: var(--cafe); }
+  .chip-pagado, .chip-entregado{ background: #E3F1E0; color: #24501C; }
+  .chip-pendiente_pago{ background: #FFE9DA; color: #8A3D10; }
+  .chip-anulado{ background: #EDE7E4; color: #6D5A53; text-decoration: line-through; }
+  .chip-en_preparacion, .chip-listo, .chip-en_camino{ background: #E4ECF7; color: #24406B; }
+  .pasarela{ margin-top: 16px; border: 2px dashed var(--naranja-claro); border-radius: 10px; padding: 18px; display:flex; flex-direction:column; gap: 10px; }
+  .etiqueta-simulada{ font-size: 0.72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--naranja); }
+  .pasarela-botones{ display:flex; flex-wrap: wrap; align-items:center; gap: 12px; }
+  .boleta-totales{ display:grid; grid-template-columns: 1fr auto; gap: 6px 18px; max-width: 280px; margin: 14px 0 0 auto; }
+  .mp-lista{ display:flex; flex-direction:column; gap: 14px; }
+  .mp-pedido{ background: #fff; border: 1px solid var(--linea); border-radius: 10px; padding: 18px 20px; display:flex; flex-direction:column; gap: 8px; }
+  .mp-cab{ display:flex; justify-content: space-between; align-items:center; gap: 12px; flex-wrap: wrap; }
+  .mp-id{ font-weight: 800; color: var(--cafe); text-decoration: underline; }
+  .mp-meta, .mp-pago{ font-size: 0.88rem; color: var(--tinta-suave); margin: 0; }
+  .mp-productos{ margin: 0; padding-left: 1.1em; font-size: 0.92rem; }
+  .mp-productos .incompleto{ color: #8A2C0D; font-style: italic; }
+
+  /* ---------- Paneles por rol ---------- */
+  .inv-layout h2{ font-size: 1.25rem; margin: 26px 0 12px; }
+  .resumen-cifras{ display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 12px; }
+  .resumen-cifras div{ background:#fff; border:1px solid var(--linea); border-radius: 10px; padding: 14px 16px; display:flex; flex-direction:column; gap: 4px; }
+  .resumen-cifras span{ font-size: 0.78rem; text-transform: uppercase; letter-spacing: .05em; color: var(--tinta-suave); }
+  .resumen-cifras strong{ font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+  .accesos{ display:flex; flex-wrap: wrap; gap: 10px; margin: 4px 0 8px; }
+  .inv-tabla select{ border: 1px solid var(--linea); border-radius: 6px; padding: 6px 8px; font-family: inherit; background:#fff; }
+  .featured-estado{ color: var(--tinta-suave); font-size: 0.9rem; }
+  a.product-card{ color: inherit; }
+  .product-thumb img{ width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0px 4px 4px rgba(62,39,35,0.2)); }
+
   @media (max-width: 900px){
-    .auth-layout, .inv-layout{ padding: 32px 22px 48px; }
+    .auth-layout, .inv-layout, .pedido-layout{ padding: 32px 22px 48px; }
+    .ped-bloque{ padding: 16px; }
     .auth-grid{ grid-template-columns: 1fr; }
     .auth-actions{ flex-wrap: wrap; }
   }

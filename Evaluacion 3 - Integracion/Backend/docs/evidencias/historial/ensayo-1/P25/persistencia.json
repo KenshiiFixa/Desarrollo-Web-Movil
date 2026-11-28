@@ -1,0 +1,45 @@
+[
+ {
+  "descripcion": "Historial del pedido",
+  "hora": "2026-11-28T17:28:03+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-E73B8F93"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-E73B8F93",
+    "estado": "ENTREGADO",
+    "historial": [
+     {
+      "estado": "PENDIENTE_PAGO",
+      "por": "USR-003",
+      "en": "2026-11-28T17:25:48+00:00"
+     },
+     {
+      "estado": "PAGADO",
+      "por": "payments",
+      "en": "2026-11-28T17:26:36+00:00"
+     },
+     {
+      "estado": "EN_PREPARACION",
+      "por": "USR-002",
+      "en": "2026-11-28T17:28:01+00:00"
+     },
+     {
+      "estado": "LISTO",
+      "por": "USR-002",
+      "en": "2026-11-28T17:28:01+00:00"
+     },
+     {
+      "estado": "ENTREGADO",
+      "por": "USR-002",
+      "en": "2026-11-28T17:28:01+00:00"
+     }
+    ]
+   }
+  ]
+ }
+]

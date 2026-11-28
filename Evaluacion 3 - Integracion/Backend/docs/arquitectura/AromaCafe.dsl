@@ -1,4 +1,4 @@
-workspace "AromaYCafe" "Plataforma Aroma & Cafe - Backend Evaluacion 2" {
+workspace "AromaYCafe" "Plataforma Aroma & Cafe - Evaluacion 3: frontend integrado con el backend seguro" {
 
     !identifiers hierarchical
 
@@ -347,6 +347,61 @@ workspace "AromaYCafe" "Plataforma Aroma & Cafe - Backend Evaluacion 2" {
                 }
             }
         }
+
+        // Despliegue en Docker (Evaluacion 3): un contenedor por componente con docker compose.
+        docker = deploymentEnvironment "Docker" {
+            deploymentNode "Equipo del usuario" "Navegador que abre http://localhost:8080." "Equipo cliente" {
+                tags "ZonaCliente"
+                deploymentNode "Navegador web" "Ejecuta el JavaScript del frontend; llama solo al gateway (CORS)." "Chromium, Brave" {
+                    containerInstance sistema.frontend
+                }
+            }
+            deploymentNode "Docker (docker compose)" "Todos los componentes en contenedores; trafico entre contenedores con TLS." "Docker Engine" {
+                tags "ZonaEntorno"
+                deploymentNode "Red publica" "Unicos puertos publicados, solo en 127.0.0.1: 8080 (frontend) y 8000 (gateway)." "Red bridge" {
+                    tags "ZonaPublica"
+                    deploymentNode "frontend" "PHP 8.3 sirve la carpeta Frontend." "Contenedor php:8.3-cli-alpine" {
+                        tags "ZonaPublica"
+                    }
+                    deploymentNode "gateway" "HTTPS 8000; CORS solo para el frontend; secretos desde Vault." "Contenedor aroma-cafe-backend" {
+                        tags "ZonaPublica"
+                        containerInstance sistema.apiGateway
+                    }
+                }
+                deploymentNode "Red privada" "internal: sin acceso desde el equipo ni a Internet. Cada servicio monta solo su token de Vault." "Red bridge interna" {
+                    tags "ZonaPrivada"
+                    deploymentNode "auth, inventory, orders, clients, payments, graphql, analitica, notificaciones" "Un contenedor por servicio, usuario sin privilegios, HTTPS y gRPC con TLS." "Contenedores aroma-cafe-backend" {
+                        tags "ZonaPrivada"
+                        containerInstance sistema.authService
+                        containerInstance sistema.inventory
+                        containerInstance sistema.orders
+                        containerInstance sistema.clients
+                        containerInstance sistema.payments
+                        containerInstance sistema.notificaciones
+                        containerInstance sistema.analitica
+                        containerInstance sistema.graphqlGateway
+                    }
+                    deploymentNode "vault" "Vault en modo desarrollo con HTTPS; politica y token por servicio." "Contenedor hashicorp/vault:1.15" {
+                        tags "ZonaSecretos"
+                        containerInstance sistema.secretManager
+                    }
+                    deploymentNode "mongo" "MongoDB 7, una base y un usuario por servicio." "Contenedor mongo:7" {
+                        tags "ZonaDatos"
+                        containerInstance sistema.dbIdentity
+                        containerInstance sistema.dbInventory
+                        containerInstance sistema.dbOrders
+                        containerInstance sistema.dbClients
+                        containerInstance sistema.dbPayments
+                        containerInstance sistema.dbNotificaciones
+                        containerInstance sistema.dbAnalitica
+                    }
+                    deploymentNode "proveedor" "Doble de prueba del proveedor de pagos (webhook firmado con HMAC)." "Contenedor aroma-cafe-backend" {
+                        tags "ZonaExterna"
+                        softwareSystemInstance proveedor
+                    }
+                }
+            }
+        }
     }
 
     views {
@@ -550,6 +605,15 @@ workspace "AromaYCafe" "Plataforma Aroma & Cafe - Backend Evaluacion 2" {
         deployment sistema local "DEP_Local" "Todos los servicios del caso en un equipo local." {
             title "Despliegue - Local"
             include *
+            autoLayout lr
+        }
+
+        deployment sistema docker "DEP_Docker" "Despliegue de la Evaluacion 3: un contenedor por componente." {
+            title "Despliegue - Docker (Evaluacion 3)"
+            include *
+            // Solo se muestra donde corre cada componente; las llamadas entre servicios estan en las vistas C2 y dinamicas
+            exclude "* -> *"
+            include "sistema.frontend -> sistema.apiGateway"
             autoLayout lr
         }
 

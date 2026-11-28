@@ -1,0 +1,122 @@
+[
+ {
+  "hora": "2026-11-28T17:37:33+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/products",
+  "estado": 200,
+  "request_id": "ba0ee9e20379",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true,\"stock\":38,\"activo\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true,\"stock\":39,\"activo\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":true,\"stock\":38,\"activo\":true},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true,\"stock\":39,\"activo\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:37:33+00:00",
+  "metodo": "PUT",
+  "url": "/api/v1/admin/products/latte-art",
+  "estado": 200,
+  "request_id": "c1bcdf04b8e8",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"imagen\":\"latte.png\",\"precio\":3200,\"stock\":38,\"precio_oferta\":2900}",
+  "respuesta": "{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":2900,\"imagen\":\"latte.png\",\"disponible\":true,\"stock\":38,\"activo\":true}"
+ },
+ {
+  "hora": "2026-11-28T17:37:33+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/products",
+  "estado": 200,
+  "request_id": "ba61bf802264",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true,\"stock\":38,\"activo\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true,\"stock\":39,\"activo\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":2900,\"imagen\":\"latte.png\",\"disponible\":true,\"stock\":38,\"activo\":true},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true,\"stock\":39,\"activo\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:37:33+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/admin/products",
+  "estado": 201,
+  "request_id": "dc5797c0a444",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"id\":\"prueba-c1\",\"nombre\":\"Mocaccino de prueba\",\"descripcion\":\"\",\"categoria\":\"cafe\",\"imagen\":\"latte.png\",\"precio\":3600,\"stock\":5,\"precio_oferta\":null}",
+  "respuesta": "{\"id\":\"prueba-c1\",\"nombre\":\"Mocaccino de prueba\",\"descripcion\":\"\",\"categoria\":\"cafe\",\"precio\":3600,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":true,\"stock\":5,\"activo\":true}"
+ },
+ {
+  "hora": "2026-11-28T17:37:33+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/products",
+  "estado": 200,
+  "request_id": "ae8c10b59285",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true,\"stock\":38,\"activo\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true,\"stock\":39,\"activo\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":2900,\"imagen\":\"latte.png\",\"disponible\":true,\"stock\":38,\"activo\":true},{\"id\":\"prueba-c1\",\"nombre\":\"Mocaccino de prueba\",\"descripcion\":\"\",\"categoria\":\"cafe\",\"precio\":3600,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":true,\"stock\":5,\"activo\":true},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true,\"stock\":39,\"activo\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:37:33+00:00",
+  "metodo": "DELETE",
+  "url": "/api/v1/admin/products/prueba-c1",
+  "estado": 204,
+  "request_id": "a161a782ea9b",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:37:33+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/products",
+  "estado": 200,
+  "request_id": "d5362ba7ece4",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true,\"stock\":38,\"activo\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true,\"stock\":39,\"activo\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true,\"stock\":40,\"activo\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":2900,\"imagen\":\"latte.png\",\"disponible\":true,\"stock\":38,\"activo\":true},{\"id\":\"prueba-c1\",\"nombre\":\"Mocaccino de prueba\",\"descripcion\":\"\",\"categoria\":\"cafe\",\"precio\":3600,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":false,\"stock\":5,\"activo\":false},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true,\"stock\":39,\"activo\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:37:33+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "c8ba9aebbf66",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":2900,\"imagen\":\"latte.png\",\"disponible\":true},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:37:35+00:00",
+  "metodo": "PUT",
+  "url": "/api/v1/admin/products/latte-art",
+  "estado": 200,
+  "request_id": "6c2b4be27bbf",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"imagen\":\"latte.png\",\"precio\":3200,\"stock\":38,\"precio_oferta\":null}",
+  "respuesta": "{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":true,\"stock\":38,\"activo\":true}"
+ },
+ {
+  "hora": "2026-11-28T17:37:36+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/products",
+  "estado": 200,
+  "request_id": "435ad823b6b9",
+  "origin": null,
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ }
+]

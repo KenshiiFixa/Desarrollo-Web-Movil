@@ -1,0 +1,19 @@
+[
+ {
+  "descripcion": "Pedido creado al reintentar",
+  "hora": "2026-11-28T17:36:13+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-E4206731"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-E4206731",
+    "estado": "PENDIENTE_PAGO",
+    "total": 2800
+   }
+  ]
+ }
+]

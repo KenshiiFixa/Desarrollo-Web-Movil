@@ -1,0 +1,43 @@
+{
+ "fecha": "2026-11-28T17:53:17.238Z",
+ "frontend": "Solemne 2/Frontend",
+ "navegador": "Chromium (Playwright)",
+ "viewport": "1366x768",
+ "resultados": [
+  {
+   "id": "LB01",
+   "descripcion": "Carta: origen de los productos",
+   "observado": "8 tarjetas, escritas en el HTML de catalogo.php (8 tarjetas class=\"product-card-lg\" en el archivo)",
+   "solicitudes_al_backend": [],
+   "evidencia": "LB/LB01.jpg"
+  },
+  {
+   "id": "LB02",
+   "descripcion": "Botones Iniciar sesión y Registrarse",
+   "observado": "Iniciar sesión → href=\"#\"; Registrarse → href=\"#\"",
+   "solicitudes_al_backend": [],
+   "evidencia": "LB/LB02.jpg"
+  },
+  {
+   "id": "LB03",
+   "descripcion": "Carrito: Pagar pedido",
+   "observado": "carrito antes: 1 producto(s); después: borrado del navegador; aviso: \"Pedido enviado. Te avisaremos cuando esté listo.\"",
+   "solicitudes_al_backend": [],
+   "evidencia": "LB/LB03.jpg"
+  },
+  {
+   "id": "LB04",
+   "descripcion": "Contacto: enviar mensaje",
+   "observado": "aviso: \"Gracias, tu mensaje quedó registrado. Te responderemos pronto.\"",
+   "solicitudes_al_backend": [],
+   "evidencia": "LB/LB04.jpg"
+  },
+  {
+   "id": "LB05",
+   "descripcion": "Pantallas de pedidos, cuenta y paneles",
+   "observado": "login.php: 404, registro.php: 404, cuenta.php: 404, pedido.php: 404, mis-pedidos.php: 404, inventario.php: 404, despacho.php: 404, admin.php: 404",
+   "solicitudes_al_backend": [],
+   "evidencia": "LB/LB05.jpg"
+  }
+ ]
+}

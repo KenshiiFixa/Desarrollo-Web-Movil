@@ -1,0 +1,26 @@
+[
+ {
+  "hora": "2026-11-28T17:41:21+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "ec371092bf0a",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"nombre\":\"Ana Pérez\",\"email\":\"ana@aromaycafe.test\",\"telefono\":\"+56 9 5555 7532\",\"run\":null,\"direccion\":null,\"comuna\":\"Maipú\",\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:41:22+00:00",
+  "metodo": "PUT",
+  "url": "/api/v1/clients/me",
+  "estado": 422,
+  "request_id": "2c5691ed760f",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"nombre\":\"Ana Pérez\",\"run\":\"12.345.678-9\",\"telefono\":\"+56 9 5555 7532\",\"direccion\":null,\"comuna\":\"Maipú\",\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}",
+  "respuesta": "{\"detail\":\"RUN invalido\"}"
+ }
+]

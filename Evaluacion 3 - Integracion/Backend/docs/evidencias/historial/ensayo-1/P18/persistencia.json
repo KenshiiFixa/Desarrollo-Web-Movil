@@ -1,0 +1,20 @@
+[
+ {
+  "descripcion": "Ficha de USR-003",
+  "hora": "2026-11-28T17:27:42+00:00",
+  "servicio": "clients",
+  "coleccion": "clientes",
+  "filtro": {
+   "_id": "USR-003"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "USR-003",
+    "telefono": "+56 9 5555 6450",
+    "run": null,
+    "comuna": "Maipú"
+   }
+  ]
+ }
+]

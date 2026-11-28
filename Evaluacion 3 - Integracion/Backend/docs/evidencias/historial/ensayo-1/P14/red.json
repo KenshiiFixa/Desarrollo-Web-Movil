@@ -1,0 +1,62 @@
+[
+ {
+  "hora": "2026-11-28T17:27:13+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "5da2981312c1",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"pedro@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"cliente\"}"
+ },
+ {
+  "hora": "2026-11-28T17:27:14+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "75539632b82c",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"nombre\":\"Pedro Soto\",\"email\":\"pedro@aromaycafe.test\",\"telefono\":null,\"run\":null,\"direccion\":null,\"comuna\":null,\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:27:14+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "fdb799e08a53",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:27:14+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-E73B8F93",
+  "estado": 404,
+  "request_id": "e649da087e55",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"detail\":\"Pedido no encontrado\"}"
+ },
+ {
+  "hora": "2026-11-28T17:27:15+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/graphql",
+  "estado": 200,
+  "request_id": "4981e900da0f",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"query\":\"query($id: String!) { resumenPedido(id: $id) { id estado total } }\",\"variables\":{\"id\":\"ORD-E73B8F93\"}}",
+  "respuesta": "{\"data\":{\"resumenPedido\":null}}"
+ }
+]

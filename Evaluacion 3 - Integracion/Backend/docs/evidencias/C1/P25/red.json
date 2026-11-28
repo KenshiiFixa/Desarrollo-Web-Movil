@@ -1,0 +1,110 @@
+[
+ {
+  "hora": "2026-11-28T17:37:39+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "435aa5c43f5a",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"despacho@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"despacho\"}"
+ },
+ {
+  "hora": "2026-11-28T17:37:39+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "1e4b66e7e376",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"nombre\":\"Encargado Despacho\",\"email\":\"despacho@aromaycafe.test\",\"telefono\":null,\"run\":null,\"direccion\":null,\"comuna\":null,\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:37:39+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/dispatch-orders",
+  "estado": 200,
+  "request_id": "97bc21b4cb2b",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"ORD-30400C33\",\"pagado_en\":\"2026-11-28T17:36:15+00:00\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Latte Art\",\"cantidad\":2},{\"nombre\":\"Croissant de Mantequilla\",\"cantidad\":1}]},{\"id\":\"ORD-E4206731\",\"pagado_en\":\"2026-11-28T17:36:26+00:00\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Croissant de Mantequilla\",\"cantidad\":1}]},{\"id\":\"ORD-EF73EAC1\",\"pagado_en\":\"2026-11-28T17:36:29+00:00\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Espresso Doble\",\"cantidad\":1}]}]"
+ },
+ {
+  "hora": "2026-11-28T17:37:39+00:00",
+  "metodo": "PUT",
+  "url": "/api/v1/admin/orders/ORD-30400C33/status",
+  "estado": 200,
+  "request_id": "1466c64ab04d",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"estado\":\"EN_PREPARACION\"}",
+  "respuesta": "{\"id\":\"ORD-30400C33\",\"estado\":\"EN_PREPARACION\"}"
+ },
+ {
+  "hora": "2026-11-28T17:37:39+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/dispatch-orders",
+  "estado": 200,
+  "request_id": "82e0c13c03a2",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"ORD-30400C33\",\"pagado_en\":\"2026-11-28T17:36:15+00:00\",\"estado\":\"EN_PREPARACION\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Latte Art\",\"cantidad\":2},{\"nombre\":\"Croissant de Mantequilla\",\"cantidad\":1}]},{\"id\":\"ORD-E4206731\",\"pagado_en\":\"2026-11-28T17:36:26+00:00\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Croissant de Mantequilla\",\"cantidad\":1}]},{\"id\":\"ORD-EF73EAC1\",\"pagado_en\":\"2026-11-28T17:36:29+00:00\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Espresso Doble\",\"cantidad\":1}]}]"
+ },
+ {
+  "hora": "2026-11-28T17:37:39+00:00",
+  "metodo": "PUT",
+  "url": "/api/v1/admin/orders/ORD-30400C33/status",
+  "estado": 200,
+  "request_id": "4599272b228b",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"estado\":\"LISTO\"}",
+  "respuesta": "{\"id\":\"ORD-30400C33\",\"estado\":\"LISTO\"}"
+ },
+ {
+  "hora": "2026-11-28T17:37:39+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/dispatch-orders",
+  "estado": 200,
+  "request_id": "4b0f2d3fa880",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"ORD-30400C33\",\"pagado_en\":\"2026-11-28T17:36:15+00:00\",\"estado\":\"LISTO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Latte Art\",\"cantidad\":2},{\"nombre\":\"Croissant de Mantequilla\",\"cantidad\":1}]},{\"id\":\"ORD-E4206731\",\"pagado_en\":\"2026-11-28T17:36:26+00:00\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Croissant de Mantequilla\",\"cantidad\":1}]},{\"id\":\"ORD-EF73EAC1\",\"pagado_en\":\"2026-11-28T17:36:29+00:00\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Espresso Doble\",\"cantidad\":1}]}]"
+ },
+ {
+  "hora": "2026-11-28T17:37:39+00:00",
+  "metodo": "PUT",
+  "url": "/api/v1/admin/orders/ORD-30400C33/status",
+  "estado": 200,
+  "request_id": "231673d6ee8e",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"estado\":\"ENTREGADO\"}",
+  "respuesta": "{\"id\":\"ORD-30400C33\",\"estado\":\"ENTREGADO\"}"
+ },
+ {
+  "hora": "2026-11-28T17:37:39+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/dispatch-orders",
+  "estado": 200,
+  "request_id": "edb01a7ab1e9",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"ORD-E4206731\",\"pagado_en\":\"2026-11-28T17:36:26+00:00\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Croissant de Mantequilla\",\"cantidad\":1}]},{\"id\":\"ORD-EF73EAC1\",\"pagado_en\":\"2026-11-28T17:36:29+00:00\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"user_id\":\"USR-003\",\"productos\":[{\"nombre\":\"Espresso Doble\",\"cantidad\":1}]}]"
+ }
+]

@@ -1,0 +1,2 @@
+inventory-1  | [inventory] req=62e19d2dfb4a llamada RECHAZADA (403): 'sin nombre' no puede llamar a este servicio
+inventory-1  | [inventory] req=0aaff9269d44 llamada RECHAZADA (403): el secreto de gateway no coincide con el guardado en Vault

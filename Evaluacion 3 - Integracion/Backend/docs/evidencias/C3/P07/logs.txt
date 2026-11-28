@@ -1,0 +1,32 @@
+inventory-1  | [inventory] req=81cc71e9d3f1 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=81cc71e9d3f1 MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+inventory-1  | [inventory] req=81cc71e9d3f1 GET /products -> 200 (2 ms)
+inventory-1  | [inventory-grpc] req=339079a32284 ReservarStock desde orders: secreto verificado con el de Vault
+gateway-1    | [gateway] req=81cc71e9d3f1 ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=81cc71e9d3f1 enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=81cc71e9d3f1 inventory respondio 200
+gateway-1    | [gateway] req=81cc71e9d3f1 GET /api/v1/products -> 200 (7 ms)
+gateway-1    | [gateway] req=339079a32284 ruta S09: POST /orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=339079a32284 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=fe1425b9c386 ruta S09: POST /orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=fe1425b9c386 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=339079a32284 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=339079a32284 enrutando a orders POST /orders con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=fe1425b9c386 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=fe1425b9c386 enrutando a orders POST /orders con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=339079a32284 orders respondio 201
+gateway-1    | [gateway] req=339079a32284 POST /api/v1/orders -> 201 (26 ms)
+gateway-1    | [gateway] req=fe1425b9c386 orders respondio 200
+gateway-1    | [gateway] req=fe1425b9c386 POST /api/v1/orders -> 200 (23 ms)
+orders-1     | [orders] req=339079a32284 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1     | [orders] req=339079a32284 MongoDB: pedido ORD-899665FB guardado en orders.pedidos (PENDIENTE_PAGO, total=4500)
+orders-1     | [orders] req=339079a32284 POST /orders -> 201 (8 ms)
+orders-1     | [orders] req=fe1425b9c386 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1     | [orders] req=fe1425b9c386 pedido repetido: la clave ya creo ORD-899665FB, se devuelve el mismo sin reservar stock
+orders-1     | [orders] req=fe1425b9c386 POST /orders -> 200 (3 ms)
+auth-1       | [auth] req=339079a32284 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=339079a32284 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=339079a32284 POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=fe1425b9c386 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=fe1425b9c386 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=fe1425b9c386 POST /introspect -> 200 (3 ms)

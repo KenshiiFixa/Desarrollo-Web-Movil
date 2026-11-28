@@ -1,0 +1,20 @@
+[
+ {
+  "descripcion": "Mensaje guardado",
+  "hora": "2026-11-28T17:29:16+00:00",
+  "servicio": "clients",
+  "coleccion": "contacto",
+  "filtro": {
+   "nombre": "Visita C1 53977"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "6b0b0f6aa8086b8c37bdd2de",
+    "nombre": "Visita C1 53977",
+    "motivo": "sugerencia",
+    "creado_en": "2026-11-28T17:29:14+00:00"
+   }
+  ]
+ }
+]

@@ -1,0 +1,124 @@
+notificaciones-1  | [notificaciones] req=d36b74aaa630 secreto de auth verificado con el de Vault: OK, se permite la llamada
+notificaciones-1  | [notificaciones] req=d36b74aaa630 correo de verificacion (simulado) para l***@correo.cl guardado en notificaciones.correos
+notificaciones-1  | [notificaciones] req=d36b74aaa630 POST /internal/verificacion -> 201 (2 ms)
+clients-1         | [clients] req=50882d8df1b8 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1         | [clients] req=50882d8df1b8 MongoDB: lee clients.clientes del usuario de la sesion (USR-001)
+clients-1         | [clients] req=50882d8df1b8 GET /clients/me -> 200 (2 ms)
+clients-1         | [clients] req=1a604595da79 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1         | [clients] req=1a604595da79 GET /contact -> 200 (2 ms)
+clients-1         | [clients] req=d36b74aaa630 secreto de auth verificado con el de Vault: OK, se permite la llamada
+clients-1         | [clients] req=d36b74aaa630 POST /internal/clients -> 201 (2 ms)
+auth-1            | [auth] req=eaf67e24aea7 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=eaf67e24aea7 login correcto: clave verificada (argon2id), sesion de USR-001 creada en auth.sesiones, rol=admin, dura 15 min
+auth-1            | [auth] req=eaf67e24aea7 POST /login -> 200 (62 ms)
+auth-1            | [auth] req=50882d8df1b8 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=50882d8df1b8 introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=50882d8df1b8 POST /introspect -> 200 (3 ms)
+auth-1            | [auth] req=0c0371876951 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=0c0371876951 introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=0c0371876951 POST /introspect -> 200 (3 ms)
+auth-1            | [auth] req=1a604595da79 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=0c0371876951 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=1a604595da79 introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=1a604595da79 POST /introspect -> 200 (4 ms)
+auth-1            | [auth] req=0c0371876951 GET /usuarios -> 200 (2 ms)
+auth-1            | [auth] req=a2218e8a2f47 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=a2218e8a2f47 introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=a2218e8a2f47 POST /introspect -> 200 (2 ms)
+auth-1            | [auth] req=a2218e8a2f47 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=a2218e8a2f47 POST /usuarios -> 201 (70 ms)
+auth-1            | [auth] req=4263962eb9ab secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=4263962eb9ab introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=4263962eb9ab POST /introspect -> 200 (2 ms)
+auth-1            | [auth] req=4263962eb9ab secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=4263962eb9ab GET /usuarios -> 200 (2 ms)
+auth-1            | [auth] req=6fe671ca633b secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=6fe671ca633b introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=6fe671ca633b POST /introspect -> 200 (4 ms)
+auth-1            | [auth] req=6fe671ca633b secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=6fe671ca633b PUT /usuarios/USR-199E111C/rol -> 200 (4 ms)
+auth-1            | [auth] req=ca31b92665db secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=ca31b92665db introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=ca31b92665db POST /introspect -> 200 (2 ms)
+auth-1            | [auth] req=ca31b92665db secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=ca31b92665db GET /usuarios -> 200 (2 ms)
+auth-1            | [auth] req=a7a978e59246 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=a7a978e59246 introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=a7a978e59246 POST /introspect -> 200 (3 ms)
+auth-1            | [auth] req=a7a978e59246 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=a7a978e59246 PUT /usuarios/USR-001/rol -> 409 (1 ms)
+auth-1            | [auth] req=d36b74aaa630 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=d36b74aaa630 introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=d36b74aaa630 POST /introspect -> 200 (4 ms)
+auth-1            | [auth] req=d36b74aaa630 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=d36b74aaa630 registro: usuario USR-2CB793B4 creado en auth.usuarios (correo sin verificar); perfil guardado en clients y codigo enviado por notificaciones
+auth-1            | [auth] req=d36b74aaa630 POST /admin/clientes -> 201 (114 ms)
+auth-1            | [auth] req=fa5994074898 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=fa5994074898 introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=fa5994074898 POST /introspect -> 200 (2 ms)
+auth-1            | [auth] req=fa5994074898 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=fa5994074898 GET /usuarios -> 200 (2 ms)
+gateway-1         | [gateway] req=eaf67e24aea7 ruta S04: POST /auth/login -> auth (publica, origen http://localhost:8080)
+gateway-1         | [gateway] req=eaf67e24aea7 enrutando a auth POST /login con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=eaf67e24aea7 auth respondio 200
+gateway-1         | [gateway] req=eaf67e24aea7 POST /api/v1/auth/login -> 200 (67 ms)
+gateway-1         | [gateway] req=50882d8df1b8 ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=50882d8df1b8 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=50882d8df1b8 Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=50882d8df1b8 enrutando a clients GET /clients/me con el secreto gateway->clients leido de Vault
+gateway-1         | [gateway] req=50882d8df1b8 clients respondio 200
+gateway-1         | [gateway] req=50882d8df1b8 GET /api/v1/clients/me -> 200 (15 ms)
+gateway-1         | [gateway] req=0c0371876951 ruta S33: GET /admin/users -> auth (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=0c0371876951 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=1a604595da79 ruta S25: GET /admin/contact -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=1a604595da79 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=0c0371876951 Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=0c0371876951 enrutando a auth GET /usuarios con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=1a604595da79 Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=1a604595da79 enrutando a clients GET /contact con el secreto gateway->clients leido de Vault
+gateway-1         | [gateway] req=0c0371876951 auth respondio 200
+gateway-1         | [gateway] req=0c0371876951 GET /api/v1/admin/users -> 200 (12 ms)
+gateway-1         | [gateway] req=1a604595da79 clients respondio 200
+gateway-1         | [gateway] req=1a604595da79 GET /api/v1/admin/contact -> 200 (14 ms)
+gateway-1         | [gateway] req=a2218e8a2f47 ruta S34: POST /admin/users -> auth (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=a2218e8a2f47 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=a2218e8a2f47 Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=a2218e8a2f47 enrutando a auth POST /usuarios con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=a2218e8a2f47 auth respondio 201
+gateway-1         | [gateway] req=a2218e8a2f47 POST /api/v1/admin/users -> 201 (79 ms)
+gateway-1         | [gateway] req=4263962eb9ab ruta S33: GET /admin/users -> auth (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=4263962eb9ab pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=4263962eb9ab Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=4263962eb9ab enrutando a auth GET /usuarios con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=4263962eb9ab auth respondio 200
+gateway-1         | [gateway] req=4263962eb9ab GET /api/v1/admin/users -> 200 (10 ms)
+gateway-1         | [gateway] req=6fe671ca633b ruta S35: PUT /admin/users/USR-199E111C/role -> auth (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=6fe671ca633b pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=6fe671ca633b Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=6fe671ca633b enrutando a auth PUT /usuarios/USR-199E111C/rol con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=6fe671ca633b auth respondio 200
+gateway-1         | [gateway] req=6fe671ca633b PUT /api/v1/admin/users/USR-199E111C/role -> 200 (16 ms)
+gateway-1         | [gateway] req=ca31b92665db ruta S33: GET /admin/users -> auth (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=ca31b92665db pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=ca31b92665db Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=ca31b92665db enrutando a auth GET /usuarios con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=ca31b92665db auth respondio 200
+gateway-1         | [gateway] req=ca31b92665db GET /api/v1/admin/users -> 200 (10 ms)
+gateway-1         | [gateway] req=a7a978e59246 ruta S35: PUT /admin/users/USR-001/role -> auth (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=a7a978e59246 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=a7a978e59246 Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=a7a978e59246 enrutando a auth PUT /usuarios/USR-001/rol con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=a7a978e59246 auth respondio 409
+gateway-1         | [gateway] req=a7a978e59246 PUT /api/v1/admin/users/USR-001/role -> 409 (12 ms)
+gateway-1         | [gateway] req=d36b74aaa630 ruta S31: POST /admin/clients -> auth (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=d36b74aaa630 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=d36b74aaa630 Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=d36b74aaa630 enrutando a auth POST /admin/clientes con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=d36b74aaa630 auth respondio 201
+gateway-1         | [gateway] req=d36b74aaa630 POST /api/v1/admin/clients -> 201 (125 ms)
+gateway-1         | [gateway] req=fa5994074898 ruta S33: GET /admin/users -> auth (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=fa5994074898 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=fa5994074898 Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=fa5994074898 enrutando a auth GET /usuarios con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=fa5994074898 auth respondio 200
+gateway-1         | [gateway] req=fa5994074898 GET /api/v1/admin/users -> 200 (10 ms)

@@ -1,0 +1,86 @@
+[
+ {
+  "hora": "2026-11-28T17:51:22+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "21f06c6ca467",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":true},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:51:23+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "8179b8a3681c",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":true},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:51:24+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "c64550a83ff9",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"nombre\":\"Ana Pérez\",\"email\":\"ana@aromaycafe.test\",\"telefono\":\"+56 9 5555 4570\",\"run\":null,\"direccion\":null,\"comuna\":\"Maipú\",\"provincia\":null,\"region\":null,\"fecha_nacimiento\":null,\"sexo\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:51:24+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/graphql",
+  "estado": 200,
+  "request_id": "2264aedc2e75",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"query\":\"query { misPedidos(limite: 20) { id estado tipoEntrega total creadoEn lineas { cantidad precio producto { nombre } } pago { estado monto } } }\"}",
+  "respuesta": "{\"data\":{\"misPedidos\":[{\"id\":\"ORD-358A2AFD\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":3000,\"creadoEn\":\"2026-11-28T17:50:48+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":3000,\"producto\":{\"nombre\":\"Cappuccino\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":3000}},{\"id\":\"ORD-167D37DB\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":3500,\"creadoEn\":\"2026-11-28T17:50:31+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":3500,\"producto\":{\"nombre\":\"Cold Brew\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":3500}},{\"id\":\"ORD-EE4EB7FA\",\"estado\":\"ANULADO\",\"tipoEntrega\":\"retiro\",\"total\":2500,\"creadoEn\":\"2026-11-28T17:49:18+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2500,\"producto\":{\"nombre\":\"Espresso Doble\"}}],\"pago\":null},{\"id\":\"ORD-2A5B3F55\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":2500,\"creadoEn\":\"2026-11-28T17:49:11+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2500,\"producto\":{\"nombre\":\"Espresso Doble\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":2500}},{\"id\":\"ORD-AA552546\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":2800,\"creadoEn\":\"2026-11-28T17:48:54+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2800,\"producto\":{\"nombre\":\"Croissant de Mantequilla\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":2800}},{\"id\":\"ORD-0DC89B8F\",\"estado\":\"PENDIENTE_PAGO\",\"tipoEntrega\":\"retiro\",\"total\":4500,\"creadoEn\":\"2026-11-28T17:48:41+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":4500,\"producto\":{\"nombre\":\"Tarta de Frambuesa\"}}],\"pago\":null},{\"id\":\"ORD-BF9EE529\",\"estado\":\"ENTREGADO\",\"tipoEntrega\":\"retiro\",\"total\":9200,\"creadoEn\":\"2026-11-28T17:48:10+00:00\",\"lineas\":[{\"cantidad\":2,\"precio\":3200,\"producto\":{\"nombre\":\"Latte Art\"}},{\"cantidad\":1,\"precio\":2800,\"producto\":{\"nombre\":\"Croissant de Mantequilla\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":9200}}]}}"
+ },
+ {
+  "hora": "2026-11-28T17:51:25+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-BF9EE529",
+  "estado": 200,
+  "request_id": "fd04a639174b",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-BF9EE529\",\"estado\":\"ENTREGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"latte-art\",\"nombre\":\"Latte Art\",\"precio\":3200,\"cantidad\":2},{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":9200,\"creado_en\":\"2026-11-28T17:48:10+00:00\",\"pagado_en\":\"2026-11-28T17:48:57+00:00\"}"
+ },
+ {
+  "hora": "2026-11-28T17:51:25+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-BF9EE529/receipt",
+  "estado": 200,
+  "request_id": "c861d8775677",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"folio\":\"B-000001\",\"fecha\":\"2026-11-28T17:48:57+00:00\",\"pedido\":\"ORD-BF9EE529\",\"caja\":\"CAJA-WEB-01\",\"detalle\":[{\"producto\":\"Latte Art\",\"cantidad\":2,\"precio\":3200,\"total\":6400},{\"producto\":\"Croissant de Mantequilla\",\"cantidad\":1,\"precio\":2800,\"total\":2800}],\"neto\":7731,\"iva\":1469,\"total\":9200}"
+ },
+ {
+  "hora": "2026-11-28T17:51:26+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/graphql",
+  "estado": 200,
+  "request_id": "ee11fdb87937",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"query\":\"query { misPedidos(limite: 20) { id estado tipoEntrega total creadoEn lineas { cantidad precio producto { nombre } } pago { estado monto } } }\"}",
+  "respuesta": "{\"data\":{\"misPedidos\":[{\"id\":\"ORD-358A2AFD\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":3000,\"creadoEn\":\"2026-11-28T17:50:48+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":3000,\"producto\":{\"nombre\":\"Cappuccino\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":3000}},{\"id\":\"ORD-167D37DB\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":3500,\"creadoEn\":\"2026-11-28T17:50:31+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":3500,\"producto\":{\"nombre\":\"Cold Brew\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":3500}},{\"id\":\"ORD-EE4EB7FA\",\"estado\":\"ANULADO\",\"tipoEntrega\":\"retiro\",\"total\":2500,\"creadoEn\":\"2026-11-28T17:49:18+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2500,\"producto\":{\"nombre\":\"Espresso Doble\"}}],\"pago\":null},{\"id\":\"ORD-2A5B3F55\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":2500,\"creadoEn\":\"2026-11-28T17:49:11+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2500,\"producto\":{\"nombre\":\"Espresso Doble\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":2500}},{\"id\":\"ORD-AA552546\",\"estado\":\"PAGADO\",\"tipoEntrega\":\"retiro\",\"total\":2800,\"creadoEn\":\"2026-11-28T17:48:54+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":2800,\"producto\":{\"nombre\":\"Croissant de Mantequilla\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":2800}},{\"id\":\"ORD-0DC89B8F\",\"estado\":\"PENDIENTE_PAGO\",\"tipoEntrega\":\"retiro\",\"total\":4500,\"creadoEn\":\"2026-11-28T17:48:41+00:00\",\"lineas\":[{\"cantidad\":1,\"precio\":4500,\"producto\":{\"nombre\":\"Tarta de Frambuesa\"}}],\"pago\":null},{\"id\":\"ORD-BF9EE529\",\"estado\":\"ENTREGADO\",\"tipoEntrega\":\"retiro\",\"total\":9200,\"creadoEn\":\"2026-11-28T17:48:10+00:00\",\"lineas\":[{\"cantidad\":2,\"precio\":3200,\"producto\":{\"nombre\":\"Latte Art\"}},{\"cantidad\":1,\"precio\":2800,\"producto\":{\"nombre\":\"Croissant de Mantequilla\"}}],\"pago\":{\"estado\":\"APROBADO\",\"monto\":9200}}]}}"
+ }
+]

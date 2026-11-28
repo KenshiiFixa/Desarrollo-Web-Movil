@@ -1,0 +1,965 @@
+{
+ "version": "1.1",
+ "requisitos": {
+  "R01": "Armar un pedido con los productos disponibles de la carta (RF1)",
+  "R02": "El pedido se prepara solo cuando el pago esta confirmado (RF2)",
+  "R03": "Anular una compra indicando el motivo (RF3)",
+  "R04": "Vender solo a clientes registrados; ventas web en la caja del cajero virtual (RF4)",
+  "R05": "Registro y ficha del cliente con RUN, dirección, comuna, teléfono y otros datos (RF5)",
+  "R06": "El administrador registra clientes en el local (RF6)",
+  "R07": "Consultar y actualizar disponibilidad, precio y oferta de los productos (RF7)",
+  "R08": "Boleta digital por cada venta, enviada al correo del cliente (RF8)",
+  "R09": "Reporte de ventas para el dueño (RF9)",
+  "R10": "Mantenedores de productos, usuarios y clientes (RF10)",
+  "R11": "Validar el correo con un código enviado por la API de mensajeria (RF11)",
+  "R12": "Autenticacion y acceso según el perfil asignado por el administrador (RF12)",
+  "R13": "Órdenes de despacho en el orden en que se pagan (RF13)",
+  "R14": "Formulario de contacto publico (pantalla Contacto)",
+  "R15": "Acceso protegido: sin sesión, sesión expirada, rol sin permiso y recurso ajeno se rechazan sin modificar datos",
+  "R16": "Agregación GraphQL de orders, inventory y payments en una pantalla real, con permisos y límites",
+  "R17": "Ante una dependencia privada caida o lenta, mensaje comprensible y recuperación coherente",
+  "R18": "Frontend responsivo: las acciones funcionan en escritorio y móvil contra el mismo backend",
+  "R19": "Una operación crítica reintentada no produce efectos duplicados (pedido y aviso de pago)"
+ },
+ "flujos": [
+  {
+   "id": "F01",
+   "nombre": "Consultar la carta",
+   "rol": "Visitante",
+   "pantalla": "catalogo.php, index.php",
+   "servicios": "Gateway → inventory (HTTPS)",
+   "datos": "Lectura de inventory.productos",
+   "criticidad": "Alta",
+   "justificacion": "Es la entrada de toda compra; un precio o stock errado afecta al cliente y al negocio",
+   "estado_inicial": "Productos escritos a mano en el HTML (sin API)",
+   "requisitos": [
+    "R01",
+    "R07"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F02",
+   "nombre": "Registro con verificación de correo",
+   "rol": "Visitante",
+   "pantalla": "registro.php",
+   "servicios": "Gateway → auth → clients y notificaciones (HTTPS)",
+   "datos": "auth.usuarios, clients.clientes, notificaciones.correos",
+   "criticidad": "Media",
+   "justificacion": "Sin verificación no hay venta a clientes registrados",
+   "estado_inicial": "Botón Registrarse sin destino",
+   "requisitos": [
+    "R05",
+    "R11"
+   ],
+   "dependencia": "Correo: doble de prueba (bandeja simulada)"
+  },
+  {
+   "id": "F03",
+   "nombre": "Iniciar y cerrar sesión",
+   "rol": "Todos",
+   "pantalla": "login.php, encabezado",
+   "servicios": "Gateway → auth (+ clients para el nombre)",
+   "datos": "auth.sesiones",
+   "criticidad": "Alta",
+   "justificacion": "Controla el acceso a todo lo protegido",
+   "estado_inicial": "Botón Iniciar sesión sin destino",
+   "requisitos": [
+    "R12",
+    "R15"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F04",
+   "nombre": "Mi cuenta (ver y editar ficha)",
+   "rol": "Cliente",
+   "pantalla": "cuenta.php",
+   "servicios": "Gateway → auth (introspect) → clients",
+   "datos": "clients.clientes",
+   "criticidad": "Alta",
+   "justificacion": "Datos personales: una escritura indebida expone o corrompe datos del cliente",
+   "estado_inicial": "No existía",
+   "requisitos": [
+    "R05",
+    "R15"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F05",
+   "nombre": "Crear pedido desde el carrito",
+   "rol": "Cliente",
+   "pantalla": "carrito.php, pedido.php",
+   "servicios": "Gateway → orders → inventory (gRPC con TLS)",
+   "datos": "orders.pedidos, inventory.productos (stock), inventory.reservas",
+   "criticidad": "Crítica",
+   "justificacion": "Cambia stock y crea la venta; un error duplica pedidos o vende sin stock",
+   "estado_inicial": "Pagar solo vaciaba el carrito local",
+   "requisitos": [
+    "R01",
+    "R04",
+    "R19"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F06",
+   "nombre": "Pagar pedido y obtener boleta",
+   "rol": "Cliente",
+   "pantalla": "pedido.php",
+   "servicios": "Gateway → payments → proveedor (doble) → webhook firmado → orders → notificaciones y analitica",
+   "datos": "payments.pagos, payments.avisos, orders.pedidos, notificaciones.correos, analitica.ventas",
+   "criticidad": "Crítica",
+   "justificacion": "Dinero y comprobante: cobrar dos veces o confirmar sin pago son fallos graves",
+   "estado_inicial": "No existía",
+   "requisitos": [
+    "R02",
+    "R08",
+    "R19"
+   ],
+   "dependencia": "Proveedor de pagos: doble de prueba (proveedor_pagos)"
+  },
+  {
+   "id": "F07",
+   "nombre": "Mis pedidos (GraphQL) y detalle",
+   "rol": "Cliente",
+   "pantalla": "mis-pedidos.php, pedido.php",
+   "servicios": "Gateway → graphql → orders, inventory y payments",
+   "datos": "Lectura de orders, inventory y payments",
+   "criticidad": "Crítica",
+   "justificacion": "Muestra datos propios; un fallo expone pedidos ajenos o presenta datos incompletos como completos",
+   "estado_inicial": "No existía",
+   "requisitos": [
+    "R15",
+    "R16",
+    "R17"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F08",
+   "nombre": "Anular pedido",
+   "rol": "Cliente",
+   "pantalla": "pedido.php",
+   "servicios": "Gateway → orders → inventory (gRPC LiberarStock)",
+   "datos": "orders.pedidos, inventory.productos",
+   "criticidad": "Media",
+   "justificacion": "Debe devolver el stock y conservar el motivo",
+   "estado_inicial": "No existía",
+   "requisitos": [
+    "R03"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F09",
+   "nombre": "Inventario del dueño",
+   "rol": "Dueño, admin",
+   "pantalla": "inventario.php",
+   "servicios": "Gateway → inventory",
+   "datos": "inventory.productos",
+   "criticidad": "Alta",
+   "justificacion": "Precios y stock que ve todo cliente",
+   "estado_inicial": "No existía",
+   "requisitos": [
+    "R07",
+    "R10"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F10",
+   "nombre": "Órdenes de despacho",
+   "rol": "Encargado de despacho, admin",
+   "pantalla": "despacho.php",
+   "servicios": "Gateway → orders (+ clients para datos de entrega)",
+   "datos": "orders.pedidos (estado e historial)",
+   "criticidad": "Media",
+   "justificacion": "Entregas fuera de orden o pedidos sin pagar en cocina",
+   "estado_inicial": "No existía",
+   "requisitos": [
+    "R02",
+    "R13"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F11",
+   "nombre": "Ventas de la caja web",
+   "rol": "Cajero, admin",
+   "pantalla": "ventas.php",
+   "servicios": "Gateway → orders",
+   "datos": "Lectura de orders.pedidos",
+   "criticidad": "Baja",
+   "justificacion": "Consulta contable, sin cambios",
+   "estado_inicial": "No existía",
+   "requisitos": [
+    "R04"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F12",
+   "nombre": "Reporte de ventas",
+   "rol": "Dueño, admin",
+   "pantalla": "reportes.php",
+   "servicios": "Gateway → analitica (alimentada por orders)",
+   "datos": "Lectura de analitica.ventas",
+   "criticidad": "Media",
+   "justificacion": "Decisiones del negocio con datos frescos",
+   "estado_inicial": "No existía",
+   "requisitos": [
+    "R09"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F13",
+   "nombre": "Administración de usuarios y clientes",
+   "rol": "Admin",
+   "pantalla": "admin.php",
+   "servicios": "Gateway → auth y clients",
+   "datos": "auth.usuarios, auth.sesiones, clients.clientes, clients.contacto",
+   "criticidad": "Alta",
+   "justificacion": "Asignar perfiles define quien accede a que",
+   "estado_inicial": "No existía",
+   "requisitos": [
+    "R06",
+    "R10",
+    "R12"
+   ],
+   "dependencia": "Ninguna"
+  },
+  {
+   "id": "F14",
+   "nombre": "Contacto",
+   "rol": "Visitante",
+   "pantalla": "Contacto.php",
+   "servicios": "Gateway → clients",
+   "datos": "clients.contacto",
+   "criticidad": "Baja",
+   "justificacion": "Mensajes de clientes; no afecta ventas",
+   "estado_inicial": "Mostraba éxito sin guardar nada",
+   "requisitos": [
+    "R14"
+   ],
+   "dependencia": "Ninguna"
+  }
+ ],
+ "criticos": {
+  "RC1": {
+   "nombre": "Comprar: carta → carrito → pedido",
+   "flujos": [
+    "F01",
+    "F05"
+   ],
+   "cubre": "Lectura y cambio persistente de estado; inventory y orders (gRPC)"
+  },
+  "RC2": {
+   "nombre": "Pagar el pedido y obtener boleta",
+   "flujos": [
+    "F06"
+   ],
+   "cubre": "Cambio persistente con dinero; payments, orders, notificaciones y analítica"
+  },
+  "RC3": {
+   "nombre": "Mis pedidos con GraphQL y acceso a pedido ajeno",
+   "flujos": [
+    "F07"
+   ],
+   "cubre": "Lectura agregada y acceso protegido; orders, inventory y payments"
+  },
+  "RC4": {
+   "nombre": "Mi cuenta y sesión",
+   "flujos": [
+    "F03",
+    "F04"
+   ],
+   "cubre": "Acceso protegido y cambio persistente de datos personales; clients y auth"
+  }
+ },
+ "pruebas": [
+  {
+   "id": "P01",
+   "recorrido": "RC1",
+   "flujos": [
+    "F01"
+   ],
+   "requisitos": [
+    "R01",
+    "R07"
+   ],
+   "escenario": "éxito",
+   "titulo": "La carta se arma con los productos de la API",
+   "criterio": "La carta muestra exactamente los productos activos que entrega GET /products, con sus nombres y precios (oferta si existe)",
+   "precondiciones": "Base limpia; visitante sin sesión",
+   "procedimiento": "Abrir catalogo.php y esperar las tarjetas",
+   "esperado": "GET https://127.0.0.1:8000/api/v1/products responde 200 con origen localhost:8080 y CORS; tarjetas = productos de la respuesta; precios iguales",
+   "verificacion": "Red (solicitud, respuesta y X-Request-ID); log del gateway e inventory con el mismo id; conteo en inventory.productos (activo=true)",
+   "restauracion": "No modifica datos",
+   "ca": "CA01"
+  },
+  {
+   "id": "P02",
+   "recorrido": "RC1",
+   "flujos": [
+    "F01"
+   ],
+   "requisitos": [
+    "R17"
+   ],
+   "escenario": "fallo y recuperación",
+   "titulo": "Carta con inventory detenido y recuperación",
+   "criterio": "Si inventory no responde, la carta no inventa productos: muestra un error comprensible con Reintentar; al volver inventory, Reintentar carga la carta",
+   "precondiciones": "Base limpia; contenedor inventory detenido (docker compose stop inventory)",
+   "procedimiento": "Abrir catalogo.php; iniciar inventory; presionar Reintentar",
+   "esperado": "Con inventory detenido: respuesta 502, 0 tarjetas y mensaje 'No pudimos cargar la carta'. Despues de iniciarlo: 200 y todas las tarjetas",
+   "verificacion": "Red (502 y luego 200); log del gateway ('inventory no responde -> 502')",
+   "restauracion": "docker compose start inventory",
+   "ca": "CA02"
+  },
+  {
+   "id": "P03",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05"
+   ],
+   "requisitos": [
+    "R01",
+    "R04"
+   ],
+   "escenario": "éxito",
+   "titulo": "Crear un pedido de retiro desde el carrito",
+   "criterio": "El pedido queda guardado con los precios del servidor, descuenta el stock una vez y se ve igual al recargar y en otra sesión",
+   "precondiciones": "Base limpia; cliente ana@aromaycafe.test; stock inicial 40 de cada producto",
+   "procedimiento": "Agregar 2 Latte Art y 1 Croissant; iniciar sesión; Confirmar pedido con Retiro en el local",
+   "esperado": "POST /orders 201; pedido.php muestra Pendiente de pago y total $9.200; stock Latte 38 y Croissant 39",
+   "verificacion": "Red (POST /orders y X-Request-ID); logs de orders e inventory-grpc (ReservarStock); inspección de orders.pedidos y inventory.productos; lectura en una sesión nueva",
+   "restauracion": "Base limpia en la siguiente campaña",
+   "ca": "CA03"
+  },
+  {
+   "id": "P04",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05"
+   ],
+   "requisitos": [
+    "R04",
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "titulo": "Confirmar pedido sin sesión",
+   "criterio": "Sin sesión no se crea pedido: la página lleva a iniciar sesión y vuelve al carrito",
+   "precondiciones": "Visitante sin sesión con productos en el carrito",
+   "procedimiento": "Presionar Confirmar pedido",
+   "esperado": "Redirige a login.php?volver=carrito.php; no se envía POST /orders; orders.pedidos sin cambios",
+   "verificacion": "Red (sin POST /orders); conteo de orders.pedidos antes y después",
+   "restauracion": "No modifica datos",
+   "ca": "CA04"
+  },
+  {
+   "id": "P05",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05"
+   ],
+   "requisitos": [
+    "R01"
+   ],
+   "escenario": "rechazo",
+   "titulo": "Despacho fuera del radio de 3 km",
+   "criterio": "Un despacho a una comuna fuera del radio se rechaza con un mensaje claro y sin crear pedido ni descontar stock",
+   "precondiciones": "Cliente ana con productos en el carrito",
+   "procedimiento": "Elegir Despacho a domicilio, comuna Providencia, Confirmar pedido",
+   "esperado": "POST /orders 422; mensaje 'fuera del radio de despacho'; sin pedido nuevo; stock igual",
+   "verificacion": "Red (422); conteo de orders.pedidos e inventory.productos antes y después",
+   "restauracion": "No modifica datos",
+   "ca": "CA05"
+  },
+  {
+   "id": "P06",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05",
+    "F09"
+   ],
+   "requisitos": [
+    "R01",
+    "R07"
+   ],
+   "escenario": "límite",
+   "titulo": "Pedido con más cantidad que el stock",
+   "criterio": "Si la cantidad supera el stock, el pedido se rechaza completo (todo o nada) y el stock no cambia",
+   "precondiciones": "Dueña deja el stock de Cappuccino en 1 desde Inventario",
+   "procedimiento": "Cliente ana agrega 2 Cappuccino y confirma",
+   "esperado": "POST /orders 409; mensaje 'No hay stock suficiente'; Cappuccino sigue con stock 1; sin pedido nuevo",
+   "verificacion": "Red (PUT del inventario y POST 409); log de inventory-grpc; inspección de inventory.productos",
+   "restauracion": "Dueña vuelve el stock a 40",
+   "ca": "CA06"
+  },
+  {
+   "id": "P07",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05"
+   ],
+   "requisitos": [
+    "R19"
+   ],
+   "escenario": "límite",
+   "titulo": "Reintento del mismo pedido (doble envío)",
+   "criterio": "Dos envios con la misma clave de idempotencia crean un solo pedido y descuentan el stock una sola vez",
+   "precondiciones": "Cliente ana con sesión",
+   "procedimiento": "Desde la sesión del navegador enviar dos veces el mismo POST /orders (mismo cuerpo y clave)",
+   "esperado": "Primera respuesta 201 y segunda 200 con repetido=true y el mismo id; un solo documento con esa clave; stock descontado una vez",
+   "verificacion": "Respuestas; log de orders ('pedido repetido'); inspección de orders.pedidos por clave e inventory.productos",
+   "restauracion": "No requiere",
+   "ca": "CA07"
+  },
+  {
+   "id": "P08",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05"
+   ],
+   "requisitos": [
+    "R17"
+   ],
+   "escenario": "fallo y recuperación",
+   "titulo": "Crear pedido con inventory demorado (gRPC)",
+   "criterio": "Si inventory no responde dentro del plazo de gRPC (3 s), no se crea el pedido y se informa; al reintentar con inventory activo, se crea",
+   "precondiciones": "Cliente ana con productos en el carrito; inventory en pausa (docker compose pause inventory)",
+   "procedimiento": "Confirmar pedido; reanudar inventory; Confirmar pedido otra vez",
+   "esperado": "Primer intento: 502 y mensaje de servicio no disponible, sin pedido; segundo intento: 201 y pedido creado",
+   "verificacion": "Red (502 y 201); tiempo de respuesta del primer intento; log de orders; conteo de orders.pedidos",
+   "restauracion": "docker compose unpause inventory",
+   "ca": "CA08"
+  },
+  {
+   "id": "P09",
+   "recorrido": "RC2",
+   "flujos": [
+    "F06"
+   ],
+   "requisitos": [
+    "R02",
+    "R04",
+    "R08"
+   ],
+   "escenario": "éxito",
+   "titulo": "Pagar con el proveedor simulado y obtener la boleta",
+   "criterio": "Con el pago aprobado por el proveedor, el pedido queda PAGADO con boleta y folio, el pago APROBADO con el monto del servidor, y se registran el correo de boleta y la venta en analítica",
+   "precondiciones": "Pedido de ana en Pendiente de pago",
+   "procedimiento": "Pagar; Pagar con tarjeta de prueba",
+   "esperado": "POST /payments 201 con el monto del pedido; POST /simular 202; pedido Pagado; boleta con folio, neto, IVA y total",
+   "verificacion": "Red; logs de payments, orders, notificaciones y analítica; inspección de payments.pagos, orders.pedidos, notificaciones.correos y analitica.ventas; lectura en sesión nueva",
+   "restauracion": "Base limpia en la siguiente campaña",
+   "ca": "CA09"
+  },
+  {
+   "id": "P10",
+   "recorrido": "RC2",
+   "flujos": [
+    "F06"
+   ],
+   "requisitos": [
+    "R02"
+   ],
+   "escenario": "rechazo y recuperación",
+   "titulo": "Pago rechazado por el proveedor y nuevo intento",
+   "criterio": "Un pago rechazado no cambia el pedido (sigue pendiente) y se puede pagar de nuevo",
+   "precondiciones": "Pedido de ana en Pendiente de pago",
+   "procedimiento": "Pagar; Simular pago rechazado; Pagar; Pagar con tarjeta de prueba",
+   "esperado": "Primer pago RECHAZADO y pedido Pendiente de pago; segundo pago APROBADO y pedido Pagado",
+   "verificacion": "Red; log de payments; inspección de payments.pagos (uno RECHAZADO y uno APROBADO) y orders.pedidos",
+   "restauracion": "No requiere",
+   "ca": "CA10"
+  },
+  {
+   "id": "P11",
+   "recorrido": "RC2",
+   "flujos": [
+    "F06"
+   ],
+   "requisitos": [
+    "R19"
+   ],
+   "escenario": "límite",
+   "titulo": "Aviso de pago repetido por el proveedor",
+   "criterio": "Si el proveedor envía dos veces el mismo aviso, se procesa una vez: un folio, una venta en analítica",
+   "precondiciones": "Pedido de ana en Pendiente de pago con pago iniciado",
+   "procedimiento": "Simular el pago aprobado con repetir_aviso=2 desde la sesión del navegador",
+   "esperado": "Primer aviso APROBADO; segundo aviso repetido; un solo folio; una sola venta del pedido en analítica",
+   "verificacion": "Respuesta de /simular; log de payments ('repetido'); inspección de analitica.ventas y orders.pedidos",
+   "restauracion": "No requiere",
+   "ca": "CA11"
+  },
+  {
+   "id": "P12",
+   "recorrido": null,
+   "flujos": [
+    "F08"
+   ],
+   "requisitos": [
+    "R03"
+   ],
+   "escenario": "éxito",
+   "titulo": "Anular un pedido pendiente con motivo",
+   "criterio": "Anular un pedido pendiente lo deja ANULADO con su motivo y devuelve el stock; un pedido pagado no muestra la opcion de anular",
+   "precondiciones": "Pedido nuevo de ana en Pendiente de pago (1 Espresso Doble)",
+   "procedimiento": "Escribir el motivo y presionar Anular pedido",
+   "esperado": "POST /cancel 200; estado Anulado; stock de Espresso vuelve al valor anterior; historial con el motivo",
+   "verificacion": "Red; logs de orders e inventory-grpc (LiberarStock); inspección de orders.pedidos e inventory.productos",
+   "restauracion": "No requiere",
+   "ca": "CA12"
+  },
+  {
+   "id": "P13",
+   "recorrido": "RC3",
+   "flujos": [
+    "F07"
+   ],
+   "requisitos": [
+    "R16"
+   ],
+   "escenario": "éxito",
+   "titulo": "Mis pedidos agrega orders, inventory y payments",
+   "criterio": "La pantalla Mis pedidos muestra, en una consulta GraphQL, el estado (orders), los nombres de producto (inventory) y el pago (payments) de cada pedido propio",
+   "precondiciones": "Ana con pedidos de P03 a P12",
+   "procedimiento": "Abrir Mis pedidos",
+   "esperado": "POST /graphql 200 sin errors; un pedido por cada pedido de ana en orders.pedidos; estados y pagos iguales a los guardados",
+   "verificacion": "Red (consulta y respuesta); logs de graphql, orders, inventory y payments con el mismo id; inspección de orders.pedidos de USR-003",
+   "restauracion": "No modifica datos",
+   "ca": "CA13"
+  },
+  {
+   "id": "P14",
+   "recorrido": "RC3",
+   "flujos": [
+    "F07"
+   ],
+   "requisitos": [
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "titulo": "Pedido ajeno",
+   "criterio": "Otro cliente no puede ver un pedido ajeno: la pantalla no revela datos y el pedido no cambia",
+   "precondiciones": "Pedido pagado de ana; sesión de pedro@aromaycafe.test",
+   "procedimiento": "Pedro abre pedido.php?id=<pedido de ana> y consulta resumenPedido por GraphQL",
+   "esperado": "GET /orders/{id} 404 con mensaje 'No encontramos ese pedido'; GraphQL resumenPedido = null; el pedido de ana sin cambios",
+   "verificacion": "Red (404 y respuesta GraphQL); log de orders; inspección del pedido de ana",
+   "restauracion": "No modifica datos",
+   "ca": "CA14"
+  },
+  {
+   "id": "P15",
+   "recorrido": "RC3",
+   "flujos": [
+    "F07"
+   ],
+   "requisitos": [
+    "R16",
+    "R17"
+   ],
+   "escenario": "fallo y recuperación",
+   "titulo": "Mis pedidos con inventory detenido",
+   "criterio": "Si inventory falla, Mis pedidos muestra lo que pudo armar y avisa que la información esta incompleta; al volver inventory se ve completa",
+   "precondiciones": "Ana con pedidos; inventory detenido",
+   "procedimiento": "Abrir Mis pedidos; iniciar inventory; recargar",
+   "esperado": "Respuesta GraphQL con errors 'Servicio inventory no disponible'; aviso 'Información incompleta' y 'Producto (dato no disponible)'; después, sin errors",
+   "verificacion": "Red (respuesta con errors); log de graphql",
+   "restauracion": "docker compose start inventory",
+   "ca": "CA15"
+  },
+  {
+   "id": "P16",
+   "recorrido": "RC3",
+   "flujos": [
+    "F07"
+   ],
+   "requisitos": [
+    "R15",
+    "R16"
+   ],
+   "escenario": "rechazo y límite",
+   "titulo": "Permisos de campos y límites de GraphQL",
+   "criterio": "Un cliente no obtiene datos personales (cliente) ni reportes, y una consulta que excede el límite se rechaza",
+   "precondiciones": "Sesión de ana",
+   "procedimiento": "Desde la sesión enviar: consulta con el campo cliente; reporteVentas; consulta con 6 alias; consulta de más de 2000 caracteres",
+   "esperado": "cliente = null con error de autorización; reporteVentas con error; la consulta de 6 alias se rechaza (límite 5) y la de más de 2000 caracteres responde 422",
+   "verificacion": "Respuestas GraphQL",
+   "restauracion": "No modifica datos",
+   "ca": "CA16"
+  },
+  {
+   "id": "P17",
+   "recorrido": "RC4",
+   "flujos": [
+    "F04"
+   ],
+   "requisitos": [
+    "R05"
+   ],
+   "escenario": "éxito",
+   "titulo": "Editar mi ficha",
+   "criterio": "Los cambios de la ficha quedan guardados en clients y se ven al recargar y en una sesión nueva",
+   "precondiciones": "Sesión de ana",
+   "procedimiento": "En Mi cuenta cambiar teléfono y comuna; Guardar cambios; recargar",
+   "esperado": "PUT /clients/me 200; aviso 'Tus datos quedaron guardados'; valores nuevos al recargar y en otra sesión",
+   "verificacion": "Red; log de clients ('actualiza clients.clientes'); inspección de clients.clientes USR-003",
+   "restauracion": "No requiere",
+   "ca": "CA17"
+  },
+  {
+   "id": "P18",
+   "recorrido": "RC4",
+   "flujos": [
+    "F04"
+   ],
+   "requisitos": [
+    "R05"
+   ],
+   "escenario": "rechazo",
+   "titulo": "RUN inválido en la ficha",
+   "criterio": "Un RUN con dígito verificador incorrecto se rechaza con un mensaje claro y la ficha no cambia",
+   "precondiciones": "Sesión de ana",
+   "procedimiento": "Escribir el RUN 12.345.678-9 y guardar",
+   "esperado": "PUT /clients/me 422; mensaje 'El RUN no es válido'; ficha sin cambios",
+   "verificacion": "Red (422); inspección de clients.clientes antes y después",
+   "restauracion": "No requiere",
+   "ca": "CA18"
+  },
+  {
+   "id": "P19",
+   "recorrido": "RC4",
+   "flujos": [
+    "F03",
+    "F04"
+   ],
+   "requisitos": [
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "titulo": "Sesión expirada",
+   "criterio": "Con la sesión vencida en el servidor, la página protegida lleva a iniciar sesión con un aviso y no muestra datos",
+   "precondiciones": "Sesión de ana; su sesión vencida en auth (vencer_sesion.py)",
+   "procedimiento": "Abrir Mi cuenta",
+   "esperado": "GET /clients/me 401; redirige a login.php?expirada=1 con aviso; la sesión se borra de auth.sesiones",
+   "verificacion": "Red (401); log de auth ('sesión expirada'); inspección de auth.sesiones",
+   "restauracion": "Iniciar sesión de nuevo",
+   "ca": "CA19"
+  },
+  {
+   "id": "P20",
+   "recorrido": "RC4",
+   "flujos": [
+    "F04"
+   ],
+   "requisitos": [
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "titulo": "Página protegida sin sesión",
+   "criterio": "Sin sesión, Mi cuenta lleva a iniciar sesión y la API responde 401 sin llamar al backend",
+   "precondiciones": "Visitante sin sesión",
+   "procedimiento": "Abrir cuenta.php; llamar GET /clients/me sin token",
+   "esperado": "Redirige a login.php; la API responde 401 'Bearer token requerido'",
+   "verificacion": "Red; log del gateway ('sin token')",
+   "restauracion": "No modifica datos",
+   "ca": "CA20"
+  },
+  {
+   "id": "P21",
+   "recorrido": "RC4",
+   "flujos": [
+    "F03"
+   ],
+   "requisitos": [
+    "R12",
+    "R15"
+   ],
+   "escenario": "rechazo y éxito",
+   "titulo": "Login fallido, login y cierre de sesión",
+   "criterio": "Una clave incorrecta se rechaza; al cerrar sesión el token deja de servir en el servidor",
+   "precondiciones": "Visitante",
+   "procedimiento": "Login con clave incorrecta; login correcto; Cerrar sesión; usar el token anterior",
+   "esperado": "401 'Correo o contraseña incorrectos'; 200 y 'Hola, Ana'; después del logout el token anterior recibe 401",
+   "verificacion": "Red; logs de auth (login rechazado, login correcto, logout)",
+   "restauracion": "No requiere",
+   "ca": "CA21"
+  },
+  {
+   "id": "P22",
+   "recorrido": null,
+   "flujos": [
+    "F02"
+   ],
+   "requisitos": [
+    "R05",
+    "R11"
+   ],
+   "escenario": "éxito y rechazo",
+   "titulo": "Registro con verificación de correo",
+   "criterio": "Un cliente nuevo no puede entrar hasta verificar su correo con el código; con el código correcto puede iniciar sesión",
+   "precondiciones": "Correo ficticio nuevo",
+   "procedimiento": "Registrarse; intentar entrar; leer el código en la bandeja simulada; verificar; iniciar sesión",
+   "esperado": "POST /auth/register 201; login 403 antes de verificar; verify-email 200; login 200",
+   "verificacion": "Red; logs de auth, clients y notificaciones; inspección de auth.usuarios (correo_verificado) y notificaciones.correos",
+   "restauracion": "No requiere",
+   "ca": "CA22"
+  },
+  {
+   "id": "P23",
+   "recorrido": null,
+   "flujos": [
+    "F09"
+   ],
+   "requisitos": [
+    "R07",
+    "R10"
+   ],
+   "escenario": "éxito",
+   "titulo": "Inventario del dueño: oferta, alta y baja",
+   "criterio": "Los cambios del dueño quedan en inventory y la carta los refleja",
+   "precondiciones": "Sesión de dueno@aromaycafe.test",
+   "procedimiento": "Oferta 2900 al Latte; agregar un producto; darlo de baja; revisar la carta",
+   "esperado": "PUT 200, POST 201, DELETE 204; la carta muestra la oferta, y el producto dado de baja no aparece",
+   "verificacion": "Red; log de inventory; inspección de inventory.productos",
+   "restauracion": "Quitar la oferta del Latte",
+   "ca": "CA23"
+  },
+  {
+   "id": "P24",
+   "recorrido": null,
+   "flujos": [
+    "F09",
+    "F10"
+   ],
+   "requisitos": [
+    "R12",
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "titulo": "Rol sin permiso",
+   "criterio": "Un cliente que entra a Inventario o Despacho escribiendo la dirección recibe 403 del backend y no ve datos",
+   "precondiciones": "Sesión de ana",
+   "procedimiento": "Abrir inventario.php y despacho.php",
+   "esperado": "GET /admin/products 403 y GET /admin/dispatch-orders 403; aviso 'No tienes permiso'",
+   "verificacion": "Red (403); log del gateway ('no tiene permiso')",
+   "restauracion": "No modifica datos",
+   "ca": "CA24"
+  },
+  {
+   "id": "P25",
+   "recorrido": null,
+   "flujos": [
+    "F10"
+   ],
+   "requisitos": [
+    "R02",
+    "R13"
+   ],
+   "escenario": "éxito",
+   "titulo": "Despacho avanza el pedido pagado",
+   "criterio": "El encargado ve los pedidos pagados en orden de pago y los avanza solo por transiciones válidas hasta Entregado",
+   "precondiciones": "Pedido pagado (P09) de tipo retiro; sesión de despacho@aromaycafe.test",
+   "procedimiento": "Marcar en preparación, listo y entregado",
+   "esperado": "Tres PUT /status 200; el pedido sale de la lista al quedar Entregado; historial en orders",
+   "verificacion": "Red; log de orders; inspección de orders.pedidos (historial)",
+   "restauracion": "No requiere",
+   "ca": "CA25"
+  },
+  {
+   "id": "P26",
+   "recorrido": null,
+   "flujos": [
+    "F11"
+   ],
+   "requisitos": [
+    "R04"
+   ],
+   "escenario": "éxito",
+   "titulo": "Ventas de la caja web",
+   "criterio": "El cajero ve la venta del pedido pagado con su folio y total en la caja CAJA-WEB-01",
+   "precondiciones": "Pedido pagado (P09); sesión de cajero@aromaycafe.test",
+   "procedimiento": "Abrir Ventas",
+   "esperado": "GET /admin/sales 200; fila con el folio y el total del pedido de P09",
+   "verificacion": "Red; inspección de orders.pedidos (folio, caja)",
+   "restauracion": "No modifica datos",
+   "ca": "CA26"
+  },
+  {
+   "id": "P27",
+   "recorrido": null,
+   "flujos": [
+    "F12"
+   ],
+   "requisitos": [
+    "R09"
+   ],
+   "escenario": "éxito",
+   "titulo": "Reporte de ventas actualizado",
+   "criterio": "El reporte del dueño suma cada pedido pagado al momento del pago",
+   "precondiciones": "Sesión de dueño; al menos un pedido pagado",
+   "procedimiento": "Abrir Reportes; pagar un pedido nuevo con ana; Actualizar",
+   "esperado": "GET /admin/reports/sales 200; pedidos pagados aumenta en 1 y el total en el monto del pedido",
+   "verificacion": "Red; logs de analítica; inspección de analitica.ventas",
+   "restauracion": "No requiere",
+   "ca": "CA27"
+  },
+  {
+   "id": "P28",
+   "recorrido": null,
+   "flujos": [
+    "F12"
+   ],
+   "requisitos": [
+    "R09",
+    "R17"
+   ],
+   "escenario": "fallo y recuperación",
+   "titulo": "Analítica detenida y recuperación",
+   "criterio": "Si analítica no responde, el pago igual se confirma y el reporte informa el error; al volver analítica, la venta se suma (reintento cada 30 s)",
+   "precondiciones": "analítica detenida; pedido pendiente de ana",
+   "procedimiento": "Pagar el pedido; abrir Reportes; iniciar analítica; esperar hasta 70 s; Actualizar",
+   "esperado": "Pago aprobado; Reportes muestra un error mientras analítica esta detenida; después de iniciarla, el reporte incluye la venta",
+   "verificacion": "Red; log de orders (reintento) y analítica; inspección de analitica.ventas",
+   "restauracion": "docker compose start analítica",
+   "ca": "CA28"
+  },
+  {
+   "id": "P29",
+   "recorrido": null,
+   "flujos": [
+    "F13"
+   ],
+   "requisitos": [
+    "R06",
+    "R10",
+    "R12"
+   ],
+   "escenario": "éxito y rechazo",
+   "titulo": "Administración de usuarios y clientes",
+   "criterio": "El admin crea funcionarios, cambia perfiles (no el suyo) y registra clientes en el local",
+   "precondiciones": "Sesión de admin@aromaycafe.test",
+   "procedimiento": "Crear un cajero; cambiarlo a despacho; intentar cambiar el propio perfil; registrar un cliente en el local",
+   "esperado": "POST /admin/users 201; PUT /role 200; PUT del propio perfil 409; POST /admin/clients 201",
+   "verificacion": "Red; inspección de auth.usuarios",
+   "restauracion": "No requiere",
+   "ca": "CA29"
+  },
+  {
+   "id": "P30",
+   "recorrido": null,
+   "flujos": [
+    "F14"
+   ],
+   "requisitos": [
+    "R14"
+   ],
+   "escenario": "éxito",
+   "titulo": "Formulario de contacto",
+   "criterio": "El mensaje enviado queda guardado y el admin lo ve en Administración",
+   "precondiciones": "Visitante",
+   "procedimiento": "Enviar el formulario de contacto; el admin abre Administración",
+   "esperado": "POST /contact 201 y aviso de gracias; el mensaje aparece en la tabla del admin",
+   "verificacion": "Red; log de clients; inspección de clients.contacto",
+   "restauracion": "No requiere",
+   "ca": "CA30"
+  },
+  {
+   "id": "P31",
+   "recorrido": null,
+   "flujos": [],
+   "requisitos": [
+    "R15"
+   ],
+   "escenario": "control de backend",
+   "titulo": "Servicio llamado sin el secreto del gateway",
+   "criterio": "Un servicio privado rechaza una llamada que no trae el secreto de Vault, aunque venga desde la red interna",
+   "precondiciones": "Sistema en Docker",
+   "procedimiento": "docker compose exec clients python llamada_sin_secreto.py",
+   "esperado": "403 sin secreto y 403 con secreto falso; dos lineas 'llamada RECHAZADA' en inventory",
+   "verificacion": "Salida del script; log de inventory",
+   "restauracion": "No modifica datos",
+   "ca": "CA31"
+  },
+  {
+   "id": "P32",
+   "recorrido": null,
+   "flujos": [
+    "F01",
+    "F03",
+    "F04",
+    "F05",
+    "F06",
+    "F07"
+   ],
+   "requisitos": [
+    "R18"
+   ],
+   "escenario": "responsivo",
+   "titulo": "Páginas sin desborde horizontal",
+   "criterio": "Las páginas principales se usan sin desborde horizontal en el viewport de la campaña",
+   "precondiciones": "Sesión de ana",
+   "procedimiento": "Abrir index, catalogo, carrito, login, cuenta, mis-pedidos y pedido",
+   "esperado": "En cada página el ancho del documento no supera el del viewport",
+   "verificacion": "Medicion del DOM y capturas",
+   "restauracion": "No modifica datos",
+   "ca": "CA32"
+  }
+ ],
+ "campanas": {
+  "C1": {
+   "nombre": "Escritorio, ejecucion 1",
+   "viewport": {
+    "width": 1366,
+    "height": 768
+   },
+   "dispositivo": null
+  },
+  "C2": {
+   "nombre": "Movil, ejecucion 1",
+   "viewport": null,
+   "dispositivo": "Pixel 7"
+  },
+  "C3": {
+   "nombre": "Escritorio, ejecucion 2",
+   "viewport": {
+    "width": 1366,
+    "height": 768
+   },
+   "dispositivo": null
+  },
+  "C4": {
+   "nombre": "Movil, ejecucion 2",
+   "viewport": null,
+   "dispositivo": "Pixel 7"
+  }
+ },
+ "cambios": [
+  {
+   "version": "1.0",
+   "fecha": "2026-11-28",
+   "cambio": "Versión inicial",
+   "motivo": "—",
+   "repetir": "—"
+  },
+  {
+   "version": "1.1",
+   "fecha": "2026-11-28",
+   "cambio": "P16: la consulta de profundidad 6 se reemplaza por una consulta de más de 2000 caracteres",
+   "motivo": "El esquema llega como máximo a profundidad 4 (misPedidos > lineas > producto > nombre), así que no se puede escribir una consulta válida que pase el límite de profundidad 5; el límite de tamaño (2000 caracteres) sí se puede probar. Se detectó al implementar la suite, antes de la primera ejecución. Además se corrigen tildes en títulos (sin cambio de criterios)",
+   "repetir": "P16 (aún no ejecutada)"
+  },
+  {
+   "version": "1.1",
+   "fecha": "2026-11-28",
+   "cambio": "Aclaración (después de ejecutar, sin cambio de criterios): el viewport móvil del perfil Pixel 7 es 412×839 (la pantalla es 412×915); la v1.0 decía 412×915",
+   "motivo": "Corregir la descripción para que coincida con lo registrado en las ejecuciones C2 y C4",
+   "repetir": "Ninguna"
+  }
+ ]
+}

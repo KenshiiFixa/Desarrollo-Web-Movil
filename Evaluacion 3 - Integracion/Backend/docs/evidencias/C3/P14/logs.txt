@@ -1,0 +1,43 @@
+clients-1  | [clients] req=148dcd9a497f secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1  | [clients] req=148dcd9a497f MongoDB: lee clients.clientes del usuario de la sesion (USR-004)
+clients-1  | [clients] req=148dcd9a497f GET /clients/me -> 200 (2 ms)
+auth-1     | [auth] req=eb9f253194fd secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1     | [auth] req=eb9f253194fd login correcto: clave verificada (argon2id), sesion de USR-004 creada en auth.sesiones, rol=cliente, dura 15 min
+auth-1     | [auth] req=eb9f253194fd POST /login -> 200 (86 ms)
+auth-1     | [auth] req=148dcd9a497f secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1     | [auth] req=148dcd9a497f introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1     | [auth] req=148dcd9a497f POST /introspect -> 200 (3 ms)
+auth-1     | [auth] req=ddc0786d5ed7 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1     | [auth] req=ddc0786d5ed7 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1     | [auth] req=ddc0786d5ed7 POST /introspect -> 200 (4 ms)
+graphql-1  | [graphql] req=bb345e2ac977 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1     | [auth] req=bb345e2ac977 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1     | [auth] req=bb345e2ac977 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1     | [auth] req=bb345e2ac977 POST /introspect -> 200 (2 ms)
+graphql-1    | [graphql] req=bb345e2ac977 POST /graphql -> 200 (12 ms)
+gateway-1    | [gateway] req=eb9f253194fd ruta S04: POST /auth/login -> auth (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=eb9f253194fd enrutando a auth POST /login con el secreto gateway->auth leido de Vault
+gateway-1    | [gateway] req=eb9f253194fd auth respondio 200
+gateway-1    | [gateway] req=eb9f253194fd POST /api/v1/auth/login -> 200 (95 ms)
+gateway-1    | [gateway] req=148dcd9a497f ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=148dcd9a497f pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=148dcd9a497f Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=148dcd9a497f enrutando a clients GET /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=148dcd9a497f clients respondio 200
+gateway-1    | [gateway] req=148dcd9a497f GET /api/v1/clients/me -> 200 (19 ms)
+gateway-1    | [gateway] req=ddc0786d5ed7 ruta S11: GET /orders/ORD-752AD31F -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=ddc0786d5ed7 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=ddc0786d5ed7 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=ddc0786d5ed7 enrutando a orders GET /orders/ORD-752AD31F con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=ddc0786d5ed7 orders respondio 404
+gateway-1    | [gateway] req=ddc0786d5ed7 GET /api/v1/orders/ORD-752AD31F -> 404 (23 ms)
+gateway-1    | [gateway] req=bb345e2ac977 ruta S18: POST /graphql -> graphql (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=bb345e2ac977 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=bb345e2ac977 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=bb345e2ac977 enrutando a graphql POST /graphql con el secreto gateway->graphql leido de Vault
+gateway-1    | [gateway] req=bb345e2ac977 graphql respondio 200
+gateway-1    | [gateway] req=bb345e2ac977 POST /api/v1/graphql -> 200 (25 ms)
+orders-1     | [orders] req=ddc0786d5ed7 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1     | [orders] req=ddc0786d5ed7 GET /orders/ORD-752AD31F -> 404 (2 ms)
+orders-1     | [orders] req=bb345e2ac977 secreto de graphql verificado con el de Vault: OK, se permite la llamada
+orders-1     | [orders] req=bb345e2ac977 GET /orders/ORD-752AD31F -> 404 (2 ms)

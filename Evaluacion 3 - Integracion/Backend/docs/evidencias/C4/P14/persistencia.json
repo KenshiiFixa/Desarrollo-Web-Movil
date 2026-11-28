@@ -1,0 +1,20 @@
+[
+ {
+  "descripcion": "Pedido de ana",
+  "hora": "2026-11-28T17:49:33+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-BF9EE529"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-BF9EE529",
+    "user_id": "USR-003",
+    "estado": "PAGADO",
+    "total": 9200
+   }
+  ]
+ }
+]

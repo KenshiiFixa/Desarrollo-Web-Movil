@@ -1,0 +1,18 @@
+[
+ {
+  "descripcion": "Venta en analítica",
+  "hora": "2026-11-28T17:28:10+00:00",
+  "servicio": "analitica",
+  "coleccion": "ventas",
+  "filtro": {
+   "_id": "ORD-62213FEF"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-62213FEF",
+    "total": 3500
+   }
+  ]
+ }
+]

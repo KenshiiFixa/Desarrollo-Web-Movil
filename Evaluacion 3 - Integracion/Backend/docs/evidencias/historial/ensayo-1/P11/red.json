@@ -1,0 +1,86 @@
+[
+ {
+  "hora": "2026-11-28T17:26:49+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "c33ba3064dd6",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":true},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:26:51+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/orders",
+  "estado": 201,
+  "request_id": "a4d15a5e1359",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"items\":[{\"product_id\":\"espresso-doble\",\"cantidad\":1}],\"tipo_entrega\":\"retiro\",\"clave\":\"PED-mx0on0fg-vavod52g\"}",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:26:51+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-FA30EA98",
+  "estado": 200,
+  "request_id": "759aba4704fd",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-FA30EA98\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"precio\":2500,\"cantidad\":1}],\"total\":2500,\"creado_en\":\"2026-11-28T17:26:51+00:00\",\"pagado_en\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:26:51+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/payments",
+  "estado": 201,
+  "request_id": "545f4fb8279b",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"order_id\":\"ORD-FA30EA98\"}",
+  "respuesta": "{\"id\":\"PAY-DB640E26\",\"order_id\":\"ORD-FA30EA98\",\"estado\":\"PENDIENTE\",\"monto\":2500,\"url_pago\":\"https://sandbox.pagos.example/pagar/chk_f49410d6b634b7ca\"}"
+ },
+ {
+  "hora": "2026-11-28T17:26:51+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/payments/PAY-DB640E26/simular",
+  "estado": 202,
+  "request_id": "b7db69b3e45b",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"resultado\":\"aprobado\",\"repetir_aviso\":2}",
+  "respuesta": "{\"avisos\":[{\"status\":200,\"respuesta\":{\"ok\":true,\"estado\":\"APROBADO\"}},{\"status\":200,\"respuesta\":{\"ok\":true,\"repetido\":true}}]}"
+ },
+ {
+  "hora": "2026-11-28T17:26:56+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-FA30EA98",
+  "estado": 200,
+  "request_id": "d1d9759e338b",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-FA30EA98\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"precio\":2500,\"cantidad\":1}],\"total\":2500,\"creado_en\":\"2026-11-28T17:26:51+00:00\",\"pagado_en\":\"2026-11-28T17:26:51+00:00\"}"
+ },
+ {
+  "hora": "2026-11-28T17:26:56+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-FA30EA98/receipt",
+  "estado": 200,
+  "request_id": "321f53dc0319",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"folio\":\"B-000003\",\"fecha\":\"2026-11-28T17:26:51+00:00\",\"pedido\":\"ORD-FA30EA98\",\"caja\":\"CAJA-WEB-01\",\"detalle\":[{\"producto\":\"Espresso Doble\",\"cantidad\":1,\"precio\":2500,\"total\":2500}],\"neto\":2101,\"iva\":399,\"total\":2500}"
+ }
+]

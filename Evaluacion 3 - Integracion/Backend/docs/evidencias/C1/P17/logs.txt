@@ -1,0 +1,67 @@
+clients-1   | [clients] req=a1b205225179 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1    | [clients] req=a1b205225179 MongoDB: lee clients.clientes del usuario de la sesion (USR-003)
+clients-1    | [clients] req=a1b205225179 GET /clients/me -> 200 (2 ms)
+auth-1       | [auth] req=a1b205225179 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=a1b205225179 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=a1b205225179 POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=c549e1a723ca secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=c549e1a723ca introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=c549e1a723ca POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=602ef5dc9848 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=602ef5dc9848 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=602ef5dc9848 POST /introspect -> 200 (4 ms)
+auth-1       | [auth] req=5bb9df184a79 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=5bb9df184a79 login correcto: clave verificada (argon2id), sesion de USR-003 creada en auth.sesiones, rol=cliente, dura 15 min
+auth-1       | [auth] req=5bb9df184a79 POST /login -> 200 (91 ms)
+auth-1       | [auth] req=adc8b035cbc1 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=adc8b035cbc1 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=adc8b035cbc1 POST /introspect -> 200 (3 ms)
+auth-1       | [auth] req=1572716e2b82 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=1572716e2b82 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=1572716e2b82 POST /introspect -> 200 (3 ms)
+clients-1    | [clients] req=c549e1a723ca secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1    | [clients] req=c549e1a723ca MongoDB: actualiza clients.clientes del usuario de la sesion (USR-003)
+clients-1    | [clients] req=c549e1a723ca PUT /clients/me -> 200 (5 ms)
+clients-1    | [clients] req=602ef5dc9848 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1    | [clients] req=602ef5dc9848 MongoDB: lee clients.clientes del usuario de la sesion (USR-003)
+clients-1    | [clients] req=602ef5dc9848 GET /clients/me -> 200 (2 ms)
+clients-1    | [clients] req=adc8b035cbc1 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1    | [clients] req=adc8b035cbc1 MongoDB: lee clients.clientes del usuario de la sesion (USR-003)
+clients-1    | [clients] req=adc8b035cbc1 GET /clients/me -> 200 (2 ms)
+clients-1    | [clients] req=1572716e2b82 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1    | [clients] req=1572716e2b82 MongoDB: lee clients.clientes del usuario de la sesion (USR-003)
+clients-1    | [clients] req=1572716e2b82 GET /clients/me -> 200 (3 ms)
+gateway-1    | [gateway] req=a1b205225179 ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=a1b205225179 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=a1b205225179 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=a1b205225179 enrutando a clients GET /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=a1b205225179 clients respondio 200
+gateway-1    | [gateway] req=a1b205225179 GET /api/v1/clients/me -> 200 (14 ms)
+gateway-1    | [gateway] req=c549e1a723ca ruta S07: PUT /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=c549e1a723ca pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=c549e1a723ca Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=c549e1a723ca enrutando a clients PUT /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=c549e1a723ca clients respondio 200
+gateway-1    | [gateway] req=c549e1a723ca PUT /api/v1/clients/me -> 200 (14 ms)
+gateway-1    | [gateway] req=602ef5dc9848 ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=602ef5dc9848 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=602ef5dc9848 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=602ef5dc9848 enrutando a clients GET /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=602ef5dc9848 clients respondio 200
+gateway-1    | [gateway] req=602ef5dc9848 GET /api/v1/clients/me -> 200 (15 ms)
+gateway-1    | [gateway] req=5bb9df184a79 ruta S04: POST /auth/login -> auth (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=5bb9df184a79 enrutando a auth POST /login con el secreto gateway->auth leido de Vault
+gateway-1    | [gateway] req=5bb9df184a79 auth respondio 200
+gateway-1    | [gateway] req=5bb9df184a79 POST /api/v1/auth/login -> 200 (95 ms)
+gateway-1    | [gateway] req=adc8b035cbc1 ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=adc8b035cbc1 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=adc8b035cbc1 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=adc8b035cbc1 enrutando a clients GET /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=adc8b035cbc1 clients respondio 200
+gateway-1    | [gateway] req=adc8b035cbc1 GET /api/v1/clients/me -> 200 (13 ms)
+gateway-1    | [gateway] req=1572716e2b82 ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=1572716e2b82 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=1572716e2b82 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=1572716e2b82 enrutando a clients GET /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=1572716e2b82 clients respondio 200
+gateway-1    | [gateway] req=1572716e2b82 GET /api/v1/clients/me -> 200 (14 ms)

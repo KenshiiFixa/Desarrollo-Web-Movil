@@ -1,0 +1,50 @@
+[
+ {
+  "hora": "2026-11-28T17:37:41+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "68f5e0b3c1b6",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"cajero@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"cajero\"}"
+ },
+ {
+  "hora": "2026-11-28T17:37:41+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "1439d76869c1",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:37:41+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/sales",
+  "estado": 200,
+  "request_id": "ef2f187e49b5",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"folio\":\"B-000003\",\"pedido\":\"ORD-EF73EAC1\",\"fecha\":\"2026-11-28T17:36:29+00:00\",\"total\":2500,\"caja\":\"CAJA-WEB-01\",\"estado\":\"PAGADO\"},{\"folio\":\"B-000002\",\"pedido\":\"ORD-E4206731\",\"fecha\":\"2026-11-28T17:36:26+00:00\",\"total\":2800,\"caja\":\"CAJA-WEB-01\",\"estado\":\"PAGADO\"},{\"folio\":\"B-000001\",\"pedido\":\"ORD-30400C33\",\"fecha\":\"2026-11-28T17:36:15+00:00\",\"total\":9200,\"caja\":\"CAJA-WEB-01\",\"estado\":\"ENTREGADO\"}]"
+ },
+ {
+  "hora": "2026-11-28T17:37:43+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/sales",
+  "estado": 200,
+  "request_id": "791652eab324",
+  "origin": null,
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ }
+]

@@ -1,0 +1,45 @@
+[
+ {
+  "descripcion": "Historial del pedido",
+  "hora": "2026-11-28T17:41:49+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-85DB18DC"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-85DB18DC",
+    "estado": "ENTREGADO",
+    "historial": [
+     {
+      "estado": "PENDIENTE_PAGO",
+      "por": "USR-003",
+      "en": "2026-11-28T17:39:33+00:00"
+     },
+     {
+      "estado": "PAGADO",
+      "por": "payments",
+      "en": "2026-11-28T17:40:19+00:00"
+     },
+     {
+      "estado": "EN_PREPARACION",
+      "por": "USR-002",
+      "en": "2026-11-28T17:41:47+00:00"
+     },
+     {
+      "estado": "LISTO",
+      "por": "USR-002",
+      "en": "2026-11-28T17:41:47+00:00"
+     },
+     {
+      "estado": "ENTREGADO",
+      "por": "USR-002",
+      "en": "2026-11-28T17:41:48+00:00"
+     }
+    ]
+   }
+  ]
+ }
+]

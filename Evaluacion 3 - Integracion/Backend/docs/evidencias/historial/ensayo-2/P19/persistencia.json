@@ -1,0 +1,78 @@
+[
+ {
+  "descripcion": "Sesiones de USR-003 antes",
+  "hora": "2026-11-28T17:31:12+00:00",
+  "servicio": "auth",
+  "coleccion": "sesiones",
+  "filtro": {
+   "user_id": "USR-003"
+  },
+  "total": 7,
+  "resultado": [
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   }
+  ]
+ },
+ {
+  "descripcion": "Sesiones de USR-003 después",
+  "hora": "2026-11-28T17:31:13+00:00",
+  "servicio": "auth",
+  "coleccion": "sesiones",
+  "filtro": {
+   "user_id": "USR-003"
+  },
+  "total": 6,
+  "resultado": [
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   },
+   {
+    "_id": "*** (hash del token)",
+    "expires_at": "2026-11-28 17:30:10.180000"
+   }
+  ]
+ }
+]

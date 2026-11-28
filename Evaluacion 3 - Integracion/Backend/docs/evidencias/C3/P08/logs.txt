@@ -1,0 +1,42 @@
+orders-1  | [orders] req=46b3bbd1b7e6 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1  | [orders] req=46b3bbd1b7e6 POST /orders -> 503 (3005 ms)
+orders-1  | [orders] req=60ef4d07b369 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1  | [orders] req=60ef4d07b369 MongoDB: pedido ORD-724B33B7 guardado en orders.pedidos (PENDIENTE_PAGO, total=2800)
+orders-1  | [orders] req=60ef4d07b369 POST /orders -> 201 (10 ms)
+orders-1  | [orders] req=79d7d6a13022 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1  | [orders] req=79d7d6a13022 GET /orders/ORD-724B33B7 -> 200 (3 ms)
+inventory-1  | [inventory] req=f8127ba0477c secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=f8127ba0477c MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+inventory-1  | [inventory] req=f8127ba0477c GET /products -> 200 (3 ms)
+inventory-1  | [inventory-grpc] req=60ef4d07b369 ReservarStock desde orders: secreto verificado con el de Vault
+auth-1       | [auth] req=46b3bbd1b7e6 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+gateway-1    | [gateway] req=f8127ba0477c ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=f8127ba0477c enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=f8127ba0477c inventory respondio 200
+gateway-1    | [gateway] req=f8127ba0477c GET /api/v1/products -> 200 (13 ms)
+gateway-1    | [gateway] req=46b3bbd1b7e6 ruta S09: POST /orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=46b3bbd1b7e6 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=46b3bbd1b7e6 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=46b3bbd1b7e6 enrutando a orders POST /orders con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=46b3bbd1b7e6 orders respondio 503
+gateway-1    | [gateway] req=46b3bbd1b7e6 POST /api/v1/orders -> 502 (3024 ms)
+gateway-1    | [gateway] req=60ef4d07b369 ruta S09: POST /orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=60ef4d07b369 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=60ef4d07b369 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=60ef4d07b369 enrutando a orders POST /orders con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=60ef4d07b369 orders respondio 201
+gateway-1    | [gateway] req=60ef4d07b369 POST /api/v1/orders -> 201 (32 ms)
+gateway-1    | [gateway] req=79d7d6a13022 ruta S11: GET /orders/ORD-724B33B7 -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=79d7d6a13022 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=79d7d6a13022 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=79d7d6a13022 enrutando a orders GET /orders/ORD-724B33B7 con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=79d7d6a13022 orders respondio 200
+auth-1       | [auth] req=46b3bbd1b7e6 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=46b3bbd1b7e6 POST /introspect -> 200 (3 ms)
+auth-1       | [auth] req=60ef4d07b369 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=60ef4d07b369 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=60ef4d07b369 POST /introspect -> 200 (3 ms)
+auth-1       | [auth] req=79d7d6a13022 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=79d7d6a13022 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=79d7d6a13022 POST /introspect -> 200 (5 ms)
+gateway-1    | [gateway] req=79d7d6a13022 GET /api/v1/orders/ORD-724B33B7 -> 200 (17 ms)

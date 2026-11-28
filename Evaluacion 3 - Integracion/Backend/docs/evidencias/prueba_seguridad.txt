@@ -1,4 +1,4 @@
-Prueba de seguridad y aislamiento (2026-11-16 19:40)
+Prueba de seguridad y aislamiento (2026-11-28 17:33)
 
   [OK]    m7_1_catalogo_anonimo: CASO M7-1: un visitante sin sesion ve el catalogo, solo con campos publicos (sin stock).
   [OK]    m7_2_operacion_protegida_sin_sesion: CASO M7-2: crear pedido sin token o con token falso -> 401.

@@ -1,0 +1,35 @@
+[
+ {
+  "descripcion": "Ventas del pedido en analítica",
+  "hora": "2026-11-28T17:45:01+00:00",
+  "servicio": "analitica",
+  "coleccion": "ventas",
+  "filtro": {
+   "_id": "ORD-0C911072"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-0C911072",
+    "total": 2500
+   }
+  ]
+ },
+ {
+  "descripcion": "Pedido",
+  "hora": "2026-11-28T17:45:03+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-0C911072"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-0C911072",
+    "estado": "PAGADO",
+    "folio": "B-000003"
+   }
+  ]
+ }
+]

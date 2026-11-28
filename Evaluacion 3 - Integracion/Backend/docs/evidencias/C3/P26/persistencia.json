@@ -1,0 +1,32 @@
+[
+ {
+  "descripcion": "Pedidos en la caja web",
+  "hora": "2026-11-28T17:46:13+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "caja": "CAJA-WEB-01"
+  },
+  "total": 3,
+  "resultado": [
+   {
+    "_id": "ORD-752AD31F",
+    "total": 9200,
+    "folio": "B-000001",
+    "caja": "CAJA-WEB-01"
+   },
+   {
+    "_id": "ORD-724B33B7",
+    "total": 2800,
+    "folio": "B-000002",
+    "caja": "CAJA-WEB-01"
+   },
+   {
+    "_id": "ORD-0C911072",
+    "total": 2500,
+    "folio": "B-000003",
+    "caja": "CAJA-WEB-01"
+   }
+  ]
+ }
+]

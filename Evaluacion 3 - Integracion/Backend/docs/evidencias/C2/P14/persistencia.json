@@ -1,0 +1,20 @@
+[
+ {
+  "descripcion": "Pedido de ana",
+  "hora": "2026-11-28T17:40:56+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-85DB18DC"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-85DB18DC",
+    "user_id": "USR-003",
+    "estado": "PAGADO",
+    "total": 9200
+   }
+  ]
+ }
+]

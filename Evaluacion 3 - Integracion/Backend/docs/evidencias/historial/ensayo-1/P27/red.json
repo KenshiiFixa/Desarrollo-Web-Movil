@@ -1,0 +1,110 @@
+[
+ {
+  "hora": "2026-11-28T17:28:06+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/reports/sales",
+  "estado": 200,
+  "request_id": "ea121edb2bdb",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"pedidos\":3,\"total_vendido\":14500,\"ticket_promedio\":4833,\"por_dia\":[{\"dia\":\"2026-11-28\",\"pedidos\":3,\"total\":14500}],\"mas_vendidos\":[{\"product_id\":\"latte-art\",\"nombre\":\"Latte Art\",\"cantidad\":2,\"total\":6400},{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"cantidad\":2,\"total\":5600},{\"product_id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"cantidad\":1,\"total\":2500}]}"
+ },
+ {
+  "hora": "2026-11-28T17:28:06+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/products",
+  "estado": 200,
+  "request_id": "a6d1c9b9577b",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"id\":\"cappuccino\",\"nombre\":\"Cappuccino\",\"descripcion\":\"Espresso, leche vaporizada y una capa generosa de espuma.\",\"categoria\":\"cafe\",\"precio\":3000,\"precio_oferta\":null,\"imagen\":\"cappuccino.png\",\"disponible\":true},{\"id\":\"cheesecake-maracuya\",\"nombre\":\"Cheesecake de Maracuyá\",\"descripcion\":\"Cheesecake cremoso con cobertura de maracuyá.\",\"categoria\":\"reposteria\",\"precio\":4800,\"precio_oferta\":null,\"imagen\":\"cheesecake-maracuya.png\",\"disponible\":true},{\"id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"descripcion\":\"Café extraído en frío durante 18 horas, suave y refrescante.\",\"categoria\":\"frio\",\"precio\":3500,\"precio_oferta\":null,\"imagen\":\"cold-brew.png\",\"disponible\":true},{\"id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"descripcion\":\"Hojaldrado, horneado cada mañana.\",\"categoria\":\"reposteria\",\"precio\":2800,\"precio_oferta\":null,\"imagen\":\"croissant.png\",\"disponible\":true},{\"id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"descripcion\":\"Doble shot de café de especialidad, intenso y de cuerpo completo.\",\"categoria\":\"cafe\",\"precio\":2500,\"precio_oferta\":null,\"imagen\":\"espresso.png\",\"disponible\":true},{\"id\":\"frappe-mocha\",\"nombre\":\"Frappé de Mocha\",\"descripcion\":\"Café helado batido con chocolate y crema.\",\"categoria\":\"frio\",\"precio\":3900,\"precio_oferta\":3400,\"imagen\":\"frappe-mocha.png\",\"disponible\":true},{\"id\":\"latte-art\",\"nombre\":\"Latte Art\",\"descripcion\":\"Espresso con leche texturizada y arte en la espuma.\",\"categoria\":\"cafe\",\"precio\":3200,\"precio_oferta\":null,\"imagen\":\"latte.png\",\"disponible\":true},{\"id\":\"tarta-frambuesa\",\"nombre\":\"Tarta de Frambuesa\",\"descripcion\":\"Base de almendras con crema pastelera y frambuesas.\",\"categoria\":\"reposteria\",\"precio\":4500,\"precio_oferta\":null,\"imagen\":\"tarta-frambuesa.png\",\"disponible\":true}]"
+ },
+ {
+  "hora": "2026-11-28T17:28:07+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/orders",
+  "estado": 201,
+  "request_id": "3ceb72ca5d56",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"items\":[{\"product_id\":\"cold-brew\",\"cantidad\":1}],\"tipo_entrega\":\"retiro\",\"clave\":\"PED-mx0oon10-ik2r1x2t\"}",
+  "respuesta": "{\"id\":\"ORD-62213FEF\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"precio\":3500,\"cantidad\":1}],\"total\":3500,\"creado_en\":\"2026-11-28T17:28:07+00:00\",\"pagado_en\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:28:07+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-62213FEF",
+  "estado": 200,
+  "request_id": "c02a7c2f5986",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-62213FEF\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"precio\":3500,\"cantidad\":1}],\"total\":3500,\"creado_en\":\"2026-11-28T17:28:07+00:00\",\"pagado_en\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:28:07+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/payments",
+  "estado": 201,
+  "request_id": "a120b8694304",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"order_id\":\"ORD-62213FEF\"}",
+  "respuesta": "{\"id\":\"PAY-C2FDF782\",\"order_id\":\"ORD-62213FEF\",\"estado\":\"PENDIENTE\",\"monto\":3500,\"url_pago\":\"https://sandbox.pagos.example/pagar/chk_b1f8404ab10bc2c2\"}"
+ },
+ {
+  "hora": "2026-11-28T17:28:08+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/payments/PAY-C2FDF782/simular",
+  "estado": 202,
+  "request_id": "1d858a2c17ad",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"resultado\":\"aprobado\"}",
+  "respuesta": "{\"avisos\":[{\"status\":200,\"respuesta\":{\"ok\":true,\"estado\":\"APROBADO\"}}]}"
+ },
+ {
+  "hora": "2026-11-28T17:28:08+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-62213FEF",
+  "estado": 200,
+  "request_id": "0623a77cf076",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-62213FEF\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"precio\":3500,\"cantidad\":1}],\"total\":3500,\"creado_en\":\"2026-11-28T17:28:07+00:00\",\"pagado_en\":\"2026-11-28T17:28:07+00:00\"}"
+ },
+ {
+  "hora": "2026-11-28T17:28:08+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-62213FEF/receipt",
+  "estado": 200,
+  "request_id": "9bf432f15475",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"folio\":\"B-000004\",\"fecha\":\"2026-11-28T17:28:07+00:00\",\"pedido\":\"ORD-62213FEF\",\"caja\":\"CAJA-WEB-01\",\"detalle\":[{\"producto\":\"Cold Brew\",\"cantidad\":1,\"precio\":3500,\"total\":3500}],\"neto\":2941,\"iva\":559,\"total\":3500}"
+ },
+ {
+  "hora": "2026-11-28T17:28:09+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/reports/sales",
+  "estado": 200,
+  "request_id": "ca28c5a19a57",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"pedidos\":4,\"total_vendido\":18000,\"ticket_promedio\":4500,\"por_dia\":[{\"dia\":\"2026-11-28\",\"pedidos\":4,\"total\":18000}],\"mas_vendidos\":[{\"product_id\":\"latte-art\",\"nombre\":\"Latte Art\",\"cantidad\":2,\"total\":6400},{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"cantidad\":2,\"total\":5600},{\"product_id\":\"espresso-doble\",\"nombre\":\"Espresso Doble\",\"cantidad\":1,\"total\":2500},{\"product_id\":\"cold-brew\",\"nombre\":\"Cold Brew\",\"cantidad\":1,\"total\":3500}]}"
+ }
+]

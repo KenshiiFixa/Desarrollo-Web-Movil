@@ -17,9 +17,11 @@ from typing import Literal, Optional
 
 import grpc
 from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
+from pymongo.errors import DuplicateKeyError
 
-from comun import (ID_SOLICITUD, canal_inventory, registrar_logs, SECRETOS, conectar_mongo, exigir_rol, leer_secretos, llamar_servicio, usuario_actual,
+from comun import (ID_SOLICITUD, canal_inventory, log, registrar_logs, SECRETOS, conectar_mongo, exigir_rol, leer_secretos, llamar_servicio, usuario_actual,
                    verificar_servicio)
 from proto import inventario_pb2, inventario_pb2_grpc
 
@@ -136,8 +138,9 @@ def avisar_pedido_pagado(pedido):
         r2 = llamar_servicio("orders", "analitica", "POST", "/internal/ventas", json=venta)
         if r1.status_code == 201 and r2.status_code == 201:
             db.pedidos.update_one({"_id": pedido["_id"]}, {"$set": {"avisos_enviados": True}})
+            log(f"pedido {pedido['_id']}: boleta enviada a notificaciones y venta registrada en analitica")
     except HTTPException:
-        print(f"Notificaciones o analitica no disponible, se reintentara el pedido {pedido['_id']}")
+        log(f"pedido {pedido['_id']}: notificaciones o analitica no disponible, aviso pendiente (se reintenta cada 30 s)")
 
 
 def tareas_en_segundo_plano():
@@ -164,6 +167,9 @@ async def lifespan(app: FastAPI):
     leer_secretos("orders")
     db = conectar_mongo("orders")
     db.pedidos.create_index("user_id")
+    # Una misma clave de idempotencia no puede crear dos pedidos del mismo cliente
+    db.pedidos.create_index([("user_id", 1), ("clave", 1)], unique=True,
+                            partialFilterExpression={"clave": {"$type": "string"}})
     threading.Thread(target=tareas_en_segundo_plano, daemon=True).start()
     yield
 
@@ -184,6 +190,7 @@ class PedidoNuevo(BaseModel):
     tipo_entrega: Literal["retiro", "delivery"]
     direccion: Optional[str] = Field(default=None, max_length=200)
     comuna: Optional[str] = Field(default=None, max_length=60)
+    clave: Optional[str] = Field(default=None, pattern=r"^[A-Za-z0-9-]{8,64}$")   # clave de idempotencia
 
 
 def buscar_pedido(order_id, usuario):
@@ -194,9 +201,21 @@ def buscar_pedido(order_id, usuario):
     return pedido
 
 
+def pedido_repetido(usuario, clave):
+    """Si la clave ya creo un pedido de este cliente, lo devuelve con 200 (no se crea ni se reserva otra vez)."""
+    existente = db.pedidos.find_one({"user_id": usuario["user_id"], "clave": clave}) if clave else None
+    if existente is None:
+        return None
+    log(f"pedido repetido: la clave ya creo {existente['_id']}, se devuelve el mismo sin reservar stock")
+    return JSONResponse(status_code=200, content={**pedido_para_cliente(existente), "repetido": True})
+
+
 @app.post("/orders", status_code=201, dependencies=[gateway_o_graphql])
 def crear_pedido(pedido: PedidoNuevo, usuario=Depends(usuario_actual)):
     exigir_rol(usuario, "cliente")
+    repetido = pedido_repetido(usuario, pedido.clave)
+    if repetido:
+        return repetido
     es_delivery = pedido.tipo_entrega == "delivery"
     if es_delivery and not (pedido.direccion and len(pedido.direccion.strip()) >= 5 and pedido.comuna):
         raise HTTPException(status_code=422, detail="Para delivery se requiere direccion y comuna")
@@ -212,7 +231,14 @@ def crear_pedido(pedido: PedidoNuevo, usuario=Depends(usuario_actual)):
                  "creado_en": ahora(), "pagado_en": None, "folio": None, "caja": None,
                  "stock_devuelto": False, "avisos_enviados": False,
                  "historial": [{"estado": "PENDIENTE_PAGO", "por": usuario["user_id"], "en": ahora()}]}
-    db.pedidos.insert_one(documento)
+    if pedido.clave:
+        documento["clave"] = pedido.clave
+    try:
+        db.pedidos.insert_one(documento)
+    except DuplicateKeyError:
+        liberar(order_id)   # otra solicitud con la misma clave gano: se devuelve el stock de esta
+        return pedido_repetido(usuario, pedido.clave)
+    log(f"MongoDB: pedido {order_id} guardado en orders.pedidos (PENDIENTE_PAGO, total={documento['total']})")
     return pedido_para_cliente(documento)
 
 
@@ -259,6 +285,7 @@ def anular_pedido(order_id: str, anulacion: Anulacion, usuario=Depends(usuario_a
                                                        "motivo": anulacion.motivo, "en": ahora()}}})
     if r.modified_count == 0:
         raise HTTPException(status_code=409, detail="El pedido ya no se puede anular")
+    log(f"MongoDB: pedido {order_id} ANULADO en orders.pedidos; se devuelve el stock a inventory por gRPC")
     liberar(order_id)
     return {"id": order_id, "estado": "ANULADO"}
 
@@ -276,6 +303,7 @@ def cambiar_estado(order_id: str, cambio: CambioEstado, usuario=Depends(usuario_
     db.pedidos.update_one({"_id": order_id, "estado": pedido["estado"]},
                           {"$set": {"estado": cambio.estado},
                            "$push": {"historial": {"estado": cambio.estado, "por": usuario["user_id"], "en": ahora()}}})
+    log(f"MongoDB: pedido {order_id} pasa de {pedido['estado']} a {cambio.estado} (rol={usuario['rol']})")
     return {"id": order_id, "estado": cambio.estado}
 
 
@@ -321,7 +349,8 @@ def marcar_pagado(order_id: str, datos: Pagado):
     if pedido is None:
         raise HTTPException(status_code=404, detail="Pedido no encontrado")
     if pedido["pagado_en"]:
-        return {"estado": pedido["estado"], "repetido": True}   # aviso repetido: no se hace nada
+        log(f"aviso de pago repetido para {order_id}: no se hace nada")
+        return {"estado": pedido["estado"], "repetido": True}
     if pedido["estado"] != "PENDIENTE_PAGO":
         raise HTTPException(status_code=409, detail="El pedido ya no admite pago")
     # El folio de la boleta es correlativo: $inc es atomico en MongoDB
@@ -333,6 +362,7 @@ def marcar_pagado(order_id: str, datos: Pagado):
                                "$push": {"historial": {"estado": "PAGADO", "por": "payments", "en": ahora()}}})
     if r.modified_count == 0:
         raise HTTPException(status_code=409, detail="El pedido ya no admite pago")
+    log(f"MongoDB: pedido {order_id} actualizado a PAGADO en orders.pedidos (boleta B-{folio:06d})")
     avisar_pedido_pagado(db.pedidos.find_one({"_id": order_id}))
     return {"estado": "PAGADO"}
 

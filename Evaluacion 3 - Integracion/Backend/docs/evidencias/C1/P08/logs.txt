@@ -1,0 +1,42 @@
+inventory-1  | [inventory] req=7171b36888f0 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=7171b36888f0 MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+inventory-1  | [inventory] req=7171b36888f0 GET /products -> 200 (3 ms)
+inventory-1  | [inventory-grpc] req=28f8fee22e3b ReservarStock desde orders: secreto verificado con el de Vault
+orders-1     | [orders] req=27d1d797705e secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1     | [orders] req=27d1d797705e POST /orders -> 503 (3006 ms)
+orders-1     | [orders] req=28f8fee22e3b secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1     | [orders] req=28f8fee22e3b MongoDB: pedido ORD-E4206731 guardado en orders.pedidos (PENDIENTE_PAGO, total=2800)
+orders-1     | [orders] req=28f8fee22e3b POST /orders -> 201 (8 ms)
+orders-1     | [orders] req=bc6d5bfa0ddf secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1     | [orders] req=bc6d5bfa0ddf GET /orders/ORD-E4206731 -> 200 (2 ms)
+auth-1       | [auth] req=27d1d797705e secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=27d1d797705e introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=27d1d797705e POST /introspect -> 200 (3 ms)
+auth-1       | [auth] req=28f8fee22e3b secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=28f8fee22e3b introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=28f8fee22e3b POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=bc6d5bfa0ddf secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=bc6d5bfa0ddf introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=bc6d5bfa0ddf POST /introspect -> 200 (2 ms)
+gateway-1    | [gateway] req=7171b36888f0 ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=7171b36888f0 enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=7171b36888f0 inventory respondio 200
+gateway-1    | [gateway] req=7171b36888f0 GET /api/v1/products -> 200 (12 ms)
+gateway-1    | [gateway] req=27d1d797705e ruta S09: POST /orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=27d1d797705e pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=27d1d797705e Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=27d1d797705e enrutando a orders POST /orders con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=27d1d797705e orders respondio 503
+gateway-1    | [gateway] req=27d1d797705e POST /api/v1/orders -> 502 (3025 ms)
+gateway-1    | [gateway] req=28f8fee22e3b ruta S09: POST /orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=28f8fee22e3b pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=28f8fee22e3b Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=28f8fee22e3b enrutando a orders POST /orders con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=28f8fee22e3b orders respondio 201
+gateway-1    | [gateway] req=28f8fee22e3b POST /api/v1/orders -> 201 (23 ms)
+gateway-1    | [gateway] req=bc6d5bfa0ddf ruta S11: GET /orders/ORD-E4206731 -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=bc6d5bfa0ddf pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=bc6d5bfa0ddf Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=bc6d5bfa0ddf enrutando a orders GET /orders/ORD-E4206731 con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=bc6d5bfa0ddf orders respondio 200
+gateway-1    | [gateway] req=bc6d5bfa0ddf GET /api/v1/orders/ORD-E4206731 -> 200 (12 ms)

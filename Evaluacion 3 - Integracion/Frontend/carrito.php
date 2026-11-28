@@ -61,9 +61,21 @@
       <span>Total</span>
       <span id="cart-total">$0</span>
     </div>
-    <button class="btn-primary btn-pay" id="btn-pay" type="button" disabled>Pagar pedido</button>
-    <p style="font-size:0.78rem; color:#6D5A53; margin-top:14px; text-align:center;">
-      Despacho gratis dentro de 3 km del local.
+    <form id="entrega-form" class="entrega" novalidate>
+      <fieldset>
+        <legend>Entrega</legend>
+        <label class="opcion"><input type="radio" name="tipo_entrega" value="retiro" checked> Retiro en el local</label>
+        <label class="opcion"><input type="radio" name="tipo_entrega" value="delivery"> Despacho a domicilio</label>
+      </fieldset>
+      <div id="entrega-direccion" class="auth-form" hidden>
+        <label>Dirección <input type="text" name="direccion" maxlength="200" autocomplete="street-address"></label>
+        <label>Comuna <input type="text" name="comuna" maxlength="60" placeholder="Maipú"></label>
+      </div>
+    </form>
+    <p class="aviso" id="pedido-aviso" role="status"></p>
+    <button class="btn-primary btn-pay" id="btn-pay" type="button" disabled>Confirmar pedido</button>
+    <p class="nota-total">
+      Despacho gratis dentro de 3 km del local. El total final lo calcula el servidor con los precios vigentes.
     </p>
   </aside>
 </div>

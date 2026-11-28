@@ -1,0 +1,3 @@
+gateway-1  | [gateway] req=a2dbc24d949f ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1  | [gateway] req=a2dbc24d949f sin token: se responde 401 sin llamar al Auth Service
+gateway-1  | [gateway] req=a2dbc24d949f GET /api/v1/clients/me -> 401 (1 ms)

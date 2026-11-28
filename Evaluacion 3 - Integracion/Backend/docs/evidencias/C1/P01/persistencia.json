@@ -1,0 +1,70 @@
+[
+ {
+  "descripcion": "Productos activos en inventory",
+  "hora": "2026-11-28T17:35:04+00:00",
+  "servicio": "inventory",
+  "coleccion": "productos",
+  "filtro": {
+   "activo": true
+  },
+  "total": 8,
+  "resultado": [
+   {
+    "_id": "espresso-doble",
+    "precio_oferta": null,
+    "nombre": "Espresso Doble",
+    "precio": 2500,
+    "stock": 40
+   },
+   {
+    "_id": "latte-art",
+    "precio_oferta": null,
+    "nombre": "Latte Art",
+    "precio": 3200,
+    "stock": 40
+   },
+   {
+    "_id": "cappuccino",
+    "precio_oferta": null,
+    "nombre": "Cappuccino",
+    "precio": 3000,
+    "stock": 40
+   },
+   {
+    "_id": "cold-brew",
+    "precio_oferta": null,
+    "nombre": "Cold Brew",
+    "precio": 3500,
+    "stock": 40
+   },
+   {
+    "_id": "frappe-mocha",
+    "precio_oferta": 3400,
+    "nombre": "Frappé de Mocha",
+    "precio": 3900,
+    "stock": 40
+   },
+   {
+    "_id": "croissant",
+    "precio_oferta": null,
+    "nombre": "Croissant de Mantequilla",
+    "precio": 2800,
+    "stock": 40
+   },
+   {
+    "_id": "tarta-frambuesa",
+    "precio_oferta": null,
+    "nombre": "Tarta de Frambuesa",
+    "precio": 4500,
+    "stock": 40
+   },
+   {
+    "_id": "cheesecake-maracuya",
+    "precio_oferta": null,
+    "nombre": "Cheesecake de Maracuyá",
+    "precio": 4800,
+    "stock": 40
+   }
+  ]
+ }
+]

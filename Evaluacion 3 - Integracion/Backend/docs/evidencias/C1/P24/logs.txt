@@ -1,0 +1,42 @@
+clients-1  | [clients] req=89f803fa4e25 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1    | [clients] req=89f803fa4e25 MongoDB: lee clients.clientes del usuario de la sesion (USR-003)
+clients-1    | [clients] req=89f803fa4e25 GET /clients/me -> 200 (2 ms)
+auth-1       | [auth] req=8b056f65b475 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=8b056f65b475 login correcto: clave verificada (argon2id), sesion de USR-003 creada en auth.sesiones, rol=cliente, dura 15 min
+auth-1       | [auth] req=8b056f65b475 POST /login -> 200 (123 ms)
+auth-1       | [auth] req=89f803fa4e25 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=89f803fa4e25 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=89f803fa4e25 POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=a08338f8153f secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=a08338f8153f introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=a08338f8153f POST /introspect -> 200 (3 ms)
+auth-1       | [auth] req=aa0a5d68790f secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=aa0a5d68790f introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=aa0a5d68790f POST /introspect -> 200 (4 ms)
+inventory-1  | [inventory] req=e1eb4874d34a secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=e1eb4874d34a MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+inventory-1  | [inventory] req=e1eb4874d34a GET /products -> 200 (2 ms)
+gateway-1    | [gateway] req=8b056f65b475 ruta S04: POST /auth/login -> auth (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=8b056f65b475 enrutando a auth POST /login con el secreto gateway->auth leido de Vault
+gateway-1    | [gateway] req=8b056f65b475 auth respondio 200
+gateway-1    | [gateway] req=8b056f65b475 POST /api/v1/auth/login -> 200 (128 ms)
+gateway-1    | [gateway] req=89f803fa4e25 ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=89f803fa4e25 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=89f803fa4e25 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=89f803fa4e25 enrutando a clients GET /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=89f803fa4e25 clients respondio 200
+gateway-1    | [gateway] req=89f803fa4e25 GET /api/v1/clients/me -> 200 (15 ms)
+gateway-1    | [gateway] req=e1eb4874d34a ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=e1eb4874d34a enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=e1eb4874d34a inventory respondio 200
+gateway-1    | [gateway] req=e1eb4874d34a GET /api/v1/products -> 200 (6 ms)
+gateway-1    | [gateway] req=a08338f8153f ruta S19: GET /admin/products -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=a08338f8153f pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=a08338f8153f Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=a08338f8153f rol cliente no tiene permiso para S19 -> 403 (no se enruta)
+gateway-1    | [gateway] req=a08338f8153f GET /api/v1/admin/products -> 403 (11 ms)
+gateway-1    | [gateway] req=aa0a5d68790f ruta S29: GET /admin/dispatch-orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=aa0a5d68790f pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=aa0a5d68790f Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=aa0a5d68790f rol cliente no tiene permiso para S29 -> 403 (no se enruta)
+gateway-1    | [gateway] req=aa0a5d68790f GET /api/v1/admin/dispatch-orders -> 403 (11 ms)

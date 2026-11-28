@@ -1,0 +1,115 @@
+inventory-1  | [inventory] req=4efa878fc7ac secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=4efa878fc7ac MongoDB: consulta inventory.productos con stock (rol=dueno) -> 8 documentos
+inventory-1  | [inventory] req=4efa878fc7ac GET /admin/products -> 200 (2 ms)
+inventory-1  | [inventory] req=1104c2cc6df8 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=1104c2cc6df8 MongoDB: actualiza inventory.productos latte-art (precio=3200, oferta=2900, stock=38) por rol=dueno
+inventory-1  | [inventory] req=1104c2cc6df8 PUT /products/latte-art -> 200 (4 ms)
+inventory-1  | [inventory] req=862fc604af15 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=862fc604af15 MongoDB: consulta inventory.productos con stock (rol=dueno) -> 8 documentos
+inventory-1  | [inventory] req=862fc604af15 GET /admin/products -> 200 (2 ms)
+inventory-1  | [inventory] req=cfd2760fb063 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=cfd2760fb063 MongoDB: producto prueba-c3 agregado a inventory.productos por rol=dueno
+inventory-1  | [inventory] req=cfd2760fb063 POST /products -> 201 (4 ms)
+inventory-1  | [inventory] req=00bc0fb0970d secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=00bc0fb0970d MongoDB: consulta inventory.productos con stock (rol=dueno) -> 9 documentos
+inventory-1  | [inventory] req=00bc0fb0970d GET /admin/products -> 200 (3 ms)
+inventory-1  | [inventory] req=08e753fb5967 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=08e753fb5967 MongoDB: producto prueba-c3 dado de baja en inventory.productos (activo=false) por rol=dueno
+inventory-1  | [inventory] req=08e753fb5967 DELETE /products/prueba-c3 -> 204 (2 ms)
+inventory-1  | [inventory] req=201d87d9c7ba secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=201d87d9c7ba MongoDB: consulta inventory.productos con stock (rol=dueno) -> 9 documentos
+inventory-1  | [inventory] req=201d87d9c7ba GET /admin/products -> 200 (3 ms)
+inventory-1  | [inventory] req=8adbd0980cbf secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=8adbd0980cbf MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+inventory-1  | [inventory] req=8adbd0980cbf GET /products -> 200 (2 ms)
+inventory-1  | [inventory] req=0e9c994d1c94 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=0e9c994d1c94 MongoDB: actualiza inventory.productos latte-art (precio=3200, oferta=None, stock=38) por rol=dueno
+inventory-1  | [inventory] req=0e9c994d1c94 PUT /products/latte-art -> 200 (3 ms)
+inventory-1  | [inventory] req=e0adb9a773cf secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=e0adb9a773cf MongoDB: consulta inventory.productos con stock (rol=dueno) -> 9 documentos
+inventory-1  | [inventory] req=e0adb9a773cf GET /admin/products -> 200 (2 ms)
+auth-1       | [auth] req=4efa878fc7ac secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=4efa878fc7ac introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1       | [auth] req=4efa878fc7ac POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=1104c2cc6df8 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=1104c2cc6df8 introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1       | [auth] req=1104c2cc6df8 POST /introspect -> 200 (3 ms)
+auth-1       | [auth] req=862fc604af15 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=862fc604af15 introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1       | [auth] req=862fc604af15 POST /introspect -> 200 (4 ms)
+auth-1       | [auth] req=cfd2760fb063 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=cfd2760fb063 introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1       | [auth] req=cfd2760fb063 POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=00bc0fb0970d secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=00bc0fb0970d introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1       | [auth] req=00bc0fb0970d POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=08e753fb5967 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=08e753fb5967 introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1       | [auth] req=08e753fb5967 POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=201d87d9c7ba secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=201d87d9c7ba introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1       | [auth] req=201d87d9c7ba POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=0e9c994d1c94 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=0e9c994d1c94 introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1       | [auth] req=0e9c994d1c94 POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=e0adb9a773cf secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=e0adb9a773cf introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1       | [auth] req=e0adb9a773cf POST /introspect -> 200 (2 ms)
+gateway-1    | [gateway] req=4efa878fc7ac ruta S19: GET /admin/products -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=4efa878fc7ac pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=4efa878fc7ac Auth Service respondio: token valido, rol=dueno
+gateway-1    | [gateway] req=4efa878fc7ac enrutando a inventory GET /admin/products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=4efa878fc7ac inventory respondio 200
+gateway-1    | [gateway] req=4efa878fc7ac GET /api/v1/admin/products -> 200 (12 ms)
+gateway-1    | [gateway] req=1104c2cc6df8 ruta S21: PUT /admin/products/latte-art -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=1104c2cc6df8 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=1104c2cc6df8 Auth Service respondio: token valido, rol=dueno
+gateway-1    | [gateway] req=1104c2cc6df8 enrutando a inventory PUT /products/latte-art con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=1104c2cc6df8 inventory respondio 200
+gateway-1    | [gateway] req=1104c2cc6df8 PUT /api/v1/admin/products/latte-art -> 200 (17 ms)
+gateway-1    | [gateway] req=862fc604af15 ruta S19: GET /admin/products -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=862fc604af15 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=862fc604af15 Auth Service respondio: token valido, rol=dueno
+gateway-1    | [gateway] req=862fc604af15 enrutando a inventory GET /admin/products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=862fc604af15 inventory respondio 200
+gateway-1    | [gateway] req=862fc604af15 GET /api/v1/admin/products -> 200 (15 ms)
+gateway-1    | [gateway] req=cfd2760fb063 ruta S20: POST /admin/products -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=cfd2760fb063 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=cfd2760fb063 Auth Service respondio: token valido, rol=dueno
+gateway-1    | [gateway] req=cfd2760fb063 enrutando a inventory POST /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=cfd2760fb063 inventory respondio 201
+gateway-1    | [gateway] req=cfd2760fb063 POST /api/v1/admin/products -> 201 (15 ms)
+gateway-1    | [gateway] req=00bc0fb0970d ruta S19: GET /admin/products -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=00bc0fb0970d pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=00bc0fb0970d Auth Service respondio: token valido, rol=dueno
+gateway-1    | [gateway] req=00bc0fb0970d enrutando a inventory GET /admin/products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=00bc0fb0970d inventory respondio 200
+gateway-1    | [gateway] req=00bc0fb0970d GET /api/v1/admin/products -> 200 (11 ms)
+gateway-1    | [gateway] req=08e753fb5967 ruta S22: DELETE /admin/products/prueba-c3 -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=08e753fb5967 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=08e753fb5967 Auth Service respondio: token valido, rol=dueno
+gateway-1    | [gateway] req=08e753fb5967 enrutando a inventory DELETE /products/prueba-c3 con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=08e753fb5967 inventory respondio 204
+gateway-1    | [gateway] req=08e753fb5967 DELETE /api/v1/admin/products/prueba-c3 -> 204 (11 ms)
+gateway-1    | [gateway] req=201d87d9c7ba ruta S19: GET /admin/products -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=201d87d9c7ba pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=201d87d9c7ba Auth Service respondio: token valido, rol=dueno
+gateway-1    | [gateway] req=201d87d9c7ba enrutando a inventory GET /admin/products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=201d87d9c7ba inventory respondio 200
+gateway-1    | [gateway] req=201d87d9c7ba GET /api/v1/admin/products -> 200 (11 ms)
+gateway-1    | [gateway] req=8adbd0980cbf ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=8adbd0980cbf enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=8adbd0980cbf inventory respondio 200
+gateway-1    | [gateway] req=8adbd0980cbf GET /api/v1/products -> 200 (7 ms)
+gateway-1    | [gateway] req=0e9c994d1c94 ruta S21: PUT /admin/products/latte-art -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=0e9c994d1c94 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=0e9c994d1c94 Auth Service respondio: token valido, rol=dueno
+gateway-1    | [gateway] req=0e9c994d1c94 enrutando a inventory PUT /products/latte-art con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=0e9c994d1c94 inventory respondio 200
+gateway-1    | [gateway] req=0e9c994d1c94 PUT /api/v1/admin/products/latte-art -> 200 (15 ms)
+gateway-1    | [gateway] req=e0adb9a773cf ruta S19: GET /admin/products -> inventory (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=e0adb9a773cf pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=e0adb9a773cf Auth Service respondio: token valido, rol=dueno
+gateway-1    | [gateway] req=e0adb9a773cf enrutando a inventory GET /admin/products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=e0adb9a773cf inventory respondio 200
+gateway-1    | [gateway] req=e0adb9a773cf GET /api/v1/admin/products -> 200 (11 ms)

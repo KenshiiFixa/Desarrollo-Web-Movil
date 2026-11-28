@@ -1,0 +1,35 @@
+[
+ {
+  "descripcion": "Pedidos con esa clave",
+  "hora": "2026-11-28T17:26:21+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "clave": "PRUEBA-C1-1795886779773"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-7FBFF781",
+    "estado": "PENDIENTE_PAGO",
+    "total": 4500
+   }
+  ]
+ },
+ {
+  "descripcion": "Stock de Tarta de Frambuesa",
+  "hora": "2026-11-28T17:26:24+00:00",
+  "servicio": "inventory",
+  "coleccion": "productos",
+  "filtro": {
+   "_id": "tarta-frambuesa"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "tarta-frambuesa",
+    "stock": 39
+   }
+  ]
+ }
+]

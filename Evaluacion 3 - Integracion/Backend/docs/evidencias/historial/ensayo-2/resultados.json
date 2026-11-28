@@ -1,0 +1,275 @@
+{
+ "meta": {
+  "campana": "C1",
+  "nombre": "Escritorio, ejecucion 1",
+  "protocolo": "1.1",
+  "commit": "17fafb2",
+  "cambios_sin_commit": true,
+  "inicio": "2026-11-28T17:30:47+00:00",
+  "zona_horaria": "UTC",
+  "ejecutor": "root",
+  "sistema": "Linux 6.18.44-fc-v880",
+  "navegador": "Chromium 153.0.8010.12 (Playwright 1.63.0)",
+  "viewport": "1366x768",
+  "docker": "29.9.2",
+  "estado_inicial": "sin reinicio (base existente)",
+  "limite_general_gateway": "600 solicitudes por minuto (login: 10 por minuto, sin cambios)",
+  "fin": "2026-11-28T17:31:52+00:00"
+ },
+ "conteo": {
+  "aprobada": 3
+ },
+ "resultados": [
+  {
+   "id": "P15",
+   "ca": "CA15",
+   "titulo": "Mis pedidos con inventory detenido",
+   "recorrido": "RC3",
+   "flujos": [
+    "F07"
+   ],
+   "requisitos": [
+    "R16",
+    "R17"
+   ],
+   "escenario": "fallo y recuperación",
+   "run": "RUN-C1-P15",
+   "campana": "C1",
+   "inicio": "2026-11-28T17:30:47+00:00",
+   "fin": "2026-11-28T17:31:08+00:00",
+   "duracion_ms": 20698,
+   "estado": "aprobada",
+   "esperado": "Respuesta GraphQL con errors 'Servicio inventory no disponible'; aviso 'Información incompleta' y 'Producto (dato no disponible)'; después, sin errors",
+   "observado": [
+    {
+     "descripcion": "Aviso de información incompleta",
+     "ok": true,
+     "detalle": "Información incompleta: Servicio inventory no disponible: la respuesta esta incompleta Reintentar"
+    },
+    {
+     "descripcion": "Productos marcados como dato no disponible",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "La respuesta GraphQL trae errors de inventory y data parcial",
+     "ok": true,
+     "detalle": "[{\"message\":\"Servicio inventory no disponible: la respuesta esta incompleta\",\"path\":null}]"
+    },
+    {
+     "descripcion": "Con inventory de vuelta: sin aviso y sin productos incompletos",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C1-P15-01",
+     "tipo": "captura",
+     "ruta": "C1/P15/01-incompleto.jpg",
+     "descripcion": "Mis pedidos con inventory detenido"
+    },
+    {
+     "id": "E-C1-P15-02",
+     "tipo": "captura",
+     "ruta": "C1/P15/02-completo.jpg",
+     "descripcion": "Mis pedidos completo otra vez"
+    },
+    {
+     "id": "E-C1-P15-03",
+     "tipo": "red",
+     "ruta": "C1/P15/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C1-P15-04",
+     "tipo": "logs",
+     "ruta": "C1/P15/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 5efc23aa9e18",
+    "X-Request-ID 147365569879",
+    "X-Request-ID 8e45680f7d77",
+    "X-Request-ID ceb2900c5ffa",
+    "X-Request-ID 5a3978bd0d51"
+   ]
+  },
+  {
+   "id": "P19",
+   "ca": "CA19",
+   "titulo": "Sesión expirada",
+   "recorrido": "RC4",
+   "flujos": [
+    "F03",
+    "F04"
+   ],
+   "requisitos": [
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "run": "RUN-C1-P19",
+   "campana": "C1",
+   "inicio": "2026-11-28T17:31:08+00:00",
+   "fin": "2026-11-28T17:31:13+00:00",
+   "duracion_ms": 5048,
+   "estado": "aprobada",
+   "esperado": "GET /clients/me 401; redirige a login.php?expirada=1 con aviso; la sesión se borra de auth.sesiones",
+   "observado": [
+    {
+     "descripcion": "Redirige a login.php?expirada=1 con aviso",
+     "ok": true,
+     "detalle": "Tu sesión expiró o ya no es válida. Inicia sesión de nuevo."
+    },
+    {
+     "descripcion": "GET /clients/me (con la sesión vencida) responde 401",
+     "ok": true,
+     "detalle": "401"
+    },
+    {
+     "descripcion": "La sesión vencida se borró de auth.sesiones",
+     "ok": true,
+     "detalle": "7 -> 6"
+    }
+   ],
+   "notas": [
+    "Sesiones vencidas de USR-003: 7"
+   ],
+   "evidencias": [
+    {
+     "id": "E-C1-P19-01",
+     "tipo": "captura",
+     "ruta": "C1/P19/01-sesion-expirada.jpg",
+     "descripcion": "Sesión expirada: vuelve a iniciar sesión"
+    },
+    {
+     "id": "E-C1-P19-02",
+     "tipo": "red",
+     "ruta": "C1/P19/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C1-P19-03",
+     "tipo": "persistencia",
+     "ruta": "C1/P19/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C1-P19-04",
+     "tipo": "logs",
+     "ruta": "C1/P19/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 329d0a4ededb",
+    "X-Request-ID b8f3fe9cfc14",
+    "X-Request-ID 6b339d2fbd49",
+    "X-Request-ID 00aabb579960"
+   ]
+  },
+  {
+   "id": "P28",
+   "ca": "CA28",
+   "titulo": "Analítica detenida y recuperación",
+   "recorrido": null,
+   "flujos": [
+    "F12"
+   ],
+   "requisitos": [
+    "R09",
+    "R17"
+   ],
+   "escenario": "fallo y recuperación",
+   "run": "RUN-C1-P28",
+   "campana": "C1",
+   "inicio": "2026-11-28T17:31:13+00:00",
+   "fin": "2026-11-28T17:31:52+00:00",
+   "duracion_ms": 38048,
+   "estado": "aprobada",
+   "esperado": "Pago aprobado; Reportes muestra un error mientras analítica esta detenida; después de iniciarla, el reporte incluye la venta",
+   "observado": [
+    {
+     "descripcion": "Con analítica detenida el pago se confirma (Pagado)",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Reportes informa el error mientras analítica está detenida",
+     "ok": true,
+     "detalle": "Un servicio del sistema no está disponible. Intenta de nuevo en unos segundos. Reintentar"
+    },
+    {
+     "descripcion": "orders guarda el aviso como pendiente",
+     "ok": true,
+     "detalle": "{\"_id\":\"ORD-BAC2C71A\",\"estado\":\"PAGADO\",\"avisos_enviados\":false}"
+    },
+    {
+     "descripcion": "Al volver analítica, la venta se registra (reintento de orders)",
+     "ok": true,
+     "detalle": "5 -> 6 en 21 s"
+    },
+    {
+     "descripcion": "Reintentar en Reportes muestra el reporte con la venta",
+     "ok": true,
+     "detalle": "6"
+    }
+   ],
+   "notas": [
+    "La venta llegó a analítica 21 s después de iniciarla (orders reintenta cada 30 s)"
+   ],
+   "evidencias": [
+    {
+     "id": "E-C1-P28-01",
+     "tipo": "captura",
+     "ruta": "C1/P28/01-analitica-detenida.jpg",
+     "descripcion": "Reportes con analítica detenida"
+    },
+    {
+     "id": "E-C1-P28-02",
+     "tipo": "captura",
+     "ruta": "C1/P28/02-recuperado.jpg",
+     "descripcion": "Reporte después de la recuperación"
+    },
+    {
+     "id": "E-C1-P28-03",
+     "tipo": "red",
+     "ruta": "C1/P28/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C1-P28-04",
+     "tipo": "persistencia",
+     "ruta": "C1/P28/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C1-P28-05",
+     "tipo": "logs",
+     "ruta": "C1/P28/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-BAC2C71A",
+    "X-Request-ID 05518a88eb60",
+    "X-Request-ID c7d562c87cb1",
+    "X-Request-ID 525eeeffebc7",
+    "X-Request-ID 6b3ea71b07e2",
+    "X-Request-ID 9c05e031d6a2",
+    "X-Request-ID 618acef04835",
+    "X-Request-ID 37a1b4db0e4a",
+    "X-Request-ID 04206ba3fa99",
+    "X-Request-ID 6bcaeb624e6e",
+    "X-Request-ID 879446aa6e03",
+    "X-Request-ID 26fd88ac12fe",
+    "X-Request-ID f10afa81be31",
+    "X-Request-ID aaf2427857a5",
+    "X-Request-ID 90973ed0549f",
+    "X-Request-ID fc5395cbca32"
+   ]
+  }
+ ]
+}

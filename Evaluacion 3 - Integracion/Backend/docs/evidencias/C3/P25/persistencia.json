@@ -1,0 +1,45 @@
+[
+ {
+  "descripcion": "Historial del pedido",
+  "hora": "2026-11-28T17:46:10+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-752AD31F"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-752AD31F",
+    "estado": "ENTREGADO",
+    "historial": [
+     {
+      "estado": "PENDIENTE_PAGO",
+      "por": "USR-003",
+      "en": "2026-11-28T17:44:00+00:00"
+     },
+     {
+      "estado": "PAGADO",
+      "por": "payments",
+      "en": "2026-11-28T17:44:45+00:00"
+     },
+     {
+      "estado": "EN_PREPARACION",
+      "por": "USR-002",
+      "en": "2026-11-28T17:46:09+00:00"
+     },
+     {
+      "estado": "LISTO",
+      "por": "USR-002",
+      "en": "2026-11-28T17:46:09+00:00"
+     },
+     {
+      "estado": "ENTREGADO",
+      "por": "USR-002",
+      "en": "2026-11-28T17:46:09+00:00"
+     }
+    ]
+   }
+  ]
+ }
+]

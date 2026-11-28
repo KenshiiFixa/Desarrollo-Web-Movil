@@ -1,0 +1,57 @@
+[
+ {
+  "descripcion": "Pagos tras el rechazo",
+  "hora": "2026-11-28T17:44:54+00:00",
+  "servicio": "payments",
+  "coleccion": "pagos",
+  "filtro": {
+   "order_id": "ORD-724B33B7"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "PAY-9498AA1A",
+    "monto": 2800,
+    "estado": "RECHAZADO"
+   }
+  ]
+ },
+ {
+  "descripcion": "Pedido tras el rechazo",
+  "hora": "2026-11-28T17:44:56+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-724B33B7"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-724B33B7",
+    "estado": "PENDIENTE_PAGO"
+   }
+  ]
+ },
+ {
+  "descripcion": "Pagos tras el segundo intento",
+  "hora": "2026-11-28T17:44:57+00:00",
+  "servicio": "payments",
+  "coleccion": "pagos",
+  "filtro": {
+   "order_id": "ORD-724B33B7"
+  },
+  "total": 2,
+  "resultado": [
+   {
+    "_id": "PAY-9498AA1A",
+    "monto": 2800,
+    "estado": "RECHAZADO"
+   },
+   {
+    "_id": "PAY-0FC6AF95",
+    "monto": 2800,
+    "estado": "APROBADO"
+   }
+  ]
+ }
+]

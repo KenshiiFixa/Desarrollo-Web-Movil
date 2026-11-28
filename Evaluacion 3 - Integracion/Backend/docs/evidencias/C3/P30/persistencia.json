@@ -1,0 +1,20 @@
+[
+ {
+  "descripcion": "Mensaje guardado",
+  "hora": "2026-11-28T17:47:10+00:00",
+  "servicio": "clients",
+  "coleccion": "contacto",
+  "filtro": {
+   "nombre": "Visita C3 28293"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "6b0b139cfc03c082a43a72e5",
+    "nombre": "Visita C3 28293",
+    "motivo": "sugerencia",
+    "creado_en": "2026-11-28T17:47:08+00:00"
+   }
+  ]
+ }
+]

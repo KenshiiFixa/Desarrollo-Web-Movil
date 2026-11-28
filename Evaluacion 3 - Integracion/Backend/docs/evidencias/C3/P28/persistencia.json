@@ -1,0 +1,35 @@
+[
+ {
+  "descripcion": "Pedido con aviso pendiente",
+  "hora": "2026-11-28T17:46:33+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-B29ED291"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-B29ED291",
+    "estado": "PAGADO",
+    "avisos_enviados": false
+   }
+  ]
+ },
+ {
+  "descripcion": "Venta registrada después de la recuperación",
+  "hora": "2026-11-28T17:47:03+00:00",
+  "servicio": "analitica",
+  "coleccion": "ventas",
+  "filtro": {
+   "_id": "ORD-B29ED291"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-B29ED291",
+    "total": 3000
+   }
+  ]
+ }
+]

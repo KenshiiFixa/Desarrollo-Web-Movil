@@ -1,0 +1,106 @@
+proveedor-1  | [proveedor] req=ebe4db90fae4 secreto de payments verificado con el de Vault: OK, se permite la llamada
+proveedor-1       | [proveedor] req=ebe4db90fae4 POST /checkout -> 200 (1 ms)
+proveedor-1       | [proveedor] req=9d21f56c617d secreto de payments verificado con el de Vault: OK, se permite la llamada
+proveedor-1       | [proveedor] req=9d21f56c617d POST /checkout/chk_7212e2ad57aebfcf/pagar -> 200 (49 ms)
+payments-1        | [payments] req=ebe4db90fae4 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+payments-1        | [payments] req=ebe4db90fae4 MongoDB: pago PAY-EC898FB6 creado en payments.pagos para ORD-B90E4D58 con el monto de orders (3500)
+payments-1        | [payments] req=ebe4db90fae4 POST /payments -> 201 (16 ms)
+payments-1        | [payments] req=9d21f56c617d secreto de gateway verificado con el de Vault: OK, se permite la llamada
+payments-1        | [payments] req=9d21f56c617d POST /payments/PAY-EC898FB6/simular -> 202 (54 ms)
+inventory-1  | [inventory] req=3bd495199ef3 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1          | [orders] req=9673bbd6aad5 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1          | [orders] req=9673bbd6aad5 MongoDB: pedido ORD-B90E4D58 guardado en orders.pedidos (PENDIENTE_PAGO, total=3500)
+orders-1          | [orders] req=9673bbd6aad5 POST /orders -> 201 (12 ms)
+orders-1          | [orders] req=f15304df782d secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1       | [inventory] req=3bd495199ef3 MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+auth-1            | [auth] req=2dc54d8a4a99 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=2dc54d8a4a99 introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1            | [auth] req=2dc54d8a4a99 POST /introspect -> 200 (2 ms)
+auth-1            | [auth] req=9673bbd6aad5 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=9673bbd6aad5 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1            | [auth] req=9673bbd6aad5 POST /introspect -> 200 (2 ms)
+analitica-1       | [analitica] req=2dc54d8a4a99 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1          | [orders] req=f15304df782d GET /orders/ORD-B90E4D58 -> 200 (2 ms)
+orders-1          | [orders] req=ebe4db90fae4 secreto de payments verificado con el de Vault: OK, se permite la llamada
+analitica-1       | [analitica] req=2dc54d8a4a99 MongoDB: reporte calculado con 3 ventas de analitica.ventas (rol=dueno)
+orders-1          | [orders] req=ebe4db90fae4 GET /internal/orders/ORD-B90E4D58 -> 200 (2 ms)
+analitica-1       | [analitica] req=2dc54d8a4a99 GET /reportes/ventas -> 200 (4 ms)
+analitica-1       | [analitica] req=6e545637ddba secreto de gateway verificado con el de Vault: OK, se permite la llamada
+analitica-1       | [analitica] req=6e545637ddba MongoDB: reporte calculado con 4 ventas de analitica.ventas (rol=dueno)
+analitica-1       | [analitica] req=6e545637ddba GET /reportes/ventas -> 200 (2 ms)
+inventory-1       | [inventory] req=3bd495199ef3 GET /products -> 200 (3 ms)
+inventory-1       | [inventory-grpc] req=9673bbd6aad5 ReservarStock desde orders: secreto verificado con el de Vault
+orders-1          | [orders] req=4bd3098cc198 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1          | [orders] req=4bd3098cc198 GET /orders/ORD-B90E4D58 -> 200 (2 ms)
+orders-1          | [orders] req=847df4ffcba6 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=f15304df782d secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1          | [orders] req=847df4ffcba6 GET /orders/ORD-B90E4D58/receipt -> 200 (2 ms)
+auth-1            | [auth] req=f15304df782d introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1            | [auth] req=f15304df782d POST /introspect -> 200 (5 ms)
+auth-1            | [auth] req=ebe4db90fae4 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=ebe4db90fae4 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1            | [auth] req=ebe4db90fae4 POST /introspect -> 200 (2 ms)
+auth-1            | [auth] req=9d21f56c617d secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=9d21f56c617d introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1            | [auth] req=9d21f56c617d POST /introspect -> 200 (3 ms)
+auth-1            | [auth] req=4bd3098cc198 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=4bd3098cc198 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1            | [auth] req=4bd3098cc198 POST /introspect -> 200 (2 ms)
+auth-1            | [auth] req=847df4ffcba6 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=847df4ffcba6 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1            | [auth] req=847df4ffcba6 POST /introspect -> 200 (2 ms)
+auth-1            | [auth] req=6e545637ddba secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=6e545637ddba introspect: sesion valida en auth.sesiones, rol=dueno -> autenticado
+auth-1            | [auth] req=6e545637ddba POST /introspect -> 200 (3 ms)
+gateway-1         | [gateway] req=2dc54d8a4a99 ruta S26: GET /admin/reports/sales -> analitica (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=2dc54d8a4a99 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=2dc54d8a4a99 Auth Service respondio: token valido, rol=dueno
+gateway-1         | [gateway] req=2dc54d8a4a99 enrutando a analitica GET /reportes/ventas con el secreto gateway->analitica leido de Vault
+gateway-1         | [gateway] req=2dc54d8a4a99 analitica respondio 200
+gateway-1         | [gateway] req=2dc54d8a4a99 GET /api/v1/admin/reports/sales -> 200 (24 ms)
+gateway-1         | [gateway] req=3bd495199ef3 ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1         | [gateway] req=3bd495199ef3 enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1         | [gateway] req=3bd495199ef3 inventory respondio 200
+gateway-1         | [gateway] req=3bd495199ef3 GET /api/v1/products -> 200 (11 ms)
+gateway-1         | [gateway] req=9673bbd6aad5 ruta S09: POST /orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=9673bbd6aad5 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=9673bbd6aad5 Auth Service respondio: token valido, rol=cliente
+gateway-1         | [gateway] req=9673bbd6aad5 enrutando a orders POST /orders con el secreto gateway->orders leido de Vault
+gateway-1         | [gateway] req=9673bbd6aad5 orders respondio 201
+gateway-1         | [gateway] req=9673bbd6aad5 POST /api/v1/orders -> 201 (20 ms)
+gateway-1         | [gateway] req=f15304df782d ruta S11: GET /orders/ORD-B90E4D58 -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=f15304df782d pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=f15304df782d Auth Service respondio: token valido, rol=cliente
+gateway-1         | [gateway] req=f15304df782d enrutando a orders GET /orders/ORD-B90E4D58 con el secreto gateway->orders leido de Vault
+gateway-1         | [gateway] req=f15304df782d orders respondio 200
+gateway-1         | [gateway] req=f15304df782d GET /api/v1/orders/ORD-B90E4D58 -> 200 (14 ms)
+gateway-1         | [gateway] req=ebe4db90fae4 ruta S14: POST /payments -> payments (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=ebe4db90fae4 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=ebe4db90fae4 Auth Service respondio: token valido, rol=cliente
+gateway-1         | [gateway] req=ebe4db90fae4 enrutando a payments POST /payments con el secreto gateway->payments leido de Vault
+gateway-1         | [gateway] req=ebe4db90fae4 payments respondio 201
+gateway-1         | [gateway] req=ebe4db90fae4 POST /api/v1/payments -> 201 (28 ms)
+gateway-1         | [gateway] req=9d21f56c617d ruta S16: POST /payments/PAY-EC898FB6/simular -> payments (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=9d21f56c617d pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=9d21f56c617d Auth Service respondio: token valido, rol=cliente
+gateway-1         | [gateway] req=9d21f56c617d enrutando a payments POST /payments/PAY-EC898FB6/simular con el secreto gateway->payments leido de Vault
+gateway-1         | [gateway] req=9d21f56c617d payments respondio 202
+gateway-1         | [gateway] req=9d21f56c617d POST /api/v1/payments/PAY-EC898FB6/simular -> 202 (65 ms)
+gateway-1         | [gateway] req=4bd3098cc198 ruta S11: GET /orders/ORD-B90E4D58 -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=4bd3098cc198 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=4bd3098cc198 Auth Service respondio: token valido, rol=cliente
+gateway-1         | [gateway] req=4bd3098cc198 enrutando a orders GET /orders/ORD-B90E4D58 con el secreto gateway->orders leido de Vault
+gateway-1         | [gateway] req=4bd3098cc198 orders respondio 200
+gateway-1         | [gateway] req=4bd3098cc198 GET /api/v1/orders/ORD-B90E4D58 -> 200 (11 ms)
+gateway-1         | [gateway] req=847df4ffcba6 ruta S13: GET /orders/ORD-B90E4D58/receipt -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=847df4ffcba6 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=847df4ffcba6 Auth Service respondio: token valido, rol=cliente
+gateway-1         | [gateway] req=847df4ffcba6 enrutando a orders GET /orders/ORD-B90E4D58/receipt con el secreto gateway->orders leido de Vault
+gateway-1         | [gateway] req=847df4ffcba6 orders respondio 200
+gateway-1         | [gateway] req=847df4ffcba6 GET /api/v1/orders/ORD-B90E4D58/receipt -> 200 (12 ms)
+gateway-1         | [gateway] req=6e545637ddba ruta S26: GET /admin/reports/sales -> analitica (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=6e545637ddba pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=6e545637ddba Auth Service respondio: token valido, rol=dueno
+gateway-1         | [gateway] req=6e545637ddba enrutando a analitica GET /reportes/ventas con el secreto gateway->analitica leido de Vault
+gateway-1         | [gateway] req=6e545637ddba analitica respondio 200
+gateway-1         | [gateway] req=6e545637ddba GET /api/v1/admin/reports/sales -> 200 (13 ms)

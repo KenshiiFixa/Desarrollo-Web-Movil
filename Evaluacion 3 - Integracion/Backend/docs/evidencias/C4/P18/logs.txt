@@ -1,0 +1,23 @@
+clients-1  | [clients] req=1a98ff1b2c48 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1  | [clients] req=1a98ff1b2c48 MongoDB: lee clients.clientes del usuario de la sesion (USR-003)
+clients-1  | [clients] req=1a98ff1b2c48 GET /clients/me -> 200 (2 ms)
+clients-1  | [clients] req=ea192c5242d1 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1  | [clients] req=ea192c5242d1 PUT /clients/me -> 422 (2 ms)
+auth-1     | [auth] req=1a98ff1b2c48 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1     | [auth] req=1a98ff1b2c48 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1     | [auth] req=1a98ff1b2c48 POST /introspect -> 200 (3 ms)
+auth-1     | [auth] req=ea192c5242d1 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1     | [auth] req=ea192c5242d1 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1     | [auth] req=ea192c5242d1 POST /introspect -> 200 (2 ms)
+gateway-1    | [gateway] req=1a98ff1b2c48 ruta S06: GET /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=1a98ff1b2c48 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=1a98ff1b2c48 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=1a98ff1b2c48 enrutando a clients GET /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=1a98ff1b2c48 clients respondio 200
+gateway-1    | [gateway] req=1a98ff1b2c48 GET /api/v1/clients/me -> 200 (12 ms)
+gateway-1    | [gateway] req=ea192c5242d1 ruta S07: PUT /clients/me -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=ea192c5242d1 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=ea192c5242d1 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=ea192c5242d1 enrutando a clients PUT /clients/me con el secreto gateway->clients leido de Vault
+gateway-1    | [gateway] req=ea192c5242d1 clients respondio 422
+gateway-1    | [gateway] req=ea192c5242d1 PUT /api/v1/clients/me -> 422 (13 ms)

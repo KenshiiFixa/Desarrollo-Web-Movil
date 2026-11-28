@@ -1,0 +1,28 @@
+clients-1         | [clients] req=4a15ebc8b4ea secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1         | [clients] req=4a15ebc8b4ea MongoDB: mensaje de contacto (sugerencia) guardado en clients.contacto
+clients-1         | [clients] req=4a15ebc8b4ea POST /contact -> 201 (11 ms)
+clients-1         | [clients] req=f616bb3a2bdf secreto de gateway verificado con el de Vault: OK, se permite la llamada
+clients-1         | [clients] req=f616bb3a2bdf GET /contact -> 200 (2 ms)
+auth-1            | [auth] req=5ddc995039a9 secreto de gateway verificado con el de Vault: OK, se permite la llamada[auth] req=f616bb3a2bdf secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=5ddc995039a9 introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=5ddc995039a9 POST /introspect -> 200 (4 ms)
+auth-1            | [auth] req=f616bb3a2bdf introspect: sesion valida en auth.sesiones, rol=admin -> autenticado
+auth-1            | [auth] req=f616bb3a2bdf POST /introspect -> 200 (4 ms)
+auth-1            | [auth] req=5ddc995039a9 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1            | [auth] req=5ddc995039a9 GET /usuarios -> 200 (2 ms)
+gateway-1         | [gateway] req=4a15ebc8b4ea ruta S08: POST /contact -> clients (publica, origen http://localhost:8080)
+gateway-1         | [gateway] req=4a15ebc8b4ea enrutando a clients POST /contact con el secreto gateway->clients leido de Vault
+gateway-1         | [gateway] req=4a15ebc8b4ea clients respondio 201
+gateway-1         | [gateway] req=4a15ebc8b4ea POST /api/v1/contact -> 201 (16 ms)
+gateway-1         | [gateway] req=5ddc995039a9 ruta S33: GET /admin/users -> auth (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=5ddc995039a9 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=f616bb3a2bdf ruta S25: GET /admin/contact -> clients (requiere sesion, origen http://localhost:8080)
+gateway-1         | [gateway] req=f616bb3a2bdf pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1         | [gateway] req=5ddc995039a9 Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=5ddc995039a9 enrutando a auth GET /usuarios con el secreto gateway->auth leido de Vault
+gateway-1         | [gateway] req=f616bb3a2bdf Auth Service respondio: token valido, rol=admin
+gateway-1         | [gateway] req=f616bb3a2bdf enrutando a clients GET /contact con el secreto gateway->clients leido de Vault
+gateway-1         | [gateway] req=f616bb3a2bdf clients respondio 200
+gateway-1         | [gateway] req=5ddc995039a9 auth respondio 200
+gateway-1         | [gateway] req=f616bb3a2bdf GET /api/v1/admin/contact -> 200 (12 ms)
+gateway-1         | [gateway] req=5ddc995039a9 GET /api/v1/admin/users -> 200 (15 ms)

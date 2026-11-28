@@ -1,0 +1,39 @@
+[
+ {
+  "descripcion": "Usuario nuevo",
+  "hora": "2026-11-28T17:46:01+00:00",
+  "servicio": "auth",
+  "coleccion": "usuarios",
+  "filtro": {
+   "email": "camila.c3.1795887956315@correo.cl"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "USR-53F96CE3",
+    "email": "camila.c3.1795887956315@correo.cl",
+    "rol": "cliente",
+    "correo_verificado": true
+   }
+  ]
+ },
+ {
+  "descripcion": "Correo de verificación (cuerpo oculto)",
+  "hora": "2026-11-28T17:46:02+00:00",
+  "servicio": "notificaciones",
+  "coleccion": "correos",
+  "filtro": {
+   "para": "camila.c3.1795887956315@correo.cl"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "VER-2dbe919672f4",
+    "tipo": "verificacion",
+    "asunto": "Aroma & Cafe - Verifica tu correo",
+    "cuerpo": "***",
+    "estado": "ENVIADO_SIMULADO"
+   }
+  ]
+ }
+]

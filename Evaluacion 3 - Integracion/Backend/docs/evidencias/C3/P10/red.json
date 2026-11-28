@@ -1,0 +1,98 @@
+[
+ {
+  "hora": "2026-11-28T17:44:53+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-724B33B7",
+  "estado": 200,
+  "request_id": "d34908779fad",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-724B33B7\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":2800,\"creado_en\":\"2026-11-28T17:44:42+00:00\",\"pagado_en\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:44:53+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/payments",
+  "estado": 201,
+  "request_id": "f9356b1b2e68",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"order_id\":\"ORD-724B33B7\"}",
+  "respuesta": "{\"id\":\"PAY-9498AA1A\",\"order_id\":\"ORD-724B33B7\",\"estado\":\"PENDIENTE\",\"monto\":2800,\"url_pago\":\"https://sandbox.pagos.example/pagar/chk_252795cf700fe9e6\"}"
+ },
+ {
+  "hora": "2026-11-28T17:44:53+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/payments/PAY-9498AA1A/simular",
+  "estado": 202,
+  "request_id": "82a284b84dd3",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"resultado\":\"rechazado\"}",
+  "respuesta": "{\"avisos\":[{\"status\":200,\"respuesta\":{\"ok\":true,\"estado\":\"RECHAZADO\"}}]}"
+ },
+ {
+  "hora": "2026-11-28T17:44:53+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-724B33B7",
+  "estado": 200,
+  "request_id": "8fe9999062c6",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-724B33B7\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":2800,\"creado_en\":\"2026-11-28T17:44:42+00:00\",\"pagado_en\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:44:56+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/payments",
+  "estado": 201,
+  "request_id": "3948e4a1bf77",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"order_id\":\"ORD-724B33B7\"}",
+  "respuesta": "{\"id\":\"PAY-0FC6AF95\",\"order_id\":\"ORD-724B33B7\",\"estado\":\"PENDIENTE\",\"monto\":2800,\"url_pago\":\"https://sandbox.pagos.example/pagar/chk_42ac5994bdb64bdc\"}"
+ },
+ {
+  "hora": "2026-11-28T17:44:56+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/payments/PAY-0FC6AF95/simular",
+  "estado": 202,
+  "request_id": "5a404330593f",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"resultado\":\"aprobado\"}",
+  "respuesta": "{\"avisos\":[{\"status\":200,\"respuesta\":{\"ok\":true,\"estado\":\"APROBADO\"}}]}"
+ },
+ {
+  "hora": "2026-11-28T17:44:56+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-724B33B7",
+  "estado": 200,
+  "request_id": "d56ce7bfb2d7",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-724B33B7\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":2800,\"creado_en\":\"2026-11-28T17:44:42+00:00\",\"pagado_en\":\"2026-11-28T17:44:56+00:00\"}"
+ },
+ {
+  "hora": "2026-11-28T17:44:56+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-724B33B7/receipt",
+  "estado": 200,
+  "request_id": "d57dacee907e",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"folio\":\"B-000002\",\"fecha\":\"2026-11-28T17:44:56+00:00\",\"pedido\":\"ORD-724B33B7\",\"caja\":\"CAJA-WEB-01\",\"detalle\":[{\"producto\":\"Croissant de Mantequilla\",\"cantidad\":1,\"precio\":2800,\"total\":2800}],\"neto\":2353,\"iva\":447,\"total\":2800}"
+ }
+]

@@ -1,0 +1,57 @@
+inventory-1  | [inventory] req=5048b7b3b1a9 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=5048b7b3b1a9 MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+inventory-1  | [inventory] req=5048b7b3b1a9 GET /products -> 200 (3 ms)
+inventory-1  | [inventory] req=0704a2f0a1a3 secreto de graphql verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=0704a2f0a1a3 GET /internal/products -> 200 (2 ms)
+graphql-1    | [graphql] req=0704a2f0a1a3 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+graphql-1    | [graphql] req=0704a2f0a1a3 POST /graphql -> 200 (19 ms)
+graphql-1    | [graphql] req=d94c3b3ae1b3 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+graphql-1    | [graphql] req=d94c3b3ae1b3 POST /graphql -> 200 (4 ms)
+graphql-1    | [graphql] req=d287b6101ff7 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+graphql-1    | [graphql] req=d287b6101ff7 POST /graphql -> 200 (3 ms)
+graphql-1    | [graphql] req=2d74b5dd1ee8 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+graphql-1    | [graphql] req=2d74b5dd1ee8 POST /graphql -> 422 (1 ms)
+payments-1   | [payments] req=0704a2f0a1a3 secreto de graphql verificado con el de Vault: OK, se permite la llamada
+payments-1   | [payments] req=0704a2f0a1a3 GET /payments/by-orders -> 200 (2 ms)
+auth-1       | [auth] req=0704a2f0a1a3 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=0704a2f0a1a3 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+orders-1     | [orders] req=0704a2f0a1a3 secreto de graphql verificado con el de Vault: OK, se permite la llamada
+orders-1     | [orders] req=0704a2f0a1a3 GET /orders/ORD-E73B8F93 -> 200 (2 ms)
+auth-1       | [auth] req=0704a2f0a1a3 POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=d94c3b3ae1b3 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=d94c3b3ae1b3 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=d94c3b3ae1b3 POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=d287b6101ff7 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=d287b6101ff7 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=d287b6101ff7 POST /introspect -> 200 (1 ms)
+auth-1       | [auth] req=2d74b5dd1ee8 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=2d74b5dd1ee8 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=2d74b5dd1ee8 POST /introspect -> 200 (2 ms)
+gateway-1    | [gateway] req=5048b7b3b1a9 ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=5048b7b3b1a9 enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=5048b7b3b1a9 inventory respondio 200
+gateway-1    | [gateway] req=5048b7b3b1a9 GET /api/v1/products -> 200 (11 ms)
+gateway-1    | [gateway] req=0704a2f0a1a3 ruta S18: POST /graphql -> graphql (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=0704a2f0a1a3 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=0704a2f0a1a3 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=0704a2f0a1a3 enrutando a graphql POST /graphql con el secreto gateway->graphql leido de Vault
+gateway-1    | [gateway] req=0704a2f0a1a3 graphql respondio 200
+gateway-1    | [gateway] req=0704a2f0a1a3 POST /api/v1/graphql -> 200 (28 ms)
+gateway-1    | [gateway] req=d94c3b3ae1b3 ruta S18: POST /graphql -> graphql (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=d94c3b3ae1b3 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=d94c3b3ae1b3 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=d94c3b3ae1b3 enrutando a graphql POST /graphql con el secreto gateway->graphql leido de Vault
+gateway-1    | [gateway] req=d94c3b3ae1b3 graphql respondio 200
+gateway-1    | [gateway] req=d94c3b3ae1b3 POST /api/v1/graphql -> 200 (12 ms)
+gateway-1    | [gateway] req=d287b6101ff7 ruta S18: POST /graphql -> graphql (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=d287b6101ff7 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=d287b6101ff7 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=d287b6101ff7 enrutando a graphql POST /graphql con el secreto gateway->graphql leido de Vault
+gateway-1    | [gateway] req=d287b6101ff7 graphql respondio 200
+gateway-1    | [gateway] req=d287b6101ff7 POST /api/v1/graphql -> 200 (11 ms)
+gateway-1    | [gateway] req=2d74b5dd1ee8 ruta S18: POST /graphql -> graphql (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=2d74b5dd1ee8 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=2d74b5dd1ee8 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=2d74b5dd1ee8 enrutando a graphql POST /graphql con el secreto gateway->graphql leido de Vault
+gateway-1    | [gateway] req=2d74b5dd1ee8 graphql respondio 422
+gateway-1    | [gateway] req=2d74b5dd1ee8 POST /api/v1/graphql -> 422 (8 ms)

@@ -1,4 +1,4 @@
-Prueba de fallos, desconexiones y concurrencia (2026-11-16 19:42)
+Prueba de fallos, desconexiones y concurrencia (2026-11-28 17:34)
 
   [OK]    inventory_caido_error_controlado_y_recuperacion: Con inventory apagado: el catalogo responde un error controlado (sin datos falsos) y GraphQL entrega lo de orders con un aviso de respuesta incompleta. Al restaurarlo, todo vuelve a funcionar.
   [OK]    auth_caido_falla_cerrado_y_recuperacion: Con auth apagado las rutas protegidas se rechazan (falla cerrado), el catalogo publico sigue y, al volver auth, la misma sesion sigue valida porque vive en MongoDB.

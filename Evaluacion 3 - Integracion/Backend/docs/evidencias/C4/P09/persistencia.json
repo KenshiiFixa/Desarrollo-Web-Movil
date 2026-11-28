@@ -1,0 +1,72 @@
+[
+ {
+  "descripcion": "Pagos del pedido",
+  "hora": "2026-11-28T17:48:59+00:00",
+  "servicio": "payments",
+  "coleccion": "pagos",
+  "filtro": {
+   "order_id": "ORD-BF9EE529"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "PAY-9ACCC337",
+    "monto": 9200,
+    "estado": "APROBADO"
+   }
+  ]
+ },
+ {
+  "descripcion": "Pedido",
+  "hora": "2026-11-28T17:49:00+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-BF9EE529"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-BF9EE529",
+    "estado": "PAGADO",
+    "folio": "B-000001",
+    "caja": "CAJA-WEB-01"
+   }
+  ]
+ },
+ {
+  "descripcion": "Correo de boleta",
+  "hora": "2026-11-28T17:49:02+00:00",
+  "servicio": "notificaciones",
+  "coleccion": "correos",
+  "filtro": {
+   "_id": "ORD-BF9EE529"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-BF9EE529",
+    "tipo": "boleta",
+    "asunto": "Aroma & Cafe - Boleta B-000001",
+    "estado": "ENVIADO_SIMULADO"
+   }
+  ]
+ },
+ {
+  "descripcion": "Venta en analítica",
+  "hora": "2026-11-28T17:49:04+00:00",
+  "servicio": "analitica",
+  "coleccion": "ventas",
+  "filtro": {
+   "_id": "ORD-BF9EE529"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-BF9EE529",
+    "total": 9200,
+    "tipo_entrega": "retiro"
+   }
+  ]
+ }
+]

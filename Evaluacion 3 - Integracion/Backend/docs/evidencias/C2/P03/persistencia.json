@@ -1,0 +1,60 @@
+[
+ {
+  "descripcion": "Pedido en orders.pedidos",
+  "hora": "2026-11-28T17:39:35+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-85DB18DC"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-85DB18DC",
+    "user_id": "USR-003",
+    "estado": "PENDIENTE_PAGO",
+    "tipo_entrega": "retiro",
+    "lineas": [
+     {
+      "product_id": "latte-art",
+      "nombre": "Latte Art",
+      "precio": 3200,
+      "cantidad": 2
+     },
+     {
+      "product_id": "croissant",
+      "nombre": "Croissant de Mantequilla",
+      "precio": 2800,
+      "cantidad": 1
+     }
+    ],
+    "total": 9200
+   }
+  ]
+ },
+ {
+  "descripcion": "Stock después del pedido",
+  "hora": "2026-11-28T17:39:39+00:00",
+  "servicio": "inventory",
+  "coleccion": "productos",
+  "filtro": {
+   "_id": {
+    "$in": [
+     "latte-art",
+     "croissant"
+    ]
+   }
+  },
+  "total": 2,
+  "resultado": [
+   {
+    "_id": "croissant",
+    "stock": 39
+   },
+   {
+    "_id": "latte-art",
+    "stock": 38
+   }
+  ]
+ }
+]

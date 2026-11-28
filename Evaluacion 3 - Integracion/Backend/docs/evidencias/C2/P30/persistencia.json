@@ -1,0 +1,20 @@
+[
+ {
+  "descripcion": "Mensaje guardado",
+  "hora": "2026-11-28T17:42:44+00:00",
+  "servicio": "clients",
+  "coleccion": "contacto",
+  "filtro": {
+   "nombre": "Visita C2 62733"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "6b0b1293d6d436147bebc4cf",
+    "nombre": "Visita C2 62733",
+    "motivo": "sugerencia",
+    "creado_en": "2026-11-28T17:42:43+00:00"
+   }
+  ]
+ }
+]

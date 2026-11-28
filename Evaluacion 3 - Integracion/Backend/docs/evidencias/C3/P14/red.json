@@ -1,0 +1,50 @@
+[
+ {
+  "hora": "2026-11-28T17:45:20+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "eb9f253194fd",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"pedro@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"cliente\"}"
+ },
+ {
+  "hora": "2026-11-28T17:45:20+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "148dcd9a497f",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:45:20+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-752AD31F",
+  "estado": 404,
+  "request_id": "ddc0786d5ed7",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"detail\":\"Pedido no encontrado\"}"
+ },
+ {
+  "hora": "2026-11-28T17:45:21+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/graphql",
+  "estado": 200,
+  "request_id": "bb345e2ac977",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"query\":\"query($id: String!) { resumenPedido(id: $id) { id estado total } }\",\"variables\":{\"id\":\"ORD-752AD31F\"}}",
+  "respuesta": "{\"data\":{\"resumenPedido\":null}}"
+ }
+]

@@ -1,0 +1,35 @@
+[
+ {
+  "descripcion": "Pedido con aviso pendiente",
+  "hora": "2026-11-28T17:50:51+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-358A2AFD"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-358A2AFD",
+    "estado": "PAGADO",
+    "avisos_enviados": false
+   }
+  ]
+ },
+ {
+  "descripcion": "Venta registrada después de la recuperación",
+  "hora": "2026-11-28T17:51:14+00:00",
+  "servicio": "analitica",
+  "coleccion": "ventas",
+  "filtro": {
+   "_id": "ORD-358A2AFD"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-358A2AFD",
+    "total": 3000
+   }
+  ]
+ }
+]

@@ -1,0 +1,35 @@
+[
+ {
+  "descripcion": "Ventas del pedido en analítica",
+  "hora": "2026-11-28T17:40:36+00:00",
+  "servicio": "analitica",
+  "coleccion": "ventas",
+  "filtro": {
+   "_id": "ORD-488151CA"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-488151CA",
+    "total": 2500
+   }
+  ]
+ },
+ {
+  "descripcion": "Pedido",
+  "hora": "2026-11-28T17:40:38+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-488151CA"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-488151CA",
+    "estado": "PAGADO",
+    "folio": "B-000003"
+   }
+  ]
+ }
+]

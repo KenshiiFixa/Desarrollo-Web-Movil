@@ -57,42 +57,10 @@
 
  
   <aside class="featured">
-    <h2>Los más pedidos</h2>
-    <div class="product-list">
-
-      <div class="product-card">
-        <div class="product-thumb">
-          <img src="espresso.png" alt="Espresso Doble" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0px 4px 4px rgba(62,39,35,0.2));">
-        </div>
-        <div class="product-info">
-          <div class="name">Espresso Doble</div>
-          <div class="meta">Taza · 60 ml</div>
-        </div>
-        <div class="product-price">$2.500</div>
-      </div>
-
-      <div class="product-card">
-        <div class="product-thumb">
-          <img src="latte.png" alt="Latte Art" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0px 4px 4px rgba(62,39,35,0.2));">
-        </div>
-        <div class="product-info">
-          <div class="name">Latte Art</div>
-          <div class="meta">Taza · 240 ml</div>
-        </div>
-        <div class="product-price">$3.200</div>
-      </div>
-
-      <div class="product-card">
-        <div class="product-thumb">
-          <img src="cold-brew.png" alt="Cold Brew" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0px 4px 4px rgba(62,39,35,0.2));">
-        </div>
-        <div class="product-info">
-          <div class="name">Cold Brew</div>
-          <div class="meta">Vaso · 350 ml</div>
-        </div>
-        <div class="product-price">$3.500</div>
-      </div>
-
+    <h2>Destacados de la carta</h2>
+    <!-- app.js muestra aqui 3 productos del API Gateway, primero los que estan en oferta -->
+    <div class="product-list" id="destacados">
+      <p class="featured-estado" id="destacados-estado">Cargando destacados…</p>
     </div>
     <a href="catalogo.php" class="see-all">Ver toda la carta</a>
   </aside>

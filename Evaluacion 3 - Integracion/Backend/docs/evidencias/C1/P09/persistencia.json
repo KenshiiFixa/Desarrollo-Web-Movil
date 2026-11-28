@@ -1,0 +1,72 @@
+[
+ {
+  "descripcion": "Pagos del pedido",
+  "hora": "2026-11-28T17:36:16+00:00",
+  "servicio": "payments",
+  "coleccion": "pagos",
+  "filtro": {
+   "order_id": "ORD-30400C33"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "PAY-755E024F",
+    "monto": 9200,
+    "estado": "APROBADO"
+   }
+  ]
+ },
+ {
+  "descripcion": "Pedido",
+  "hora": "2026-11-28T17:36:18+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-30400C33"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-30400C33",
+    "estado": "PAGADO",
+    "folio": "B-000001",
+    "caja": "CAJA-WEB-01"
+   }
+  ]
+ },
+ {
+  "descripcion": "Correo de boleta",
+  "hora": "2026-11-28T17:36:20+00:00",
+  "servicio": "notificaciones",
+  "coleccion": "correos",
+  "filtro": {
+   "_id": "ORD-30400C33"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-30400C33",
+    "tipo": "boleta",
+    "asunto": "Aroma & Cafe - Boleta B-000001",
+    "estado": "ENVIADO_SIMULADO"
+   }
+  ]
+ },
+ {
+  "descripcion": "Venta en analítica",
+  "hora": "2026-11-28T17:36:22+00:00",
+  "servicio": "analitica",
+  "coleccion": "ventas",
+  "filtro": {
+   "_id": "ORD-30400C33"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-30400C33",
+    "total": 9200,
+    "tipo_entrega": "retiro"
+   }
+  ]
+ }
+]

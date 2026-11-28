@@ -10,7 +10,7 @@ from typing import Optional
 from fastapi import Depends, FastAPI, Query
 from pydantic import BaseModel, Field
 
-from comun import registrar_logs, conectar_mongo, exigir_rol, leer_secretos, usuario_actual, verificar_servicio
+from comun import log, registrar_logs, conectar_mongo, exigir_rol, leer_secretos, usuario_actual, verificar_servicio
 
 db = None
 
@@ -67,6 +67,7 @@ class Venta(BaseModel):
 def registrar_venta(venta: Venta):
     # _id = order_id: si orders reintenta el mismo pedido, se reemplaza (no se cuenta dos veces)
     db.ventas.replace_one({"_id": venta.order_id}, venta.model_dump(), upsert=True)
+    log(f"MongoDB: venta {venta.order_id} registrada en analitica.ventas (sin datos personales)")
     return {"ok": True}
 
 
@@ -82,7 +83,9 @@ def reporte_ventas(usuario=Depends(usuario_actual),
             filtro["pagado_en"]["$gte"] = desde
         if hasta:
             filtro["pagado_en"]["$lte"] = hasta + "T23:59:59"
-    return resumir_ventas(list(db.ventas.find(filtro)))
+    ventas = list(db.ventas.find(filtro))
+    log(f"MongoDB: reporte calculado con {len(ventas)} ventas de analitica.ventas (rol={usuario['rol']})")
+    return resumir_ventas(ventas)
 
 
 @app.get("/health")

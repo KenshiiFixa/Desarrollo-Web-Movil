@@ -1,0 +1,11 @@
+inventory-1  | [inventory] req=67011a5ee9bc secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=67011a5ee9bc MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+inventory-1  | [inventory] req=67011a5ee9bc GET /products -> 200 (3 ms)
+gateway-1    | [gateway] req=2db184f02926 ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=2db184f02926 enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=2db184f02926 inventory no responde -> 502
+gateway-1    | [gateway] req=2db184f02926 GET /api/v1/products -> 502 (3 ms)
+gateway-1    | [gateway] req=67011a5ee9bc ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=67011a5ee9bc enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=67011a5ee9bc inventory respondio 200
+gateway-1    | [gateway] req=67011a5ee9bc GET /api/v1/products -> 200 (11 ms)

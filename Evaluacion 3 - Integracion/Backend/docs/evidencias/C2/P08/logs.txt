@@ -1,0 +1,42 @@
+orders-1  | [orders] req=713ade4d58fb secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1  | [orders] req=713ade4d58fb POST /orders -> 503 (3006 ms)
+orders-1  | [orders] req=884f73ed468e secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1  | [orders] req=884f73ed468e MongoDB: pedido ORD-697C1C21 guardado en orders.pedidos (PENDIENTE_PAGO, total=2800)
+orders-1  | [orders] req=884f73ed468e POST /orders -> 201 (7 ms)
+orders-1  | [orders] req=50a5e6df6d42 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+orders-1  | [orders] req=50a5e6df6d42 GET /orders/ORD-697C1C21 -> 200 (2 ms)
+inventory-1  | [inventory] req=993636ca9398 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+inventory-1  | [inventory] req=993636ca9398 MongoDB: consulta inventory.productos (filtro: activo) -> 8 documentos
+inventory-1  | [inventory] req=993636ca9398 GET /products -> 200 (2 ms)
+inventory-1  | [inventory-grpc] req=884f73ed468e ReservarStock desde orders: secreto verificado con el de Vault
+gateway-1    | [gateway] req=993636ca9398 ruta S01: GET /products -> inventory (publica, origen http://localhost:8080)
+gateway-1    | [gateway] req=993636ca9398 enrutando a inventory GET /products con el secreto gateway->inventory leido de Vault
+gateway-1    | [gateway] req=993636ca9398 inventory respondio 200
+gateway-1    | [gateway] req=993636ca9398 GET /api/v1/products -> 200 (9 ms)
+gateway-1    | [gateway] req=713ade4d58fb ruta S09: POST /orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=713ade4d58fb pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=713ade4d58fb Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=713ade4d58fb enrutando a orders POST /orders con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=713ade4d58fb orders respondio 503
+gateway-1    | [gateway] req=713ade4d58fb POST /api/v1/orders -> 502 (3026 ms)
+gateway-1    | [gateway] req=884f73ed468e ruta S09: POST /orders -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=884f73ed468e pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=884f73ed468e Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=884f73ed468e enrutando a orders POST /orders con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=884f73ed468e orders respondio 201
+gateway-1    | [gateway] req=884f73ed468e POST /api/v1/orders -> 201 (20 ms)
+gateway-1    | [gateway] req=50a5e6df6d42 ruta S11: GET /orders/ORD-697C1C21 -> orders (requiere sesion, origen http://localhost:8080)
+gateway-1    | [gateway] req=50a5e6df6d42 pidiendo validacion del token al Auth Service (POST /introspect)
+gateway-1    | [gateway] req=50a5e6df6d42 Auth Service respondio: token valido, rol=cliente
+gateway-1    | [gateway] req=50a5e6df6d42 enrutando a orders GET /orders/ORD-697C1C21 con el secreto gateway->orders leido de Vault
+gateway-1    | [gateway] req=50a5e6df6d42 orders respondio 200
+gateway-1    | [gateway] req=50a5e6df6d42 GET /api/v1/orders/ORD-697C1C21 -> 200 (11 ms)
+auth-1       | [auth] req=713ade4d58fb secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=713ade4d58fb introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=713ade4d58fb POST /introspect -> 200 (4 ms)
+auth-1       | [auth] req=884f73ed468e secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=884f73ed468e introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=884f73ed468e POST /introspect -> 200 (2 ms)
+auth-1       | [auth] req=50a5e6df6d42 secreto de gateway verificado con el de Vault: OK, se permite la llamada
+auth-1       | [auth] req=50a5e6df6d42 introspect: sesion valida en auth.sesiones, rol=cliente -> autenticado
+auth-1       | [auth] req=50a5e6df6d42 POST /introspect -> 200 (2 ms)

@@ -1,0 +1,2 @@
+Sin secreto: inventory respondio 403 Forbidden
+Haciendose pasar por el gateway con un secreto falso: inventory respondio 403 Forbidden

@@ -3,6 +3,7 @@
   // Direccion del API Gateway (unica entrada al backend)
   var API_URL = 'https://127.0.0.1:8000/api/v1';
   var SESION_KEY = 'aroma_sesion';
+  var CLAVE_KEY = 'aroma_clave_pedido';
 
   // ---------- Sesion ----------
   // El token se guarda en sessionStorage, que se borra al cerrar el navegador.
@@ -71,12 +72,27 @@
     'Fecha de nacimiento invalida': 'La fecha de nacimiento no es válida.',
     'Permiso insuficiente': 'No tienes permiso para esta sección.',
     'Ya existe un producto con ese id': 'Ya existe un producto con ese código.',
-    'Producto no encontrado': 'El producto ya no existe.'
+    'Producto no encontrado': 'El producto ya no existe.',
+    'Pedido no encontrado': 'No encontramos ese pedido.',
+    'Para delivery se requiere direccion y comuna': 'Para el despacho a domicilio escribe la dirección y la comuna.',
+    'La direccion esta fuera del radio de despacho (3 km)': 'Esa dirección está fuera del radio de despacho (3 km del local). Puedes elegir retiro en el local.',
+    'El pedido ya no se puede anular': 'Este pedido ya no se puede anular.',
+    'El pago ya fue procesado': 'Este pago ya fue procesado.',
+    'El pedido no esta pendiente de pago': 'Este pedido ya no está pendiente de pago.',
+    'El pedido aun no esta pagado': 'El pedido aún no está pagado.',
+    'Error en el servicio interno': 'Un servicio del sistema no está disponible. Intenta de nuevo en unos segundos.',
+    'Backend no disponible': 'Un servicio del sistema no está disponible. Intenta de nuevo en unos segundos.',
+    'Authentication Service no disponible': 'El servicio de sesiones no está disponible. Intenta de nuevo en unos segundos.',
+    'No puedes cambiar tu propio perfil': 'No puedes cambiar tu propio perfil.',
+    'Ya existe un usuario con ese correo': 'Ya existe un usuario con ese correo.'
   };
 
   function mensajeError(res) {
     if (res.status === 429) return 'Demasiados intentos. Espera un minuto y vuelve a intentar.';
     var detalle = res.datos && res.datos.detail;
+    if (typeof detalle === 'string' && detalle.indexOf('Stock insuficiente') === 0) {
+      return 'No hay stock suficiente de uno de los productos. Revisa las cantidades.';
+    }
     if (typeof detalle === 'string') return MENSAJES[detalle] || detalle;
     if (res.status === 422) return 'Revisa los datos del formulario.';
     return 'Ocurrió un error (' + res.status + '). Intenta de nuevo.';
@@ -101,6 +117,18 @@
     if (el) el.className = 'aviso';
   }
 
+  // Error al cargar datos: mensaje con un boton para reintentar sin recargar la pagina
+  function errorDeCarga(el, texto, reintentar) {
+    mostrarAviso(el, texto, 'error');
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn-chico btn-reintentar';
+    b.textContent = 'Reintentar';
+    b.addEventListener('click', reintentar);
+    el.appendChild(document.createTextNode(' '));
+    el.appendChild(b);
+  }
+
   // Lee un formulario: los campos vacios quedan en null (asi el backend los toma como "no informado")
   function leerFormulario(form) {
     var datos = {};
@@ -117,7 +145,16 @@
     if (boton) boton.disabled = si;
   }
 
-  // Encabezado: con sesion muestra "Hola, nombre", Inventario (dueno o admin) y Cerrar sesion
+  // Enlaces del encabezado segun el rol de la sesion
+  var ENLACES_ROL = {
+    cliente: [['mis-pedidos.php', 'Mis pedidos']],
+    despacho: [['despacho.php', 'Despacho']],
+    cajero: [['ventas.php', 'Ventas']],
+    dueno: [['inventario.php', 'Inventario'], ['reportes.php', 'Reportes']],
+    admin: [['admin.php', 'Administración']]
+  };
+
+  // Encabezado: con sesion muestra "Hola, nombre", los enlaces de su rol y Cerrar sesion
   function pintarEncabezado() {
     var cont = document.querySelector('.auth-actions');
     var sesion = leerSesion();
@@ -133,13 +170,13 @@
     hola.className = 'saludo';
     hola.textContent = 'Hola, ' + ((sesion.nombre || sesion.email).split(' ')[0]);
     cont.appendChild(hola);
-    if (sesion.rol === 'dueno' || sesion.rol === 'admin') {
-      var inv = document.createElement('a');
-      inv.href = 'inventario.php';
-      inv.className = 'btn-login';
-      inv.textContent = 'Inventario';
-      cont.appendChild(inv);
-    }
+    (ENLACES_ROL[sesion.rol] || []).forEach(function (enlace) {
+      var a = document.createElement('a');
+      a.href = enlace[0];
+      a.className = 'btn-login';
+      a.textContent = enlace[1];
+      cont.appendChild(a);
+    });
     var salir = document.createElement('button');
     salir.type = 'button';
     salir.className = 'btn-register';
@@ -169,7 +206,10 @@
   }
 
   function saveCart(cart) {
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    try {
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+      sessionStorage.removeItem(CLAVE_KEY);   // carrito distinto = pedido distinto
+    } catch (e) { /* sin almacenamiento */ }
     updateCartBadge();
   }
 
@@ -238,39 +278,65 @@
     var emptyMsg = document.getElementById('cart-empty');
 
     if (cart.length === 0) {
-      list.innerHTML = '';
+      list.textContent = '';
       if (emptyMsg) emptyMsg.style.display = 'block';
       updateSummary(0);
       return;
     }
     if (emptyMsg) emptyMsg.style.display = 'none';
 
-    list.innerHTML = cart.map(function (item) {
-      return (
-        '<div class="cart-item" data-id="' + item.id + '">' +
-          '<div class="art">' + item.art + '</div>' +
-          '<div class="info">' +
-            '<h4>' + item.name + '</h4>' +
-            '<div class="qty-control">' +
-              '<button type="button" data-action="dec" aria-label="Restar">\u2212</button>' +
-              '<span>' + item.qty + '</span>' +
-              '<button type="button" data-action="inc" aria-label="Sumar">+</button>' +
-            '</div>' +
-            '<a href="#" class="remove-item" data-action="remove">Quitar</a>' +
-          '</div>' +
-          '<div class="line-price">' + money(item.price * item.qty) + '</div>' +
-        '</div>'
-      );
-    }).join('');
-
-    list.querySelectorAll('.cart-item').forEach(function (el) {
-      var id = el.getAttribute('data-id');
-      el.querySelector('[data-action="inc"]').addEventListener('click', function () { changeQty(id, 1); });
-      el.querySelector('[data-action="dec"]').addEventListener('click', function () { changeQty(id, -1); });
-      el.querySelector('[data-action="remove"]').addEventListener('click', function (e) {
+    // Las filas se arman con textContent: el nombre del producto viene de la API
+    list.textContent = '';
+    cart.forEach(function (item) {
+      var fila = document.createElement('div');
+      fila.className = 'cart-item';
+      var art = document.createElement('div');
+      art.className = 'art';
+      if (item.imagen) {
+        var img = document.createElement('img');
+        img.src = item.imagen;
+        img.alt = '';
+        art.appendChild(img);
+      }
+      var info = document.createElement('div');
+      info.className = 'info';
+      var h4 = document.createElement('h4');
+      h4.textContent = item.name;
+      var qty = document.createElement('div');
+      qty.className = 'qty-control';
+      var menos = document.createElement('button');
+      menos.type = 'button';
+      menos.setAttribute('aria-label', 'Restar');
+      menos.textContent = '\u2212';
+      menos.addEventListener('click', function () { changeQty(item.id, -1); });
+      var cantidad = document.createElement('span');
+      cantidad.textContent = item.qty;
+      var mas = document.createElement('button');
+      mas.type = 'button';
+      mas.setAttribute('aria-label', 'Sumar');
+      mas.textContent = '+';
+      mas.addEventListener('click', function () { changeQty(item.id, 1); });
+      qty.appendChild(menos);
+      qty.appendChild(cantidad);
+      qty.appendChild(mas);
+      var quitar = document.createElement('a');
+      quitar.href = '#';
+      quitar.className = 'remove-item';
+      quitar.textContent = 'Quitar';
+      quitar.addEventListener('click', function (e) {
         e.preventDefault();
-        removeFromCart(id);
+        removeFromCart(item.id);
       });
+      info.appendChild(h4);
+      info.appendChild(qty);
+      info.appendChild(quitar);
+      var precio = document.createElement('div');
+      precio.className = 'line-price';
+      precio.textContent = money(item.price * item.qty);
+      fila.appendChild(art);
+      fila.appendChild(info);
+      fila.appendChild(precio);
+      list.appendChild(fila);
     });
 
     var total = cart.reduce(function (sum, i) { return sum + i.price * i.qty; }, 0);
@@ -297,13 +363,11 @@
     (root || document).querySelectorAll('[data-add-to-cart]').forEach(function (btn) {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
-        var card = btn.closest('.product-card-lg');
-        var art = card ? card.querySelector('.art') : null;
         addToCart({
           id: btn.getAttribute('data-id'),
           name: btn.getAttribute('data-name'),
           price: parseInt(btn.getAttribute('data-price'), 10),
-          art: art ? art.innerHTML : ''
+          imagen: btn.getAttribute('data-imagen') || ''
         });
       });
     });
@@ -346,6 +410,7 @@
     btn.setAttribute('data-id', p.id);
     btn.setAttribute('data-name', p.nombre);
     btn.setAttribute('data-price', precio);
+    btn.setAttribute('data-imagen', p.imagen || '');
     btn.textContent = p.disponible ? 'Agregar al pedido' : 'Agotado';
     btn.disabled = !p.disponible;
     card.appendChild(btn);
@@ -497,7 +562,7 @@
                 sesion.nombre = perfil.datos.nombre;
                 guardarSesion(sesion);
               }
-              var inicio = (sesion.rol === 'dueno' || sesion.rol === 'admin') ? 'inventario.php' : 'catalogo.php';
+              var inicio = { despacho: 'despacho.php', cajero: 'ventas.php', dueno: 'inventario.php', admin: 'admin.php' }[sesion.rol] || 'catalogo.php';
               location.href = volver || inicio;
             });
           }
@@ -601,17 +666,21 @@
         .forEach(function (c) { form.elements[c].value = perfil[c] || ''; });
     }
 
-    llamarApi('GET', '/clients/me', undefined, true)
-      .then(function (res) {
-        if (res.status === 200) {
-          rellenar(res.datos);
-          ocultarAviso(aviso);
-          form.hidden = false;
-        } else {
-          mostrarAviso(aviso, mensajeError(res), 'error');
-        }
-      })
-      .catch(function () { mostrarAviso(aviso, ERROR_CONEXION, 'error'); });
+    function cargarFicha() {
+      mostrarAviso(aviso, 'Cargando tus datos…');
+      llamarApi('GET', '/clients/me', undefined, true)
+        .then(function (res) {
+          if (res.status === 200) {
+            rellenar(res.datos);
+            ocultarAviso(aviso);
+            form.hidden = false;
+          } else {
+            errorDeCarga(aviso, mensajeError(res), cargarFicha);
+          }
+        })
+        .catch(function () { errorDeCarga(aviso, ERROR_CONEXION, cargarFicha); });
+    }
+    cargarFicha();
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -735,16 +804,16 @@
             return;
           }
           if (res.status !== 200) {
-            mostrarAviso(aviso, mensajeError(res), 'error');
+            errorDeCarga(aviso, mensajeError(res), cargar);
             return;
           }
-          if (aviso.textContent === 'Cargando el inventario…') ocultarAviso(aviso);
+          if (aviso.textContent === 'Cargando el inventario…' || aviso.querySelector('.btn-reintentar')) ocultarAviso(aviso);
           filas.textContent = '';
           res.datos.forEach(function (p) { filas.appendChild(fila(p)); });
           tabla.hidden = false;
           nuevo.hidden = false;
         })
-        .catch(function () { mostrarAviso(aviso, ERROR_CONEXION, 'error'); });
+        .catch(function () { errorDeCarga(aviso, ERROR_CONEXION, cargar); });
     }
 
     formNuevo.addEventListener('submit', function (e) {
@@ -775,15 +844,628 @@
     cargar();
   }
 
+  // ---------- Confirmar pedido desde el carrito (POST /api/v1/orders) ----------
+  function claveDePedido() {
+    // Clave de idempotencia: si se reintenta el mismo carrito, orders devuelve el mismo pedido
+    try {
+      var clave = sessionStorage.getItem(CLAVE_KEY);
+      if (!clave) {
+        clave = 'PED-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+        sessionStorage.setItem(CLAVE_KEY, clave);
+      }
+      return clave;
+    } catch (e) {
+      return null;
+    }
+  }
+
   function setupPayButton() {
     var btn = document.getElementById('btn-pay');
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      showToast('Pedido enviado. Te avisaremos cuando esté listo.');
-      localStorage.removeItem(CART_KEY);
-      updateCartBadge();
-      renderCart();
+    var form = document.getElementById('entrega-form');
+    if (!btn || !form) return;
+    var aviso = document.getElementById('pedido-aviso');
+    var direccion = document.getElementById('entrega-direccion');
+
+    form.addEventListener('change', function () {
+      direccion.hidden = form.elements.tipo_entrega.value !== 'delivery';
     });
+
+    btn.addEventListener('click', function () {
+      var sesion = leerSesion();
+      if (!sesion) {
+        irALogin();
+        return;
+      }
+      if (sesion.rol !== 'cliente') {
+        mostrarAviso(aviso, 'Solo una cuenta de cliente puede hacer pedidos.', 'error');
+        return;
+      }
+      var cuerpo = {
+        items: getCart().map(function (i) { return { product_id: i.id, cantidad: i.qty }; }),
+        tipo_entrega: form.elements.tipo_entrega.value,
+        clave: claveDePedido()
+      };
+      if (cuerpo.tipo_entrega === 'delivery') {
+        cuerpo.direccion = form.elements.direccion.value.trim() || null;
+        cuerpo.comuna = form.elements.comuna.value.trim() || null;
+        if (!cuerpo.direccion || !cuerpo.comuna) {
+          mostrarAviso(aviso, 'Para el despacho a domicilio escribe la dirección y la comuna.', 'error');
+          return;
+        }
+      }
+      btn.disabled = true;
+      mostrarAviso(aviso, 'Creando tu pedido…');
+      llamarApi('POST', '/orders', cuerpo, true)
+        .then(function (res) {
+          if (res.status === 201 || res.status === 200) {
+            try {
+              localStorage.removeItem(CART_KEY);
+              sessionStorage.removeItem(CLAVE_KEY);
+            } catch (e) { /* sin almacenamiento */ }
+            location.href = 'pedido.php?id=' + encodeURIComponent(res.datos.id);
+            return;
+          }
+          mostrarAviso(aviso, mensajeError(res), 'error');
+          btn.disabled = false;
+        })
+        .catch(function () {
+          mostrarAviso(aviso, ERROR_CONEXION, 'error');
+          btn.disabled = false;
+        });
+    });
+  }
+
+  // ---------- Detalle de un pedido, pago y boleta ----------
+  var ESTADOS = {
+    PENDIENTE_PAGO: 'Pendiente de pago', PAGADO: 'Pagado', EN_PREPARACION: 'En preparación', LISTO: 'Listo',
+    EN_CAMINO: 'En camino', ENTREGADO: 'Entregado', ANULADO: 'Anulado'
+  };
+  var ENTREGAS = { retiro: 'Retiro en el local', delivery: 'Despacho a domicilio' };
+
+  function fecha(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    return isNaN(d) ? iso : d.toLocaleString('es-CL', { dateStyle: 'short', timeStyle: 'short' });
+  }
+
+  function chipEstado(el, estado) {
+    el.textContent = ESTADOS[estado] || estado;
+    el.className = 'chip chip-' + String(estado).toLowerCase();
+  }
+
+  function filaTabla(celdas) {
+    var tr = document.createElement('tr');
+    celdas.forEach(function (texto) {
+      var td = document.createElement('td');
+      td.textContent = texto;
+      tr.appendChild(td);
+    });
+    return tr;
+  }
+
+  function setupPedido() {
+    var detalle = document.getElementById('ped-detalle');
+    if (!detalle) return;
+    var aviso = document.getElementById('ped-aviso');
+    var secPago = document.getElementById('ped-pago');
+    var secAnular = document.getElementById('ped-anular');
+    var secBoleta = document.getElementById('ped-boleta');
+    var pasarela = document.getElementById('pasarela');
+    var btnPagar = document.getElementById('btn-iniciar-pago');
+    var btnAprobar = document.getElementById('btn-aprobar');
+    var btnRechazar = document.getElementById('btn-rechazar');
+    var formAnular = document.getElementById('anular-form');
+    var id = new URLSearchParams(location.search).get('id') || '';
+    var pagoId = null;
+    if (!leerSesion()) { irALogin(); return; }
+    document.getElementById('ped-id').textContent = id;
+
+    function cargarBoleta() {
+      llamarApi('GET', '/orders/' + encodeURIComponent(id) + '/receipt', undefined, true).then(function (res) {
+        if (res.status !== 200) return;
+        var b = res.datos;
+        document.getElementById('bol-folio').textContent = b.folio;
+        document.getElementById('bol-fecha').textContent = 'Fecha: ' + fecha(b.fecha) + ' · Caja: ' + b.caja;
+        var cuerpo = document.getElementById('bol-detalle');
+        cuerpo.textContent = '';
+        b.detalle.forEach(function (d) {
+          cuerpo.appendChild(filaTabla([d.producto, String(d.cantidad), money(d.precio), money(d.total)]));
+        });
+        document.getElementById('bol-neto').textContent = money(b.neto);
+        document.getElementById('bol-iva').textContent = money(b.iva);
+        document.getElementById('bol-total').textContent = money(b.total);
+        secBoleta.hidden = false;
+      });
+    }
+
+    function cargar(mensaje) {
+      return llamarApi('GET', '/orders/' + encodeURIComponent(id), undefined, true)
+        .then(function (res) {
+          if (res.status !== 200) {
+            detalle.hidden = secPago.hidden = secAnular.hidden = secBoleta.hidden = true;
+            if (res.status >= 500) errorDeCarga(aviso, mensajeError(res), function () { cargar(); });
+            else mostrarAviso(aviso, mensajeError(res), 'error');
+            return;
+          }
+          var p = res.datos;
+          chipEstado(document.getElementById('ped-estado'), p.estado);
+          document.getElementById('ped-entrega').textContent = ENTREGAS[p.tipo_entrega] +
+            (p.direccion ? ': ' + p.direccion + ', ' + p.comuna : '');
+          document.getElementById('ped-fecha').textContent = 'Creado: ' + fecha(p.creado_en);
+          var cuerpo = document.getElementById('ped-lineas');
+          cuerpo.textContent = '';
+          p.lineas.forEach(function (l) {
+            cuerpo.appendChild(filaTabla([l.nombre, String(l.cantidad), money(l.precio), money(l.precio * l.cantidad)]));
+          });
+          document.getElementById('ped-total').textContent = money(p.total);
+          detalle.hidden = false;
+          var pendiente = p.estado === 'PENDIENTE_PAGO';
+          secPago.hidden = !pendiente;
+          secAnular.hidden = !pendiente;
+          btnPagar.textContent = 'Pagar ' + money(p.total);
+          if (!pendiente) pasarela.hidden = true;
+          if (p.pagado_en) cargarBoleta();
+          if (mensaje) mostrarAviso(aviso, mensaje[0], mensaje[1]);
+          else if (p.estado === 'ANULADO') mostrarAviso(aviso, 'Este pedido está anulado; el stock se devolvió.', '');
+          else if (pendiente) mostrarAviso(aviso, 'Tu pedido quedó reservado. Págalo para que lo preparemos.', 'ok');
+          else ocultarAviso(aviso);
+        })
+        .catch(function () { errorDeCarga(aviso, ERROR_CONEXION, function () { cargar(); }); });
+    }
+
+    btnPagar.addEventListener('click', function () {
+      btnPagar.disabled = true;
+      llamarApi('POST', '/payments', { order_id: id }, true)
+        .then(function (res) {
+          if (res.status === 201 || res.status === 200) {
+            pagoId = res.datos.id;
+            document.getElementById('pas-monto').textContent = money(res.datos.monto);
+            pasarela.hidden = false;
+            ocultarAviso(aviso);
+          } else {
+            mostrarAviso(aviso, mensajeError(res), 'error');
+          }
+        })
+        .catch(function () { mostrarAviso(aviso, ERROR_CONEXION, 'error'); })
+        .then(function () { btnPagar.disabled = false; });
+    });
+
+    function simular(resultado) {
+      if (!pagoId) return;
+      btnAprobar.disabled = btnRechazar.disabled = true;
+      llamarApi('POST', '/payments/' + encodeURIComponent(pagoId) + '/simular', { resultado: resultado }, true)
+        .then(function (res) {
+          pasarela.hidden = true;
+          pagoId = null;
+          if (res.status !== 202) {
+            mostrarAviso(aviso, mensajeError(res), 'error');
+            return cargar();
+          }
+          return cargar(resultado === 'aprobado'
+            ? ['Pago aprobado. Tu boleta está abajo.', 'ok']
+            : ['El proveedor rechazó el pago. El pedido sigue pendiente; puedes intentarlo de nuevo.', 'error']);
+        })
+        .catch(function () { mostrarAviso(aviso, ERROR_CONEXION, 'error'); })
+        .then(function () { btnAprobar.disabled = btnRechazar.disabled = false; });
+    }
+    btnAprobar.addEventListener('click', function () { simular('aprobado'); });
+    btnRechazar.addEventListener('click', function () { simular('rechazado'); });
+
+    formAnular.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var motivo = formAnular.elements.motivo.value.trim();
+      if (motivo.length < 5) {
+        mostrarAviso(aviso, 'Escribe el motivo de la anulación (al menos 5 caracteres).', 'error');
+        return;
+      }
+      bloquear(formAnular, true);
+      llamarApi('POST', '/orders/' + encodeURIComponent(id) + '/cancel', { motivo: motivo }, true)
+        .then(function (res) {
+          if (res.status === 200) return cargar(['Pedido anulado; el stock se devolvió.', 'ok']);
+          mostrarAviso(aviso, mensajeError(res), 'error');
+        })
+        .catch(function () { mostrarAviso(aviso, ERROR_CONEXION, 'error'); })
+        .then(function () { bloquear(formAnular, false); });
+    });
+
+    cargar();
+  }
+
+  // ---------- Mis pedidos (POST /api/v1/graphql: orders + inventory + payments) ----------
+  var CONSULTA_MIS_PEDIDOS = 'query { misPedidos(limite: 20) { id estado tipoEntrega total creadoEn ' +
+    'lineas { cantidad precio producto { nombre } } pago { estado monto } } }';
+
+  function setupMisPedidos() {
+    var lista = document.getElementById('mp-lista');
+    if (!lista) return;
+    var aviso = document.getElementById('mp-aviso');
+    if (!leerSesion()) { irALogin(); return; }
+
+    function cargar() {
+    mostrarAviso(aviso, 'Cargando tus pedidos…');
+    llamarApi('POST', '/graphql', { query: CONSULTA_MIS_PEDIDOS }, true)
+      .then(function (res) {
+        if (res.status !== 200) {
+          errorDeCarga(aviso, mensajeError(res), cargar);
+          return;
+        }
+        var errores = res.datos.errors || [];
+        var pedidos = res.datos.data ? res.datos.data.misPedidos : null;
+        if (!pedidos) {
+          errorDeCarga(aviso, errores.length ? errores[0].message : 'No se pudieron cargar tus pedidos.', cargar);
+          return;
+        }
+        // Si inventory o payments fallaron, se avisa que la informacion esta incompleta
+        if (errores.length) {
+          errorDeCarga(aviso, 'Información incompleta: ' + errores.map(function (e) { return e.message; }).join(' · '), cargar);
+        } else if (pedidos.length === 0) {
+          mostrarAviso(aviso, 'Todavía no tienes pedidos.', '', { href: 'catalogo.php', texto: 'Ver la carta' });
+        } else {
+          ocultarAviso(aviso);
+        }
+        lista.textContent = '';
+        pedidos.forEach(function (p) {
+          var tarjeta = document.createElement('article');
+          tarjeta.className = 'mp-pedido';
+          var cab = document.createElement('div');
+          cab.className = 'mp-cab';
+          var titulo = document.createElement('a');
+          titulo.href = 'pedido.php?id=' + encodeURIComponent(p.id);
+          titulo.className = 'mp-id';
+          titulo.textContent = p.id;
+          var chip = document.createElement('span');
+          chipEstado(chip, p.estado);
+          cab.appendChild(titulo);
+          cab.appendChild(chip);
+          var meta = document.createElement('p');
+          meta.className = 'mp-meta';
+          meta.textContent = fecha(p.creadoEn) + ' · ' + ENTREGAS[p.tipoEntrega] + ' · Total ' + money(p.total);
+          var productos = document.createElement('ul');
+          productos.className = 'mp-productos';
+          p.lineas.forEach(function (l) {
+            var li = document.createElement('li');
+            li.textContent = l.cantidad + ' × ' + (l.producto ? l.producto.nombre : 'Producto (dato no disponible)');
+            if (!l.producto) li.className = 'incompleto';
+            productos.appendChild(li);
+          });
+          var pago = document.createElement('p');
+          pago.className = 'mp-pago';
+          pago.textContent = p.pago ? 'Pago: ' + p.pago.estado.toLowerCase() + ' (' + money(p.pago.monto) + ')'
+            : (errores.length ? 'Pago: dato no disponible' : 'Pago: sin pago registrado');
+          tarjeta.appendChild(cab);
+          tarjeta.appendChild(meta);
+          tarjeta.appendChild(productos);
+          tarjeta.appendChild(pago);
+          lista.appendChild(tarjeta);
+        });
+      })
+      .catch(function () { errorDeCarga(aviso, ERROR_CONEXION, cargar); });
+    }
+    cargar();
+  }
+
+  // ---------- Portada: destacados desde el API Gateway (GET /api/v1/products) ----------
+  function setupDestacados() {
+    var cont = document.getElementById('destacados');
+    if (!cont) return;
+    var estado = document.getElementById('destacados-estado');
+    llamarApi('GET', '/products', undefined, false)
+      .then(function (res) {
+        if (res.status !== 200) throw new Error();
+        var lista = res.datos.filter(function (p) { return p.disponible; });
+        lista.sort(function (a, b) { return (b.precio_oferta ? 1 : 0) - (a.precio_oferta ? 1 : 0); });
+        if (lista.length === 0) {
+          estado.textContent = 'Por ahora no hay productos disponibles.';
+          return;
+        }
+        estado.remove();
+        lista.slice(0, 3).forEach(function (p) {
+          var card = document.createElement('a');
+          card.className = 'product-card';
+          card.href = 'catalogo.php';
+          var thumb = document.createElement('div');
+          thumb.className = 'product-thumb';
+          var img = document.createElement('img');
+          img.src = p.imagen;
+          img.alt = p.nombre;
+          thumb.appendChild(img);
+          var info = document.createElement('div');
+          info.className = 'product-info';
+          var nombre = document.createElement('div');
+          nombre.className = 'name';
+          nombre.textContent = p.nombre;
+          var meta = document.createElement('div');
+          meta.className = 'meta';
+          meta.textContent = (CATEGORIAS[p.categoria] || p.categoria) + (p.precio_oferta ? ' · En oferta' : '');
+          info.appendChild(nombre);
+          info.appendChild(meta);
+          var precio = document.createElement('div');
+          precio.className = 'product-price';
+          precio.textContent = money(p.precio_oferta || p.precio);
+          card.appendChild(thumb);
+          card.appendChild(info);
+          card.appendChild(precio);
+          cont.appendChild(card);
+        });
+      })
+      .catch(function () { estado.textContent = 'No pudimos cargar los destacados.'; });
+  }
+
+  // Si el backend responde 403, la pagina muestra que no hay permiso
+  function sinPermiso(res, aviso) {
+    if (res.status !== 403) return false;
+    mostrarAviso(aviso, 'No tienes permiso para ver esta sección.', 'error');
+    return true;
+  }
+
+  // ---------- Despacho: ordenes y cambio de estado (GET /admin/dispatch-orders, PUT /admin/orders/{id}/status) ----------
+  var SIGUIENTE = { PAGADO: ['EN_PREPARACION'], EN_PREPARACION: ['LISTO'], LISTO: ['EN_CAMINO', 'ENTREGADO'], EN_CAMINO: ['ENTREGADO'] };
+
+  function setupDespacho() {
+    var lista = document.getElementById('des-lista');
+    if (!lista) return;
+    var aviso = document.getElementById('des-aviso');
+    if (!leerSesion()) { irALogin(); return; }
+
+    function boton(texto, clase, accion) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'btn-chico' + (clase ? ' ' + clase : '');
+      b.textContent = texto;
+      b.addEventListener('click', accion);
+      return b;
+    }
+
+    function cambiar(id, estado) {
+      llamarApi('PUT', '/admin/orders/' + encodeURIComponent(id) + '/status', { estado: estado }, true)
+        .then(function (res) {
+          if (res.status === 200) return cargar(['Pedido ' + id + ': ' + ESTADOS[estado] + '.', 'ok']);
+          mostrarAviso(aviso, mensajeError(res), 'error');
+        })
+        .catch(function () { mostrarAviso(aviso, ERROR_CONEXION, 'error'); });
+    }
+
+    function cargar(mensaje) {
+      return llamarApi('GET', '/admin/dispatch-orders', undefined, true)
+        .then(function (res) {
+          if (sinPermiso(res, aviso)) return;
+          if (res.status !== 200) { errorDeCarga(aviso, mensajeError(res), function () { cargar(); }); return; }
+          lista.textContent = '';
+          if (mensaje) mostrarAviso(aviso, mensaje[0], mensaje[1]);
+          else if (res.datos.length === 0) mostrarAviso(aviso, 'No hay órdenes pendientes de despacho.');
+          else ocultarAviso(aviso);
+          res.datos.forEach(function (o) {
+            var tarjeta = document.createElement('article');
+            tarjeta.className = 'mp-pedido';
+            var cab = document.createElement('div');
+            cab.className = 'mp-cab';
+            var titulo = document.createElement('strong');
+            titulo.textContent = o.id;
+            var chip = document.createElement('span');
+            chipEstado(chip, o.estado);
+            cab.appendChild(titulo);
+            cab.appendChild(chip);
+            var meta = document.createElement('p');
+            meta.className = 'mp-meta';
+            meta.textContent = 'Pagado: ' + fecha(o.pagado_en) + ' · ' + ENTREGAS[o.tipo_entrega] +
+              (o.direccion ? ': ' + o.direccion + ', ' + o.comuna : '');
+            var productos = document.createElement('ul');
+            productos.className = 'mp-productos';
+            o.productos.forEach(function (l) {
+              var li = document.createElement('li');
+              li.textContent = l.cantidad + ' × ' + l.nombre;
+              productos.appendChild(li);
+            });
+            var cliente = document.createElement('p');
+            cliente.className = 'mp-meta';
+            var acciones = document.createElement('div');
+            acciones.className = 'pasarela-botones';
+            (SIGUIENTE[o.estado] || []).forEach(function (estado) {
+              var corresponde = o.estado !== 'LISTO' || (estado === 'EN_CAMINO') === (o.tipo_entrega === 'delivery');
+              if (corresponde) acciones.appendChild(boton('Marcar ' + ESTADOS[estado].toLowerCase(), '', function () { cambiar(o.id, estado); }));
+            });
+            acciones.appendChild(boton('Datos del cliente', '', function () {
+              llamarApi('GET', '/admin/clients/' + encodeURIComponent(o.user_id), undefined, true).then(function (r) {
+                cliente.textContent = r.status === 200
+                  ? 'Cliente: ' + r.datos.nombre + (r.datos.telefono ? ' · Tel: ' + r.datos.telefono : '')
+                  : mensajeError(r);
+              });
+            }));
+            tarjeta.appendChild(cab);
+            tarjeta.appendChild(meta);
+            tarjeta.appendChild(productos);
+            tarjeta.appendChild(cliente);
+            tarjeta.appendChild(acciones);
+            lista.appendChild(tarjeta);
+          });
+        })
+        .catch(function () { errorDeCarga(aviso, ERROR_CONEXION, function () { cargar(); }); });
+    }
+    cargar();
+  }
+
+  // ---------- Ventas de la caja web (GET /admin/sales) ----------
+  function setupVentas() {
+    var filas = document.getElementById('ven-filas');
+    if (!filas) return;
+    var aviso = document.getElementById('ven-aviso');
+    if (!leerSesion()) { irALogin(); return; }
+    function cargar() {
+    llamarApi('GET', '/admin/sales', undefined, true)
+      .then(function (res) {
+        if (sinPermiso(res, aviso)) return;
+        if (res.status !== 200) { errorDeCarga(aviso, mensajeError(res), cargar); return; }
+        filas.textContent = '';
+        res.datos.forEach(function (v) {
+          filas.appendChild(filaTabla([v.folio, v.pedido, fecha(v.fecha), money(v.total), ESTADOS[v.estado] || v.estado]));
+        });
+        document.getElementById('ven-cantidad').textContent = res.datos.length;
+        document.getElementById('ven-total').textContent = money(res.datos.reduce(function (s, v) { return s + v.total; }, 0));
+        document.getElementById('ven-resumen').hidden = false;
+        document.getElementById('ven-tabla').hidden = res.datos.length === 0;
+        if (res.datos.length === 0) mostrarAviso(aviso, 'Todavía no hay ventas registradas.');
+        else ocultarAviso(aviso);
+      })
+      .catch(function () { errorDeCarga(aviso, ERROR_CONEXION, cargar); });
+    }
+    cargar();
+  }
+
+  // ---------- Reporte de ventas del dueno (GET /admin/reports/sales, servicio analitica) ----------
+  function setupReportes() {
+    var contenido = document.getElementById('rep-contenido');
+    if (!contenido) return;
+    var aviso = document.getElementById('rep-aviso');
+    if (!leerSesion()) { irALogin(); return; }
+
+    function cargar() {
+      mostrarAviso(aviso, 'Cargando el reporte…');
+      llamarApi('GET', '/admin/reports/sales', undefined, true)
+        .then(function (res) {
+          if (sinPermiso(res, aviso)) { contenido.hidden = true; return; }
+          if (res.status !== 200) { errorDeCarga(aviso, mensajeError(res), cargar); return; }
+          var r = res.datos;
+          document.getElementById('rep-pedidos').textContent = r.pedidos;
+          document.getElementById('rep-total').textContent = money(r.total_vendido);
+          document.getElementById('rep-ticket').textContent = money(r.ticket_promedio);
+          document.getElementById('rep-hora').textContent = 'Datos consultados a las ' +
+            new Date().toLocaleTimeString('es-CL') + '. Cada pedido pagado se suma al reporte al momento del pago.';
+          var productos = document.getElementById('rep-productos');
+          productos.textContent = '';
+          r.mas_vendidos.forEach(function (p) {
+            productos.appendChild(filaTabla([p.nombre, String(p.cantidad), money(p.total)]));
+          });
+          var dias = document.getElementById('rep-dias');
+          dias.textContent = '';
+          r.por_dia.forEach(function (d) { dias.appendChild(filaTabla([d.dia, String(d.pedidos), money(d.total)])); });
+          contenido.hidden = false;
+          if (r.pedidos === 0) mostrarAviso(aviso, 'Todavía no hay ventas pagadas.');
+          else ocultarAviso(aviso);
+        })
+        .catch(function () { errorDeCarga(aviso, ERROR_CONEXION, cargar); });
+    }
+    document.getElementById('rep-actualizar').addEventListener('click', cargar);
+    cargar();
+  }
+
+  // ---------- Administracion: usuarios, perfiles y mensajes de contacto ----------
+  var PERFILES = { cliente: 'Cliente', cajero: 'Cajero', despacho: 'Encargado de despacho', dueno: 'Dueño', admin: 'Administrador' };
+
+  function setupAdmin() {
+    var usuarios = document.getElementById('adm-usuarios');
+    if (!usuarios) return;
+    var aviso = document.getElementById('adm-aviso');
+    var form = document.getElementById('adm-funcionario');
+    var sesion = leerSesion();
+    if (!sesion) { irALogin(); return; }
+
+    function cargarUsuarios() {
+      return llamarApi('GET', '/admin/users', undefined, true).then(function (res) {
+        if (sinPermiso(res, aviso)) return;
+        if (res.status !== 200) { errorDeCarga(aviso, mensajeError(res), cargarUsuarios); return; }
+        usuarios.textContent = '';
+        res.datos.forEach(function (u) {
+          var tr = filaTabla([u.user_id, u.email]);
+          var tdRol = document.createElement('td');
+          var select = document.createElement('select');
+          select.setAttribute('aria-label', 'Perfil de ' + u.email);
+          Object.keys(PERFILES).forEach(function (rol) {
+            var op = document.createElement('option');
+            op.value = rol;
+            op.textContent = PERFILES[rol];
+            op.selected = rol === u.rol;
+            select.appendChild(op);
+          });
+          tdRol.appendChild(select);
+          tr.appendChild(tdRol);
+          var tdVer = document.createElement('td');
+          tdVer.textContent = u.correo_verificado ? 'Sí' : 'No';
+          tr.appendChild(tdVer);
+          var tdAccion = document.createElement('td');
+          var guardar = document.createElement('button');
+          guardar.type = 'button';
+          guardar.className = 'btn-chico';
+          guardar.textContent = 'Guardar perfil';
+          guardar.addEventListener('click', function () {
+            llamarApi('PUT', '/admin/users/' + encodeURIComponent(u.user_id) + '/role', { rol: select.value }, true)
+              .then(function (r) {
+                if (r.status === 200) {
+                  mostrarAviso(aviso, 'Perfil de ' + u.email + ': ' + PERFILES[select.value] + '. Debe volver a iniciar sesión.', 'ok');
+                  cargarUsuarios();
+                } else {
+                  mostrarAviso(aviso, mensajeError(r), 'error');
+                }
+              })
+              .catch(function () { mostrarAviso(aviso, ERROR_CONEXION, 'error'); });
+          });
+          tdAccion.appendChild(guardar);
+          tr.appendChild(tdAccion);
+          usuarios.appendChild(tr);
+        });
+      }).catch(function () { mostrarAviso(aviso, ERROR_CONEXION, 'error'); });
+    }
+
+    function cargarContacto() {
+      llamarApi('GET', '/admin/contact', undefined, true).then(function (res) {
+        if (res.status !== 200) return;
+        var cuerpo = document.getElementById('adm-contacto');
+        cuerpo.textContent = '';
+        res.datos.forEach(function (m) {
+          cuerpo.appendChild(filaTabla([fecha(m.creado_en), m.nombre, m.motivo, m.mensaje]));
+        });
+      });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var d = leerFormulario(form);
+      d.password = form.elements.password.value;
+      if (!d.email || d.password.length < 8) {
+        mostrarAviso(aviso, 'Escribe el correo y una contraseña de al menos 8 caracteres.', 'error');
+        return;
+      }
+      bloquear(form, true);
+      llamarApi('POST', '/admin/users', d, true)
+        .then(function (res) {
+          if (res.status === 201) {
+            form.reset();
+            mostrarAviso(aviso, 'Cuenta creada: ' + res.datos.email + ' (' + PERFILES[res.datos.rol] + ').', 'ok');
+            cargarUsuarios();
+          } else {
+            mostrarAviso(aviso, mensajeError(res), 'error');
+          }
+        })
+        .catch(function () { mostrarAviso(aviso, ERROR_CONEXION, 'error'); })
+        .then(function () { bloquear(form, false); });
+    });
+
+    var formCliente = document.getElementById('adm-cliente');
+    formCliente.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var d = leerFormulario(formCliente);
+      d.password = formCliente.elements.password.value;
+      if (!d.nombre || !d.email || d.password.length < 8) {
+        mostrarAviso(aviso, 'Completa nombre, correo y una contraseña de al menos 8 caracteres.', 'error');
+        return;
+      }
+      d.email = d.email.toLowerCase();
+      bloquear(formCliente, true);
+      llamarApi('POST', '/admin/clients', d, true)
+        .then(function (res) {
+          if (res.status === 201) {
+            formCliente.reset();
+            mostrarAviso(aviso, 'Cliente registrado (' + d.email + '). Debe verificar su correo con el código que le llegó.', 'ok');
+            cargarUsuarios();
+          } else {
+            mostrarAviso(aviso, mensajeError(res), 'error');
+          }
+        })
+        .catch(function () { mostrarAviso(aviso, ERROR_CONEXION, 'error'); })
+        .then(function () { bloquear(formCliente, false); });
+    });
+
+    cargarUsuarios();
+    cargarContacto();
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -800,5 +1482,12 @@
     setupRegistro();
     setupCuenta();
     setupInventario();
+    setupPedido();
+    setupMisPedidos();
+    setupDestacados();
+    setupDespacho();
+    setupVentas();
+    setupReportes();
+    setupAdmin();
   });
 })();

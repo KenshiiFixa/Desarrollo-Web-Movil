@@ -1,0 +1,33 @@
+[
+ {
+  "descripcion": "Productos modificados",
+  "hora": "2026-11-28T17:27:58+00:00",
+  "servicio": "inventory",
+  "coleccion": "productos",
+  "filtro": {
+   "_id": {
+    "$in": [
+     "latte-art",
+     "prueba-c1"
+    ]
+   }
+  },
+  "total": 2,
+  "resultado": [
+   {
+    "_id": "latte-art",
+    "precio_oferta": 2900,
+    "nombre": "Latte Art",
+    "precio": 3200,
+    "activo": true
+   },
+   {
+    "_id": "prueba-c1",
+    "nombre": "Mocaccino de prueba",
+    "precio": 3600,
+    "precio_oferta": null,
+    "activo": false
+   }
+  ]
+ }
+]

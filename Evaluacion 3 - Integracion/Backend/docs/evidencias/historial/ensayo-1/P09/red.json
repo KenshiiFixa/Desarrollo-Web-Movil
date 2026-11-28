@@ -1,0 +1,110 @@
+[
+ {
+  "hora": "2026-11-28T17:26:35+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-E73B8F93",
+  "estado": 200,
+  "request_id": "ca2058538cd1",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-E73B8F93\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"latte-art\",\"nombre\":\"Latte Art\",\"precio\":3200,\"cantidad\":2},{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":9200,\"creado_en\":\"2026-11-28T17:25:48+00:00\",\"pagado_en\":null}"
+ },
+ {
+  "hora": "2026-11-28T17:26:36+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/payments",
+  "estado": 201,
+  "request_id": "73213e31f8da",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"order_id\":\"ORD-E73B8F93\"}",
+  "respuesta": "{\"id\":\"PAY-2CF31E22\",\"order_id\":\"ORD-E73B8F93\",\"estado\":\"PENDIENTE\",\"monto\":9200,\"url_pago\":\"https://sandbox.pagos.example/pagar/chk_1146e8e46a5d77c0\"}"
+ },
+ {
+  "hora": "2026-11-28T17:26:36+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/payments/PAY-2CF31E22/simular",
+  "estado": 202,
+  "request_id": "7588dfb90046",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"resultado\":\"aprobado\"}",
+  "respuesta": "{\"avisos\":[{\"status\":200,\"respuesta\":{\"ok\":true,\"estado\":\"APROBADO\"}}]}"
+ },
+ {
+  "hora": "2026-11-28T17:26:36+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-E73B8F93",
+  "estado": 200,
+  "request_id": "b93369e86590",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-E73B8F93\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"latte-art\",\"nombre\":\"Latte Art\",\"precio\":3200,\"cantidad\":2},{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":9200,\"creado_en\":\"2026-11-28T17:25:48+00:00\",\"pagado_en\":\"2026-11-28T17:26:36+00:00\"}"
+ },
+ {
+  "hora": "2026-11-28T17:26:36+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-E73B8F93/receipt",
+  "estado": 200,
+  "request_id": "cec8657ee5a8",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"folio\":\"B-000001\",\"fecha\":\"2026-11-28T17:26:36+00:00\",\"pedido\":\"ORD-E73B8F93\",\"caja\":\"CAJA-WEB-01\",\"detalle\":[{\"producto\":\"Latte Art\",\"cantidad\":2,\"precio\":3200,\"total\":6400},{\"producto\":\"Croissant de Mantequilla\",\"cantidad\":1,\"precio\":2800,\"total\":2800}],\"neto\":7731,\"iva\":1469,\"total\":9200}"
+ },
+ {
+  "hora": "2026-11-28T17:26:43+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/auth/login",
+  "estado": 200,
+  "request_id": "9c1ebf7b9055",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"ana@aromaycafe.test\",\"password\":\"***\"}",
+  "respuesta": "{\"access_token\":\"***\",\"token_type\":\"bearer\",\"expires_in\":900,\"rol\":\"cliente\"}"
+ },
+ {
+  "hora": "2026-11-28T17:26:43+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/clients/me",
+  "estado": 200,
+  "request_id": "cca7901f3704",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": ""
+ },
+ {
+  "hora": "2026-11-28T17:26:43+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-E73B8F93",
+  "estado": 200,
+  "request_id": "17e22af2bcf5",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"id\":\"ORD-E73B8F93\",\"estado\":\"PAGADO\",\"tipo_entrega\":\"retiro\",\"direccion\":null,\"comuna\":null,\"lineas\":[{\"product_id\":\"latte-art\",\"nombre\":\"Latte Art\",\"precio\":3200,\"cantidad\":2},{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":9200,\"creado_en\":\"2026-11-28T17:25:48+00:00\",\"pagado_en\":\"2026-11-28T17:26:36+00:00\"}"
+ },
+ {
+  "hora": "2026-11-28T17:26:43+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/orders/ORD-E73B8F93/receipt",
+  "estado": 200,
+  "request_id": "a66e1dc58849",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "{\"folio\":\"B-000001\",\"fecha\":\"2026-11-28T17:26:36+00:00\",\"pedido\":\"ORD-E73B8F93\",\"caja\":\"CAJA-WEB-01\",\"detalle\":[{\"producto\":\"Latte Art\",\"cantidad\":2,\"precio\":3200,\"total\":6400},{\"producto\":\"Croissant de Mantequilla\",\"cantidad\":1,\"precio\":2800,\"total\":2800}],\"neto\":7731,\"iva\":1469,\"total\":9200}"
+ }
+]

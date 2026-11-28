@@ -1,0 +1,71 @@
+[
+ {
+  "descripcion": "Pedidos de USR-003",
+  "hora": "2026-11-28T17:49:28+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "user_id": "USR-003"
+  },
+  "total": 5,
+  "resultado": [
+   {
+    "_id": "ORD-BF9EE529",
+    "estado": "PAGADO",
+    "total": 9200
+   },
+   {
+    "_id": "ORD-0DC89B8F",
+    "estado": "PENDIENTE_PAGO",
+    "total": 4500
+   },
+   {
+    "_id": "ORD-AA552546",
+    "estado": "PAGADO",
+    "total": 2800
+   },
+   {
+    "_id": "ORD-2A5B3F55",
+    "estado": "PAGADO",
+    "total": 2500
+   },
+   {
+    "_id": "ORD-EE4EB7FA",
+    "estado": "ANULADO",
+    "total": 2500
+   }
+  ]
+ },
+ {
+  "descripcion": "Pagos de ana",
+  "hora": "2026-11-28T17:49:29+00:00",
+  "servicio": "payments",
+  "coleccion": "pagos",
+  "filtro": {
+   "user_id": "USR-003"
+  },
+  "total": 4,
+  "resultado": [
+   {
+    "_id": "PAY-9ACCC337",
+    "order_id": "ORD-BF9EE529",
+    "estado": "APROBADO"
+   },
+   {
+    "_id": "PAY-61D44760",
+    "order_id": "ORD-AA552546",
+    "estado": "RECHAZADO"
+   },
+   {
+    "_id": "PAY-9DE1F717",
+    "order_id": "ORD-AA552546",
+    "estado": "APROBADO"
+   },
+   {
+    "_id": "PAY-C4AB9627",
+    "order_id": "ORD-2A5B3F55",
+    "estado": "APROBADO"
+   }
+  ]
+ }
+]

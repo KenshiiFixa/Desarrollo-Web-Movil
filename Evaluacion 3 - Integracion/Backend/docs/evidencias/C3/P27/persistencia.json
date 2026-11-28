@@ -1,0 +1,18 @@
+[
+ {
+  "descripcion": "Venta en analítica",
+  "hora": "2026-11-28T17:46:17+00:00",
+  "servicio": "analitica",
+  "coleccion": "ventas",
+  "filtro": {
+   "_id": "ORD-E87AB715"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-E87AB715",
+    "total": 3500
+   }
+  ]
+ }
+]

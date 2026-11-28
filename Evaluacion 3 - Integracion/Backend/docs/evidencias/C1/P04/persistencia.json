@@ -1,0 +1,15 @@
+[
+ {
+  "descripcion": "Total de pedidos",
+  "hora": "2026-11-28T17:35:39+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {},
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-30400C33"
+   }
+  ]
+ }
+]

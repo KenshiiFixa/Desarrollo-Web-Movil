@@ -1,0 +1,32 @@
+# 6. Incidencias y correcciones
+
+Prioridad según el riesgo para usuarios, datos y negocio (alta, media, baja). Se distingue **causa confirmada** (con evidencia) de **hipótesis**.
+Las ejecuciones previas se conservan en `docs/evidencias/historial/` y no se mezclan con los resultados de la versión evaluada.
+
+| ID | Ejecución y evidencia de origen | Síntoma e impacto | Causa o hipótesis | Corrección (versión) | Nueva ejecución | Regresión | Estado final |
+|---|---|---|---|---|---|---|---|
+| INC-01 | Revisión de contratos de la línea base (I1) | "Frappé de Mocha" en el frontend y "Frappe de Mocha" en la API. **Baja**: nombres distintos en pantalla y en la boleta | **Confirmada**: el seed de inventory se escribió sin tildes; la codificación UTF-8 era correcta en todo el recorrido | Seed con tildes (`747d250`) | P01 C1–C4: nombres de las tarjetas = nombres de la respuesta | 42/42 | Cerrada |
+| INC-02 | Prueba manual del 2026-11-16 con un token inventado (`falso123`); log del gateway | El gateway respondía **502** en vez de 401. **Media**: el frontend lo mostraría como caída del servicio | **Confirmada**: Auth valida `min_length=10` y responde 422; el gateway trataba toda respuesta distinta de 200 como error interno | El gateway trata ese 422 como token inválido → 401 (`747d250`) | Prueba manual: 401 | 42/42 | Cerrada. Pendiente: agregar un token corto a P20 |
+| INC-03 | Regresión del backend del 2026-11-16: seguridad 21/22 y flujos 16/17 | Dos pruebas fallaban al leer datos de un servicio. **Media**: regresión rota | **Confirmada**: un `print` nuevo en `leer_secretos` se mezclaba con la salida que leen esas pruebas | Se quitó el mensaje (`747d250`) | Regresión 22/22 y 17/17 | 42/42 | Cerrada |
+| INC-04 | Captura de la prueba de navegador del avance 3 (registro) | El paso 1 del registro seguía visible junto al paso 2. **Media**: formulario confuso | **Confirmada**: `.auth-form { display: flex }` ganaba al atributo `hidden` | `[hidden] { display: none !important }` (`34bd7c2`) | Prueba del avance 3 30/30; P22 C1–C4 | 30/30 | Cerrada |
+| INC-05 | Captura enviada por el equipo (Brave en Windows, 2026-11-17) | Portada sin imagen ni texto. **Alta**: portada y carta vacías para quien tiene desactivadas las animaciones del sistema | **Confirmada**: con `prefers-reduced-motion` el CSS original apagaba las animaciones y dejaba esos elementos con `opacity: 0` (venía del frontend original) | Con movimiento reducido se muestran directamente (`fe81a08`) | Chromium con `reducedMotion: reduce`: portada y tarjetas con opacidad 1 | — | Cerrada. Pendiente: automatizar en la suite |
+| INC-06 | Captura del avance 3 | El saludo decía "Hola, Duena". **Baja** | **Confirmada**: nombres de los perfiles de prueba sin tildes | Nombres con tildes (`34bd7c2`) | Prueba del avance 3 ("Hola, Dueña") | 30/30 | Cerrada |
+| INC-07 | Revisión de código del incremento I4 | El carrito armaba sus filas con `innerHTML` usando el nombre del producto. **Alta**: un producto con HTML en el nombre podría ejecutar código en el navegador del cliente | **Hipótesis** confirmada por lectura del código; el ataque no se reprodujo | Filas con `textContent` (`7f6ebb9`) | P03, P05 y P11 usan el carrito sin fallas en C1–C4 | 128/128 | Cerrada. Pendiente: prueba automática con un nombre malicioso |
+| INC-08 | Revisión de diseño del incremento I4 (R19) | Un doble envío de "Confirmar pedido" creaba dos pedidos y reservaba el doble de stock. **Alta**: efectos duplicados | **Confirmada**: `POST /orders` no tenía idempotencia | Campo `clave` con índice único por cliente (`7f6ebb9`) | P07 C1–C4: un pedido y stock −1 con dos envíos simultáneos | 42/42 | Cerrada |
+| INC-09 | Revisión del CSS al preparar la suite | El aviso flotante invisible (`opacity: 0`) seguía encima de la esquina inferior derecha. **Media** en móvil: puede tapar un botón | **Hipótesis**: no se reprodujo un clic bloqueado antes de corregir | `pointer-events: none` (`61efbab`) | C2 y C4 (móvil): todos los clics en la carta y el carrito aprobados | 128/128 | Cerrada |
+| INC-10 | Ensayo 1, RUN P28 ([evidencia](../Backend/docs/evidencias/historial/ensayo-1/P28/red.json)) | Después de una falla de analítica, Reportes no ofrecía cómo reintentar (el botón Actualizar quedaba oculto). **Media**: recuperación incoherente, obliga a recargar la página | **Confirmada**: el botón estaba dentro del bloque que se oculta cuando falla la primera carga. El backend sí se recuperó (la venta llegó 14 s después) | "Reintentar" en el aviso de error de 7 pantallas que cargan datos (`61efbab`) | Ensayo 2 P28 aprobada; C1–C4 P28 aprobadas | 128/128 | Cerrada |
+| INC-11 | Ensayo 1, RUN P19 ([evidencia](../Backend/docs/evidencias/historial/ensayo-1/P19/red.json)) | P19 marcó "GET /clients/me respondió 200" con la sesión vencida | **Confirmada**: defecto de la **prueba**, no del sistema. `red.json` muestra que la respuesta con la sesión vencida sí fue 401; la suite tomaba la primera respuesta (la del login) | La suite toma la última respuesta (`61efbab`) | Ensayo 2 y C1–C4: aprobada | — | Cerrada |
+| INC-12 | Prueba manual del incremento I5 | El encargado de despacho y el cajero llegaban a la carta al iniciar sesión. **Baja** | **Confirmada**: la redirección solo distinguía dueño y admin | Cada rol llega a su panel (`7f6ebb9`) | Prueba manual de despacho | — | Cerrada. Pendiente: automatizar |
+
+## Incidencias abiertas e impacto en las conclusiones
+
+No hay incidencias abiertas del sistema en la versión evaluada. Quedan **controles sin automatizar**: INC-02 (token corto), INC-05 (movimiento reducido),
+INC-07 (nombre malicioso) e INC-12 (redirección por rol). Sus correcciones se comprobaron con pruebas manuales, pero esas pruebas no se repiten en cada campaña.
+Por eso no se afirma que esos casos estén cubiertos por la regresión automática.
+
+## Búsqueda de fallas
+
+Además de las incidencias, cada recorrido crítico tiene escenarios de rechazo, fallo controlado y límite (ver [protocolo](03_protocolo_pruebas.md)).
+Los rechazos previstos que el sistema aplicó correctamente cuentan como aprobados: sin sesión, sesión vencida, rol sin permiso, pedido ajeno, fuera del radio,
+sin stock, RUN inválido, pago rechazado, consultas GraphQL excesivas y servicio sin secreto. Las fallas controladas fueron inventory detenido o en pausa
+y analítica detenida.

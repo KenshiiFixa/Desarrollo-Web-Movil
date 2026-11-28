@@ -1,0 +1,45 @@
+[
+ {
+  "descripcion": "Historial del pedido",
+  "hora": "2026-11-28T17:50:26+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-BF9EE529"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-BF9EE529",
+    "estado": "ENTREGADO",
+    "historial": [
+     {
+      "estado": "PENDIENTE_PAGO",
+      "por": "USR-003",
+      "en": "2026-11-28T17:48:10+00:00"
+     },
+     {
+      "estado": "PAGADO",
+      "por": "payments",
+      "en": "2026-11-28T17:48:57+00:00"
+     },
+     {
+      "estado": "EN_PREPARACION",
+      "por": "USR-002",
+      "en": "2026-11-28T17:50:24+00:00"
+     },
+     {
+      "estado": "LISTO",
+      "por": "USR-002",
+      "en": "2026-11-28T17:50:24+00:00"
+     },
+     {
+      "estado": "ENTREGADO",
+      "por": "USR-002",
+      "en": "2026-11-28T17:50:25+00:00"
+     }
+    ]
+   }
+  ]
+ }
+]

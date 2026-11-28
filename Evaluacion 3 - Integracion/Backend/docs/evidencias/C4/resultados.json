@@ -1,0 +1,2529 @@
+{
+ "meta": {
+  "campana": "C4",
+  "nombre": "Movil, ejecucion 2",
+  "protocolo": "1.1",
+  "commit": "61efbab",
+  "cambios_sin_commit": true,
+  "inicio": "2026-11-28T17:47:44+00:00",
+  "zona_horaria": "UTC",
+  "ejecutor": "Ian Arroyo (ejecución automatizada)",
+  "sistema": "Linux 6.18.44-fc-v880",
+  "navegador": "Chromium 153.0.8010.12 (Playwright 1.63.0)",
+  "viewport": "Pixel 7 emulado (412x839)",
+  "docker": "29.9.2",
+  "estado_inicial": "base vacía (docker compose down -v / up -d)",
+  "limite_general_gateway": "600 solicitudes por minuto (login: 10 por minuto, sin cambios)",
+  "fin": "2026-11-28T17:51:26+00:00"
+ },
+ "conteo": {
+  "aprobada": 32
+ },
+ "resultados": [
+  {
+   "id": "P01",
+   "ca": "CA01",
+   "titulo": "La carta se arma con los productos de la API",
+   "recorrido": "RC1",
+   "flujos": [
+    "F01"
+   ],
+   "requisitos": [
+    "R01",
+    "R07"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P01",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:47:44+00:00",
+   "fin": "2026-11-28T17:47:46+00:00",
+   "duracion_ms": 2581,
+   "estado": "aprobada",
+   "esperado": "GET https://127.0.0.1:8000/api/v1/products responde 200 con origen localhost:8080 y CORS; tarjetas = productos de la respuesta; precios iguales",
+   "observado": [
+    {
+     "descripcion": "GET /products responde 200",
+     "ok": true,
+     "detalle": "200"
+    },
+    {
+     "descripcion": "CORS: access-control-allow-origin = origen del frontend",
+     "ok": true,
+     "detalle": "http://localhost:8080 -> http://localhost:8080"
+    },
+    {
+     "descripcion": "Las tarjetas son los productos de la respuesta",
+     "ok": true,
+     "detalle": "Cappuccino, Cheesecake de Maracuyá, Cold Brew, Croissant de Mantequilla, Espresso Doble, Frappé de Mocha, Latte Art, Tarta de Frambuesa"
+    },
+    {
+     "descripcion": "Precios de las tarjetas = precio vigente de la API",
+     "ok": true,
+     "detalle": "$3.000 $4.800 $3.500 $2.800 $2.500 $3.400 $3.200 $4.500"
+    },
+    {
+     "descripcion": "Cantidad de tarjetas = productos activos en inventory.productos",
+     "ok": true,
+     "detalle": "8 tarjetas / 8 en la base"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P01-01",
+     "tipo": "captura",
+     "ruta": "C4/P01/01-carta.jpg",
+     "descripcion": "Carta armada con los productos de la API"
+    },
+    {
+     "id": "E-C4-P01-02",
+     "tipo": "red",
+     "ruta": "C4/P01/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P01-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P01/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P01-04",
+     "tipo": "logs",
+     "ruta": "C4/P01/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 58b2559dfefd"
+   ]
+  },
+  {
+   "id": "P02",
+   "ca": "CA02",
+   "titulo": "Carta con inventory detenido y recuperación",
+   "recorrido": "RC1",
+   "flujos": [
+    "F01"
+   ],
+   "requisitos": [
+    "R17"
+   ],
+   "escenario": "fallo y recuperación",
+   "run": "RUN-C4-P02",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:47:47+00:00",
+   "fin": "2026-11-28T17:48:06+00:00",
+   "duracion_ms": 19248,
+   "estado": "aprobada",
+   "esperado": "Con inventory detenido: respuesta 502, 0 tarjetas y mensaje 'No pudimos cargar la carta'. Despues de iniciarlo: 200 y todas las tarjetas",
+   "observado": [
+    {
+     "descripcion": "Con inventory detenido: mensaje de error y 0 tarjetas",
+     "ok": true,
+     "detalle": "No pudimos cargar la carta. Revisa que el backend esté encendido. Reintentar"
+    },
+    {
+     "descripcion": "El gateway responde 502 (backend no disponible)",
+     "ok": true,
+     "detalle": "502"
+    },
+    {
+     "descripcion": "Al volver inventory, Reintentar carga la carta",
+     "ok": true,
+     "detalle": "8"
+    },
+    {
+     "descripcion": "La nueva solicitud responde 200",
+     "ok": true,
+     "detalle": "200"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P02-01",
+     "tipo": "captura",
+     "ruta": "C4/P02/01-inventory-detenido.jpg",
+     "descripcion": "Carta con inventory detenido"
+    },
+    {
+     "id": "E-C4-P02-02",
+     "tipo": "captura",
+     "ruta": "C4/P02/02-recuperado.jpg",
+     "descripcion": "Carta después de iniciar inventory y presionar Reintentar"
+    },
+    {
+     "id": "E-C4-P02-03",
+     "tipo": "red",
+     "ruta": "C4/P02/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P02-04",
+     "tipo": "logs",
+     "ruta": "C4/P02/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 5aff3d1012da",
+    "X-Request-ID 55b74ac782fa"
+   ]
+  },
+  {
+   "id": "P03",
+   "ca": "CA03",
+   "titulo": "Crear un pedido de retiro desde el carrito",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05"
+   ],
+   "requisitos": [
+    "R01",
+    "R04"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P03",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:48:06+00:00",
+   "fin": "2026-11-28T17:48:17+00:00",
+   "duracion_ms": 11164,
+   "estado": "aprobada",
+   "esperado": "POST /orders 201; pedido.php muestra Pendiente de pago y total $9.200; stock Latte 38 y Croissant 39",
+   "observado": [
+    {
+     "descripcion": "POST /orders responde 201",
+     "ok": true,
+     "detalle": "201"
+    },
+    {
+     "descripcion": "La pantalla muestra Pendiente de pago y total $9.200 (precios del servidor)",
+     "ok": true,
+     "detalle": "Pendiente de pago $9.200"
+    },
+    {
+     "descripcion": "orders.pedidos: pedido de USR-003, PENDIENTE_PAGO, total 9200, retiro",
+     "ok": true,
+     "detalle": "{\"_id\":\"ORD-BF9EE529\",\"user_id\":\"USR-003\",\"estado\":\"PENDIENTE_PAGO\",\"tipo_entrega\":\"retiro\",\"lineas\":[{\"product_id\":\"latte-art\",\"nombre\":\"Latte Art\",\"precio\":3200,\"cantidad\":2},{\"product_id\":\"croissant\",\"nombre\":\"Croissant de Mantequilla\",\"precio\":2800,\"cantidad\":1}],\"total\":9200}"
+    },
+    {
+     "descripcion": "Stock descontado una vez (Latte -2, Croissant -1)",
+     "ok": true,
+     "detalle": "{\"latte\":40,\"croissant\":40} -> {\"latte\":38,\"croissant\":39}"
+    },
+    {
+     "descripcion": "Al recargar se ve el mismo pedido",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "En una sesión nueva se ve el mismo estado y total",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P03-01",
+     "tipo": "captura",
+     "ruta": "C4/P03/01-pedido-creado.jpg",
+     "descripcion": "Pedido creado"
+    },
+    {
+     "id": "E-C4-P03-02",
+     "tipo": "captura",
+     "ruta": "C4/P03/02-sesion-nueva.jpg",
+     "descripcion": "El pedido visto desde una sesión nueva"
+    },
+    {
+     "id": "E-C4-P03-03",
+     "tipo": "red",
+     "ruta": "C4/P03/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P03-04",
+     "tipo": "persistencia",
+     "ruta": "C4/P03/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P03-05",
+     "tipo": "logs",
+     "ruta": "C4/P03/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-BF9EE529",
+    "X-Request-ID 95dd52c14cdc",
+    "X-Request-ID 328fb754dde5",
+    "X-Request-ID 873d15866006",
+    "X-Request-ID 7ac0238ee41e",
+    "X-Request-ID 0d9fa6903cd6",
+    "X-Request-ID 74f43767428a",
+    "X-Request-ID c45b77ab73b2",
+    "X-Request-ID b3a6b998a6e1",
+    "X-Request-ID 6d11f1fc7718"
+   ]
+  },
+  {
+   "id": "P04",
+   "ca": "CA04",
+   "titulo": "Confirmar pedido sin sesión",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05"
+   ],
+   "requisitos": [
+    "R04",
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "run": "RUN-C4-P04",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:48:17+00:00",
+   "fin": "2026-11-28T17:48:21+00:00",
+   "duracion_ms": 3944,
+   "estado": "aprobada",
+   "esperado": "Redirige a login.php?volver=carrito.php; no se envía POST /orders; orders.pedidos sin cambios",
+   "observado": [
+    {
+     "descripcion": "Redirige a login.php con volver=carrito.php",
+     "ok": true,
+     "detalle": "http://localhost:8080/login.php?volver=carrito.php"
+    },
+    {
+     "descripcion": "No se envió POST /orders",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "orders.pedidos sin cambios",
+     "ok": true,
+     "detalle": "1 -> 1"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P04-01",
+     "tipo": "captura",
+     "ruta": "C4/P04/01-login.jpg",
+     "descripcion": "Sin sesión, la confirmación lleva a iniciar sesión"
+    },
+    {
+     "id": "E-C4-P04-02",
+     "tipo": "red",
+     "ruta": "C4/P04/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P04-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P04/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P04-04",
+     "tipo": "logs",
+     "ruta": "C4/P04/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 05facd517b6a"
+   ]
+  },
+  {
+   "id": "P05",
+   "ca": "CA05",
+   "titulo": "Despacho fuera del radio de 3 km",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05"
+   ],
+   "requisitos": [
+    "R01"
+   ],
+   "escenario": "rechazo",
+   "run": "RUN-C4-P05",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:48:22+00:00",
+   "fin": "2026-11-28T17:48:28+00:00",
+   "duracion_ms": 6514,
+   "estado": "aprobada",
+   "esperado": "POST /orders 422; mensaje 'fuera del radio de despacho'; sin pedido nuevo; stock igual",
+   "observado": [
+    {
+     "descripcion": "Mensaje: fuera del radio de despacho",
+     "ok": true,
+     "detalle": "Esa dirección está fuera del radio de despacho (3 km del local). Puedes elegir retiro en el local."
+    },
+    {
+     "descripcion": "POST /orders responde 422",
+     "ok": true,
+     "detalle": "422"
+    },
+    {
+     "descripcion": "Sin pedido nuevo y stock igual",
+     "ok": true,
+     "detalle": "{\"pedidos\":1,\"stock\":40} -> {\"pedidos\":1,\"stock\":40}"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P05-01",
+     "tipo": "captura",
+     "ruta": "C4/P05/01-fuera-radio.jpg",
+     "descripcion": "Despacho fuera del radio rechazado"
+    },
+    {
+     "id": "E-C4-P05-02",
+     "tipo": "red",
+     "ruta": "C4/P05/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P05-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P05/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P05-04",
+     "tipo": "logs",
+     "ruta": "C4/P05/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 77713dbe9b33",
+    "X-Request-ID 846ed8e0bbe2"
+   ]
+  },
+  {
+   "id": "P06",
+   "ca": "CA06",
+   "titulo": "Pedido con más cantidad que el stock",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05",
+    "F09"
+   ],
+   "requisitos": [
+    "R01",
+    "R07"
+   ],
+   "escenario": "límite",
+   "run": "RUN-C4-P06",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:48:28+00:00",
+   "fin": "2026-11-28T17:48:39+00:00",
+   "duracion_ms": 10478,
+   "estado": "aprobada",
+   "esperado": "POST /orders 409; mensaje 'No hay stock suficiente'; Cappuccino sigue con stock 1; sin pedido nuevo",
+   "observado": [
+    {
+     "descripcion": "Precondición: stock de Cappuccino en 1",
+     "ok": true,
+     "detalle": "1"
+    },
+    {
+     "descripcion": "Mensaje: no hay stock suficiente",
+     "ok": true,
+     "detalle": "No hay stock suficiente de uno de los productos. Revisa las cantidades."
+    },
+    {
+     "descripcion": "POST /orders responde 409",
+     "ok": true,
+     "detalle": "409"
+    },
+    {
+     "descripcion": "Stock sigue en 1 y no hay pedido nuevo (todo o nada)",
+     "ok": true,
+     "detalle": "{\"pedidos\":1,\"stock\":1}"
+    },
+    {
+     "descripcion": "Restauración: stock de Cappuccino en 40",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P06-01",
+     "tipo": "captura",
+     "ruta": "C4/P06/01-sin-stock.jpg",
+     "descripcion": "Pedido rechazado por stock insuficiente"
+    },
+    {
+     "id": "E-C4-P06-02",
+     "tipo": "red",
+     "ruta": "C4/P06/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P06-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P06/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P06-04",
+     "tipo": "logs",
+     "ruta": "C4/P06/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 9405c3d3a24e",
+    "X-Request-ID 33c8339c5626",
+    "X-Request-ID c94b23e6edd4",
+    "X-Request-ID 19b461cdd210",
+    "X-Request-ID 87dd81e2069b",
+    "X-Request-ID 45c778958642",
+    "X-Request-ID db7c3239f4a1",
+    "X-Request-ID d7f594f74d35",
+    "X-Request-ID e5c911e35cc2",
+    "X-Request-ID ee7cc132fb70"
+   ]
+  },
+  {
+   "id": "P07",
+   "ca": "CA07",
+   "titulo": "Reintento del mismo pedido (doble envío)",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05"
+   ],
+   "requisitos": [
+    "R19"
+   ],
+   "escenario": "límite",
+   "run": "RUN-C4-P07",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:48:39+00:00",
+   "fin": "2026-11-28T17:48:45+00:00",
+   "duracion_ms": 6107,
+   "estado": "aprobada",
+   "esperado": "Primera respuesta 201 y segunda 200 con repetido=true y el mismo id; un solo documento con esa clave; stock descontado una vez",
+   "observado": [
+    {
+     "descripcion": "Las dos respuestas son 201 y 200",
+     "ok": true,
+     "detalle": "200, 201"
+    },
+    {
+     "descripcion": "Mismo id de pedido y una marcada como repetida",
+     "ok": true,
+     "detalle": "ORD-0DC89B8F / ORD-0DC89B8F (repetido)"
+    },
+    {
+     "descripcion": "Un solo documento con esa clave en orders.pedidos",
+     "ok": true,
+     "detalle": "1"
+    },
+    {
+     "descripcion": "Stock descontado una sola vez",
+     "ok": true,
+     "detalle": "40 -> 39"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P07-01",
+     "tipo": "red",
+     "ruta": "C4/P07/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P07-02",
+     "tipo": "persistencia",
+     "ruta": "C4/P07/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P07-03",
+     "tipo": "logs",
+     "ruta": "C4/P07/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-0DC89B8F",
+    "clave PRUEBA-C4-1795888121263",
+    "X-Request-ID e94283f2cf7d",
+    "X-Request-ID 8acbde30e6e4",
+    "X-Request-ID 69d3368a72e3"
+   ]
+  },
+  {
+   "id": "P08",
+   "ca": "CA08",
+   "titulo": "Crear pedido con inventory demorado (gRPC)",
+   "recorrido": "RC1",
+   "flujos": [
+    "F05"
+   ],
+   "requisitos": [
+    "R17"
+   ],
+   "escenario": "fallo y recuperación",
+   "run": "RUN-C4-P08",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:48:45+00:00",
+   "fin": "2026-11-28T17:48:56+00:00",
+   "duracion_ms": 10374,
+   "estado": "aprobada",
+   "esperado": "Primer intento: 502 y mensaje de servicio no disponible, sin pedido; segundo intento: 201 y pedido creado",
+   "observado": [
+    {
+     "descripcion": "Mensaje de servicio no disponible",
+     "ok": true,
+     "detalle": "Un servicio del sistema no está disponible. Intenta de nuevo en unos segundos."
+    },
+    {
+     "descripcion": "POST /orders responde 502 tras el plazo de gRPC",
+     "ok": true,
+     "detalle": "502 en 3354 ms"
+    },
+    {
+     "descripcion": "No se creó pedido",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Al reintentar con inventory activo: 201 y pedido creado",
+     "ok": true,
+     "detalle": "502, 201"
+    }
+   ],
+   "notas": [
+    "El primer intento tardó 3354 ms (plazo de gRPC: 3 s)"
+   ],
+   "evidencias": [
+    {
+     "id": "E-C4-P08-01",
+     "tipo": "captura",
+     "ruta": "C4/P08/01-inventory-en-pausa.jpg",
+     "descripcion": "Pedido con inventory sin responder"
+    },
+    {
+     "id": "E-C4-P08-02",
+     "tipo": "captura",
+     "ruta": "C4/P08/02-recuperado.jpg",
+     "descripcion": "Pedido creado al reintentar"
+    },
+    {
+     "id": "E-C4-P08-03",
+     "tipo": "red",
+     "ruta": "C4/P08/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P08-04",
+     "tipo": "persistencia",
+     "ruta": "C4/P08/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P08-05",
+     "tipo": "logs",
+     "ruta": "C4/P08/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-AA552546",
+    "X-Request-ID 1008d3355718",
+    "X-Request-ID e082837f9c4f",
+    "X-Request-ID 111221a877a3",
+    "X-Request-ID 1d5e8761f7c7"
+   ]
+  },
+  {
+   "id": "P09",
+   "ca": "CA09",
+   "titulo": "Pagar con el proveedor simulado y obtener la boleta",
+   "recorrido": "RC2",
+   "flujos": [
+    "F06"
+   ],
+   "requisitos": [
+    "R02",
+    "R04",
+    "R08"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P09",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:48:56+00:00",
+   "fin": "2026-11-28T17:49:04+00:00",
+   "duracion_ms": 8661,
+   "estado": "aprobada",
+   "esperado": "POST /payments 201 con el monto del pedido; POST /simular 202; pedido Pagado; boleta con folio, neto, IVA y total",
+   "observado": [
+    {
+     "descripcion": "POST /payments 201 con el monto del pedido (9200)",
+     "ok": true,
+     "detalle": "{\"id\":\"PAY-9ACCC337\",\"order_id\":\"ORD-BF9EE529\",\"estado\":\"PENDIENTE\",\"monto\":9200,\"url_pago\":\"https://sandbox.pagos.example/pagar/chk_8958b6057b64e5ac\"}"
+    },
+    {
+     "descripcion": "La pasarela muestra $9.200",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "POST /simular responde 202",
+     "ok": true,
+     "detalle": "202"
+    },
+    {
+     "descripcion": "Pedido Pagado y boleta con folio y total $9.200",
+     "ok": true,
+     "detalle": "B-000001"
+    },
+    {
+     "descripcion": "payments.pagos: APROBADO por 9200",
+     "ok": true,
+     "detalle": "[{\"_id\":\"PAY-9ACCC337\",\"monto\":9200,\"estado\":\"APROBADO\"}]"
+    },
+    {
+     "descripcion": "orders.pedidos: PAGADO con el mismo folio en CAJA-WEB-01",
+     "ok": true,
+     "detalle": "{\"_id\":\"ORD-BF9EE529\",\"estado\":\"PAGADO\",\"folio\":\"B-000001\",\"caja\":\"CAJA-WEB-01\"}"
+    },
+    {
+     "descripcion": "notificaciones.correos: boleta enviada (simulada)",
+     "ok": true,
+     "detalle": "[{\"_id\":\"ORD-BF9EE529\",\"tipo\":\"boleta\",\"asunto\":\"Aroma & Cafe - Boleta B-000001\",\"estado\":\"ENVIADO_SIMULADO\"}]"
+    },
+    {
+     "descripcion": "analitica.ventas: venta registrada sin datos personales",
+     "ok": true,
+     "detalle": "[{\"_id\":\"ORD-BF9EE529\",\"total\":9200,\"tipo_entrega\":\"retiro\"}]"
+    },
+    {
+     "descripcion": "En una sesión nueva: Pagado con la misma boleta",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P09-01",
+     "tipo": "captura",
+     "ruta": "C4/P09/01-pasarela.jpg",
+     "descripcion": "Pasarela de pago simulada"
+    },
+    {
+     "id": "E-C4-P09-02",
+     "tipo": "captura",
+     "ruta": "C4/P09/02-boleta.jpg",
+     "descripcion": "Pedido pagado con su boleta"
+    },
+    {
+     "id": "E-C4-P09-03",
+     "tipo": "red",
+     "ruta": "C4/P09/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P09-04",
+     "tipo": "persistencia",
+     "ruta": "C4/P09/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P09-05",
+     "tipo": "logs",
+     "ruta": "C4/P09/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-BF9EE529",
+    "X-Request-ID 23260037e38e",
+    "X-Request-ID 862ae73665fd",
+    "X-Request-ID a3fef41ca05d",
+    "X-Request-ID 9a78d8c93712",
+    "X-Request-ID 7909be607fe9",
+    "X-Request-ID 6769f2fa647d",
+    "X-Request-ID 5c49acf54856",
+    "X-Request-ID 2f8218e3f028",
+    "X-Request-ID cb6f93fefe77"
+   ]
+  },
+  {
+   "id": "P10",
+   "ca": "CA10",
+   "titulo": "Pago rechazado por el proveedor y nuevo intento",
+   "recorrido": "RC2",
+   "flujos": [
+    "F06"
+   ],
+   "requisitos": [
+    "R02"
+   ],
+   "escenario": "rechazo y recuperación",
+   "run": "RUN-C4-P10",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:49:05+00:00",
+   "fin": "2026-11-28T17:49:10+00:00",
+   "duracion_ms": 5138,
+   "estado": "aprobada",
+   "esperado": "Primer pago RECHAZADO y pedido Pendiente de pago; segundo pago APROBADO y pedido Pagado",
+   "observado": [
+    {
+     "descripcion": "Mensaje de pago rechazado y pedido Pendiente de pago",
+     "ok": true,
+     "detalle": "El proveedor rechazó el pago. El pedido sigue pendiente; puedes intentarlo de nuevo."
+    },
+    {
+     "descripcion": "payments.pagos: un pago RECHAZADO",
+     "ok": true,
+     "detalle": "[{\"_id\":\"PAY-61D44760\",\"monto\":2800,\"estado\":\"RECHAZADO\"}]"
+    },
+    {
+     "descripcion": "orders.pedidos sigue PENDIENTE_PAGO",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "El segundo intento aprueba el pago: Pagado",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "payments.pagos: uno RECHAZADO y uno APROBADO",
+     "ok": true,
+     "detalle": "[{\"_id\":\"PAY-61D44760\",\"monto\":2800,\"estado\":\"RECHAZADO\"},{\"_id\":\"PAY-9DE1F717\",\"monto\":2800,\"estado\":\"APROBADO\"}]"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P10-01",
+     "tipo": "captura",
+     "ruta": "C4/P10/01-rechazado.jpg",
+     "descripcion": "Pago rechazado por el proveedor"
+    },
+    {
+     "id": "E-C4-P10-02",
+     "tipo": "captura",
+     "ruta": "C4/P10/02-aprobado.jpg",
+     "descripcion": "Pago aprobado en el segundo intento"
+    },
+    {
+     "id": "E-C4-P10-03",
+     "tipo": "red",
+     "ruta": "C4/P10/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P10-04",
+     "tipo": "persistencia",
+     "ruta": "C4/P10/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P10-05",
+     "tipo": "logs",
+     "ruta": "C4/P10/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-AA552546",
+    "X-Request-ID 7830fe8488d7",
+    "X-Request-ID afba3e90f351",
+    "X-Request-ID e16c1cbbfade",
+    "X-Request-ID 0a6052975e47",
+    "X-Request-ID b705d884e5be",
+    "X-Request-ID 101593ad30dc",
+    "X-Request-ID 98039dd238f6",
+    "X-Request-ID aa56cf14f990"
+   ]
+  },
+  {
+   "id": "P11",
+   "ca": "CA11",
+   "titulo": "Aviso de pago repetido por el proveedor",
+   "recorrido": "RC2",
+   "flujos": [
+    "F06"
+   ],
+   "requisitos": [
+    "R19"
+   ],
+   "escenario": "límite",
+   "run": "RUN-C4-P11",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:49:10+00:00",
+   "fin": "2026-11-28T17:49:15+00:00",
+   "duracion_ms": 5162,
+   "estado": "aprobada",
+   "esperado": "Primer aviso APROBADO; segundo aviso repetido; un solo folio; una sola venta del pedido en analítica",
+   "observado": [
+    {
+     "descripcion": "POST /simular 202 con dos avisos enviados",
+     "ok": true,
+     "detalle": "{\"avisos\":[{\"status\":200,\"respuesta\":{\"ok\":true,\"estado\":\"APROBADO\"}},{\"status\":200,\"respuesta\":{\"ok\":true,\"repetido\":true}}]}"
+    },
+    {
+     "descripcion": "Primer aviso APROBADO y segundo marcado como repetido",
+     "ok": true,
+     "detalle": "[{\"status\":200,\"respuesta\":{\"ok\":true,\"estado\":\"APROBADO\"}},{\"status\":200,\"respuesta\":{\"ok\":true,\"repetido\":true}}]"
+    },
+    {
+     "descripcion": "Una sola venta del pedido en analitica.ventas",
+     "ok": true,
+     "detalle": "1"
+    },
+    {
+     "descripcion": "Pedido PAGADO con un solo folio",
+     "ok": true,
+     "detalle": "{\"_id\":\"ORD-2A5B3F55\",\"estado\":\"PAGADO\",\"folio\":\"B-000003\"}"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P11-01",
+     "tipo": "captura",
+     "ruta": "C4/P11/01-pagado-una-vez.jpg",
+     "descripcion": "Pedido pagado una vez pese al aviso repetido"
+    },
+    {
+     "id": "E-C4-P11-02",
+     "tipo": "red",
+     "ruta": "C4/P11/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P11-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P11/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P11-04",
+     "tipo": "logs",
+     "ruta": "C4/P11/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-2A5B3F55",
+    "X-Request-ID 9284abfe748f",
+    "X-Request-ID 161773e2a928",
+    "X-Request-ID 23e6254dc37b",
+    "X-Request-ID 90ad293d6765",
+    "X-Request-ID aa103d97d50e",
+    "X-Request-ID 16bf948b4794",
+    "X-Request-ID a517ac8c6d6a"
+   ]
+  },
+  {
+   "id": "P12",
+   "ca": "CA12",
+   "titulo": "Anular un pedido pendiente con motivo",
+   "recorrido": null,
+   "flujos": [
+    "F08"
+   ],
+   "requisitos": [
+    "R03"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P12",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:49:15+00:00",
+   "fin": "2026-11-28T17:49:26+00:00",
+   "duracion_ms": 10415,
+   "estado": "aprobada",
+   "esperado": "POST /cancel 200; estado Anulado; stock de Espresso vuelve al valor anterior; historial con el motivo",
+   "observado": [
+    {
+     "descripcion": "Al crear el pedido se reserva 1 Espresso",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Estado Anulado",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "POST /cancel responde 200",
+     "ok": true,
+     "detalle": "200"
+    },
+    {
+     "descripcion": "El stock vuelve al valor anterior",
+     "ok": true,
+     "detalle": "39 -> 39"
+    },
+    {
+     "descripcion": "orders.pedidos: ANULADO con el motivo en el historial",
+     "ok": true,
+     "detalle": "[{\"estado\":\"PENDIENTE_PAGO\",\"por\":\"USR-003\",\"en\":\"2026-11-28T17:49:18+00:00\"},{\"estado\":\"ANULADO\",\"por\":\"USR-003\",\"motivo\":\"Me equivoque de producto\",\"en\":\"2026-11-28T17:49:19+00:00\"}]"
+    },
+    {
+     "descripcion": "Un pedido pagado no muestra la opción de anular",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P12-01",
+     "tipo": "captura",
+     "ruta": "C4/P12/01-anulado.jpg",
+     "descripcion": "Pedido anulado"
+    },
+    {
+     "id": "E-C4-P12-02",
+     "tipo": "red",
+     "ruta": "C4/P12/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P12-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P12/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P12-04",
+     "tipo": "logs",
+     "ruta": "C4/P12/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-EE4EB7FA",
+    "X-Request-ID e0df8b203ef3",
+    "X-Request-ID 77f4b644bc4d",
+    "X-Request-ID 0626c74c1f67",
+    "X-Request-ID ebae188e3904",
+    "X-Request-ID d07a9932e302",
+    "X-Request-ID 5e99423a860f",
+    "X-Request-ID 43b473d8e9bd"
+   ]
+  },
+  {
+   "id": "P13",
+   "ca": "CA13",
+   "titulo": "Mis pedidos agrega orders, inventory y payments",
+   "recorrido": "RC3",
+   "flujos": [
+    "F07"
+   ],
+   "requisitos": [
+    "R16"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P13",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:49:26+00:00",
+   "fin": "2026-11-28T17:49:29+00:00",
+   "duracion_ms": 3232,
+   "estado": "aprobada",
+   "esperado": "POST /graphql 200 sin errors; un pedido por cada pedido de ana en orders.pedidos; estados y pagos iguales a los guardados",
+   "observado": [
+    {
+     "descripcion": "POST /graphql 200 sin errors",
+     "ok": true,
+     "detalle": "200"
+    },
+    {
+     "descripcion": "Un pedido en pantalla por cada pedido de ana en orders.pedidos",
+     "ok": true,
+     "detalle": "5 / 5"
+    },
+    {
+     "descripcion": "Estados de GraphQL = estados guardados en orders",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Todos los productos traen nombre (inventory)",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Los pedidos con pago muestran el pago (payments)",
+     "ok": true,
+     "detalle": "4"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P13-01",
+     "tipo": "captura",
+     "ruta": "C4/P13/01-mis-pedidos.jpg",
+     "descripcion": "Mis pedidos agregado por GraphQL"
+    },
+    {
+     "id": "E-C4-P13-02",
+     "tipo": "red",
+     "ruta": "C4/P13/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P13-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P13/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P13-04",
+     "tipo": "logs",
+     "ruta": "C4/P13/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 1ce7d3005644"
+   ]
+  },
+  {
+   "id": "P14",
+   "ca": "CA14",
+   "titulo": "Pedido ajeno",
+   "recorrido": "RC3",
+   "flujos": [
+    "F07"
+   ],
+   "requisitos": [
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "run": "RUN-C4-P14",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:49:29+00:00",
+   "fin": "2026-11-28T17:49:33+00:00",
+   "duracion_ms": 3601,
+   "estado": "aprobada",
+   "esperado": "GET /orders/{id} 404 con mensaje 'No encontramos ese pedido'; GraphQL resumenPedido = null; el pedido de ana sin cambios",
+   "observado": [
+    {
+     "descripcion": "Mensaje \"No encontramos ese pedido\" y sin detalle",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "GET /orders/{id} responde 404",
+     "ok": true,
+     "detalle": "404"
+    },
+    {
+     "descripcion": "GraphQL resumenPedido del pedido ajeno = null",
+     "ok": true,
+     "detalle": "{\"data\":{\"resumenPedido\":null}}"
+    },
+    {
+     "descripcion": "El pedido de ana no cambió",
+     "ok": true,
+     "detalle": "{\"_id\":\"ORD-BF9EE529\",\"user_id\":\"USR-003\",\"estado\":\"PAGADO\",\"total\":9200}"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P14-01",
+     "tipo": "captura",
+     "ruta": "C4/P14/01-pedido-ajeno.jpg",
+     "descripcion": "Pedro intenta ver el pedido de Ana"
+    },
+    {
+     "id": "E-C4-P14-02",
+     "tipo": "red",
+     "ruta": "C4/P14/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P14-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P14/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P14-04",
+     "tipo": "logs",
+     "ruta": "C4/P14/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-BF9EE529",
+    "X-Request-ID 5093ae7ad721",
+    "X-Request-ID 71d44e2a866c",
+    "X-Request-ID 3c023af6dd59",
+    "X-Request-ID e2deb3feda3c"
+   ]
+  },
+  {
+   "id": "P15",
+   "ca": "CA15",
+   "titulo": "Mis pedidos con inventory detenido",
+   "recorrido": "RC3",
+   "flujos": [
+    "F07"
+   ],
+   "requisitos": [
+    "R16",
+    "R17"
+   ],
+   "escenario": "fallo y recuperación",
+   "run": "RUN-C4-P15",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:49:33+00:00",
+   "fin": "2026-11-28T17:49:53+00:00",
+   "duracion_ms": 19721,
+   "estado": "aprobada",
+   "esperado": "Respuesta GraphQL con errors 'Servicio inventory no disponible'; aviso 'Información incompleta' y 'Producto (dato no disponible)'; después, sin errors",
+   "observado": [
+    {
+     "descripcion": "Aviso de información incompleta",
+     "ok": true,
+     "detalle": "Información incompleta: Servicio inventory no disponible: la respuesta esta incompleta Reintentar"
+    },
+    {
+     "descripcion": "Productos marcados como dato no disponible",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "La respuesta GraphQL trae errors de inventory y data parcial",
+     "ok": true,
+     "detalle": "[{\"message\":\"Servicio inventory no disponible: la respuesta esta incompleta\",\"path\":null}]"
+    },
+    {
+     "descripcion": "Con inventory de vuelta: sin aviso y sin productos incompletos",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P15-01",
+     "tipo": "captura",
+     "ruta": "C4/P15/01-incompleto.jpg",
+     "descripcion": "Mis pedidos con inventory detenido"
+    },
+    {
+     "id": "E-C4-P15-02",
+     "tipo": "captura",
+     "ruta": "C4/P15/02-completo.jpg",
+     "descripcion": "Mis pedidos completo otra vez"
+    },
+    {
+     "id": "E-C4-P15-03",
+     "tipo": "red",
+     "ruta": "C4/P15/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P15-04",
+     "tipo": "logs",
+     "ruta": "C4/P15/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID d2a70d4b9e18",
+    "X-Request-ID d28388dfd08c"
+   ]
+  },
+  {
+   "id": "P16",
+   "ca": "CA16",
+   "titulo": "Permisos de campos y límites de GraphQL",
+   "recorrido": "RC3",
+   "flujos": [
+    "F07"
+   ],
+   "requisitos": [
+    "R15",
+    "R16"
+   ],
+   "escenario": "rechazo y límite",
+   "run": "RUN-C4-P16",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:49:53+00:00",
+   "fin": "2026-11-28T17:49:54+00:00",
+   "duracion_ms": 513,
+   "estado": "aprobada",
+   "esperado": "cliente = null con error de autorización; reporteVentas con error; la consulta de 6 alias se rechaza (límite 5) y la de más de 2000 caracteres responde 422",
+   "observado": [
+    {
+     "descripcion": "Campo cliente: null con error de autorización",
+     "ok": true,
+     "detalle": "{\"data\":{\"resumenPedido\":{\"id\":\"ORD-BF9EE529\",\"cliente\":null}},\"errors\":[{\"message\":\"No autorizado para ver datos del cliente\",\"path\":[\"resumenPedido\",\"cliente\"]}]}"
+    },
+    {
+     "descripcion": "reporteVentas para un cliente: error",
+     "ok": true,
+     "detalle": "{\"data\":null,\"errors\":[{\"message\":\"Solo el dueno o el administrador pueden ver reportes\",\"path\":[\"reporteVentas\"]}]}"
+    },
+    {
+     "descripcion": "Consulta con 6 alias rechazada (límite 5)",
+     "ok": true,
+     "detalle": "{\"data\":null,\"errors\":[{\"message\":\"6 aliases found. Allowed: 5\",\"path\":null}]}"
+    },
+    {
+     "descripcion": "Consulta de más de 2000 caracteres: 422",
+     "ok": true,
+     "detalle": "422"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P16-01",
+     "tipo": "red",
+     "ruta": "C4/P16/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P16-02",
+     "tipo": "logs",
+     "ruta": "C4/P16/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 843bc1bb19c3",
+    "X-Request-ID e540c5c39641",
+    "X-Request-ID 6d2a5e06a63b",
+    "X-Request-ID 62fe16cdf280",
+    "X-Request-ID c72bedcd1d5e"
+   ]
+  },
+  {
+   "id": "P17",
+   "ca": "CA17",
+   "titulo": "Editar mi ficha",
+   "recorrido": "RC4",
+   "flujos": [
+    "F04"
+   ],
+   "requisitos": [
+    "R05"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P17",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:49:54+00:00",
+   "fin": "2026-11-28T17:49:56+00:00",
+   "duracion_ms": 2750,
+   "estado": "aprobada",
+   "esperado": "PUT /clients/me 200; aviso 'Tus datos quedaron guardados'; valores nuevos al recargar y en otra sesión",
+   "observado": [
+    {
+     "descripcion": "PUT /clients/me responde 200",
+     "ok": true,
+     "detalle": "200"
+    },
+    {
+     "descripcion": "Al recargar se ven los valores nuevos",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "clients.clientes guarda teléfono y comuna",
+     "ok": true,
+     "detalle": "{\"_id\":\"USR-003\",\"telefono\":\"+56 9 5555 4570\",\"run\":null,\"comuna\":\"Maipú\"}"
+    },
+    {
+     "descripcion": "En una sesión nueva se ven los mismos datos",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P17-01",
+     "tipo": "captura",
+     "ruta": "C4/P17/01-ficha.jpg",
+     "descripcion": "Ficha guardada"
+    },
+    {
+     "id": "E-C4-P17-02",
+     "tipo": "red",
+     "ruta": "C4/P17/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P17-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P17/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P17-04",
+     "tipo": "logs",
+     "ruta": "C4/P17/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID dd01a28f0f4c",
+    "X-Request-ID ca493f6a3f0c",
+    "X-Request-ID 585982429e7f",
+    "X-Request-ID 60e8634faad1",
+    "X-Request-ID 055407538587",
+    "X-Request-ID 7cfcd4478091"
+   ]
+  },
+  {
+   "id": "P18",
+   "ca": "CA18",
+   "titulo": "RUN inválido en la ficha",
+   "recorrido": "RC4",
+   "flujos": [
+    "F04"
+   ],
+   "requisitos": [
+    "R05"
+   ],
+   "escenario": "rechazo",
+   "run": "RUN-C4-P18",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:49:57+00:00",
+   "fin": "2026-11-28T17:50:00+00:00",
+   "duracion_ms": 3441,
+   "estado": "aprobada",
+   "esperado": "PUT /clients/me 422; mensaje 'El RUN no es válido'; ficha sin cambios",
+   "observado": [
+    {
+     "descripcion": "Mensaje: el RUN no es válido",
+     "ok": true,
+     "detalle": "El RUN no es válido (revisa el dígito verificador)."
+    },
+    {
+     "descripcion": "PUT /clients/me responde 422",
+     "ok": true,
+     "detalle": "422"
+    },
+    {
+     "descripcion": "La ficha no cambió",
+     "ok": true,
+     "detalle": "{\"_id\":\"USR-003\",\"telefono\":\"+56 9 5555 4570\",\"run\":null,\"comuna\":\"Maipú\"}"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P18-01",
+     "tipo": "captura",
+     "ruta": "C4/P18/01-run-invalido.jpg",
+     "descripcion": "RUN inválido rechazado"
+    },
+    {
+     "id": "E-C4-P18-02",
+     "tipo": "red",
+     "ruta": "C4/P18/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P18-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P18/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P18-04",
+     "tipo": "logs",
+     "ruta": "C4/P18/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 1a98ff1b2c48",
+    "X-Request-ID ea192c5242d1"
+   ]
+  },
+  {
+   "id": "P19",
+   "ca": "CA19",
+   "titulo": "Sesión expirada",
+   "recorrido": "RC4",
+   "flujos": [
+    "F03",
+    "F04"
+   ],
+   "requisitos": [
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "run": "RUN-C4-P19",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:50:00+00:00",
+   "fin": "2026-11-28T17:50:05+00:00",
+   "duracion_ms": 5048,
+   "estado": "aprobada",
+   "esperado": "GET /clients/me 401; redirige a login.php?expirada=1 con aviso; la sesión se borra de auth.sesiones",
+   "observado": [
+    {
+     "descripcion": "Redirige a login.php?expirada=1 con aviso",
+     "ok": true,
+     "detalle": "Tu sesión expiró o ya no es válida. Inicia sesión de nuevo."
+    },
+    {
+     "descripcion": "GET /clients/me (con la sesión vencida) responde 401",
+     "ok": true,
+     "detalle": "401"
+    },
+    {
+     "descripcion": "La sesión vencida se borró de auth.sesiones",
+     "ok": true,
+     "detalle": "5 -> 4"
+    }
+   ],
+   "notas": [
+    "Sesiones vencidas de USR-003: 5"
+   ],
+   "evidencias": [
+    {
+     "id": "E-C4-P19-01",
+     "tipo": "captura",
+     "ruta": "C4/P19/01-sesion-expirada.jpg",
+     "descripcion": "Sesión expirada: vuelve a iniciar sesión"
+    },
+    {
+     "id": "E-C4-P19-02",
+     "tipo": "red",
+     "ruta": "C4/P19/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P19-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P19/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P19-04",
+     "tipo": "logs",
+     "ruta": "C4/P19/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID c3ccec695538",
+    "X-Request-ID a8078da2b109",
+    "X-Request-ID c259eedc8063",
+    "X-Request-ID 150f8be90471"
+   ]
+  },
+  {
+   "id": "P20",
+   "ca": "CA20",
+   "titulo": "Página protegida sin sesión",
+   "recorrido": "RC4",
+   "flujos": [
+    "F04"
+   ],
+   "requisitos": [
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "run": "RUN-C4-P20",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:50:05+00:00",
+   "fin": "2026-11-28T17:50:06+00:00",
+   "duracion_ms": 499,
+   "estado": "aprobada",
+   "esperado": "Redirige a login.php; la API responde 401 'Bearer token requerido'",
+   "observado": [
+    {
+     "descripcion": "Sin sesión, Mi cuenta lleva a login.php",
+     "ok": true,
+     "detalle": "http://localhost:8080/login.php?volver=cuenta.php"
+    },
+    {
+     "descripcion": "GET /clients/me sin token: 401 \"Bearer token requerido\"",
+     "ok": true,
+     "detalle": "{\"status\":401,\"datos\":{\"detail\":\"Bearer token requerido\"}}"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P20-01",
+     "tipo": "captura",
+     "ruta": "C4/P20/01-sin-sesion.jpg",
+     "descripcion": "Página protegida sin sesión"
+    },
+    {
+     "id": "E-C4-P20-02",
+     "tipo": "red",
+     "ruta": "C4/P20/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P20-03",
+     "tipo": "logs",
+     "ruta": "C4/P20/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID a2dbc24d949f"
+   ]
+  },
+  {
+   "id": "P21",
+   "ca": "CA21",
+   "titulo": "Login fallido, login y cierre de sesión",
+   "recorrido": "RC4",
+   "flujos": [
+    "F03"
+   ],
+   "requisitos": [
+    "R12",
+    "R15"
+   ],
+   "escenario": "rechazo y éxito",
+   "run": "RUN-C4-P21",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:50:06+00:00",
+   "fin": "2026-11-28T17:50:07+00:00",
+   "duracion_ms": 1064,
+   "estado": "aprobada",
+   "esperado": "401 'Correo o contraseña incorrectos'; 200 y 'Hola, Ana'; después del logout el token anterior recibe 401",
+   "observado": [
+    {
+     "descripcion": "Clave incorrecta: \"Correo o contraseña incorrectos\"",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "POST /auth/login responde 401",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Login correcto: \"Hola, Ana\"",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Después de cerrar sesión, el token anterior recibe 401",
+     "ok": true,
+     "detalle": "401"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P21-01",
+     "tipo": "captura",
+     "ruta": "C4/P21/01-cerro-sesion.jpg",
+     "descripcion": "Sesión cerrada"
+    },
+    {
+     "id": "E-C4-P21-02",
+     "tipo": "red",
+     "ruta": "C4/P21/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P21-03",
+     "tipo": "logs",
+     "ruta": "C4/P21/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 71c9d784c1e7",
+    "X-Request-ID 91684a54104e",
+    "X-Request-ID 61a2adedeae3",
+    "X-Request-ID 29cb44e0a580",
+    "X-Request-ID 68bf051d3757",
+    "X-Request-ID ba3239391daf"
+   ]
+  },
+  {
+   "id": "P22",
+   "ca": "CA22",
+   "titulo": "Registro con verificación de correo",
+   "recorrido": null,
+   "flujos": [
+    "F02"
+   ],
+   "requisitos": [
+    "R05",
+    "R11"
+   ],
+   "escenario": "éxito y rechazo",
+   "run": "RUN-C4-P22",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:50:07+00:00",
+   "fin": "2026-11-28T17:50:14+00:00",
+   "duracion_ms": 6357,
+   "estado": "aprobada",
+   "esperado": "POST /auth/register 201; login 403 antes de verificar; verify-email 200; login 200",
+   "observado": [
+    {
+     "descripcion": "POST /auth/register responde 201",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Antes de verificar: login 403 con aviso para verificar",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "El código llegó a la bandeja simulada",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "POST /auth/verify-email responde 200",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Después de verificar: \"Hola, Camila\"",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "auth.usuarios: rol cliente y correo verificado",
+     "ok": true,
+     "detalle": "{\"_id\":\"USR-1CB314D8\",\"email\":\"camila.c4.1795888207897@correo.cl\",\"rol\":\"cliente\",\"correo_verificado\":true}"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P22-01",
+     "tipo": "captura",
+     "ruta": "C4/P22/01-paso-2.jpg",
+     "descripcion": "Registro: paso 2 (código)"
+    },
+    {
+     "id": "E-C4-P22-02",
+     "tipo": "captura",
+     "ruta": "C4/P22/02-sesion-nueva.jpg",
+     "descripcion": "La cuenta verificada inicia sesión"
+    },
+    {
+     "id": "E-C4-P22-03",
+     "tipo": "red",
+     "ruta": "C4/P22/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P22-04",
+     "tipo": "persistencia",
+     "ruta": "C4/P22/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P22-05",
+     "tipo": "logs",
+     "ruta": "C4/P22/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "correo camila.c4.1795888207897@correo.cl",
+    "X-Request-ID 5cb739dedca6",
+    "X-Request-ID f2434d464c16",
+    "X-Request-ID 40261d4b3d35",
+    "X-Request-ID 8b8858e25ba3",
+    "X-Request-ID 4027dd99811a",
+    "X-Request-ID 8016cfe21b87"
+   ]
+  },
+  {
+   "id": "P23",
+   "ca": "CA23",
+   "titulo": "Inventario del dueño: oferta, alta y baja",
+   "recorrido": null,
+   "flujos": [
+    "F09"
+   ],
+   "requisitos": [
+    "R07",
+    "R10"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P23",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:50:14+00:00",
+   "fin": "2026-11-28T17:50:22+00:00",
+   "duracion_ms": 8222,
+   "estado": "aprobada",
+   "esperado": "PUT 200, POST 201, DELETE 204; la carta muestra la oferta, y el producto dado de baja no aparece",
+   "observado": [
+    {
+     "descripcion": "PUT 200, POST 201 y DELETE 204",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "La carta muestra la oferta del Latte ($2.900 y $3.200 tachado)",
+     "ok": true,
+     "detalle": "$2.900$3.200"
+    },
+    {
+     "descripcion": "El producto dado de baja no aparece en la carta",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "inventory.productos: Latte con oferta 2900 y el nuevo con activo=false",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Restauración: el Latte sin oferta",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P23-01",
+     "tipo": "captura",
+     "ruta": "C4/P23/01-inventario.jpg",
+     "descripcion": "Inventario después de los cambios"
+    },
+    {
+     "id": "E-C4-P23-02",
+     "tipo": "captura",
+     "ruta": "C4/P23/02-carta.jpg",
+     "descripcion": "La carta refleja los cambios"
+    },
+    {
+     "id": "E-C4-P23-03",
+     "tipo": "red",
+     "ruta": "C4/P23/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P23-04",
+     "tipo": "persistencia",
+     "ruta": "C4/P23/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P23-05",
+     "tipo": "logs",
+     "ruta": "C4/P23/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 72737b2dde76",
+    "X-Request-ID 2238346068b5",
+    "X-Request-ID f8414e92075c",
+    "X-Request-ID 8646f36366a9",
+    "X-Request-ID d40fbeb5b9bf",
+    "X-Request-ID c010b9811202",
+    "X-Request-ID 9a00464e7def",
+    "X-Request-ID 5b37721a6cc7",
+    "X-Request-ID e6c6df9312ca",
+    "X-Request-ID af40a213d652"
+   ]
+  },
+  {
+   "id": "P24",
+   "ca": "CA24",
+   "titulo": "Rol sin permiso",
+   "recorrido": null,
+   "flujos": [
+    "F09",
+    "F10"
+   ],
+   "requisitos": [
+    "R12",
+    "R15"
+   ],
+   "escenario": "rechazo",
+   "run": "RUN-C4-P24",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:50:22+00:00",
+   "fin": "2026-11-28T17:50:23+00:00",
+   "duracion_ms": 906,
+   "estado": "aprobada",
+   "esperado": "GET /admin/products 403 y GET /admin/dispatch-orders 403; aviso 'No tienes permiso'",
+   "observado": [
+    {
+     "descripcion": "Inventario: \"No tienes permiso\"",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Despacho: \"No tienes permiso\"",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "GET /admin/products y /admin/dispatch-orders responden 403",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P24-01",
+     "tipo": "captura",
+     "ruta": "C4/P24/01-inventario-403.jpg",
+     "descripcion": "Cliente en Inventario"
+    },
+    {
+     "id": "E-C4-P24-02",
+     "tipo": "captura",
+     "ruta": "C4/P24/02-despacho-403.jpg",
+     "descripcion": "Cliente en Despacho"
+    },
+    {
+     "id": "E-C4-P24-03",
+     "tipo": "red",
+     "ruta": "C4/P24/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P24-04",
+     "tipo": "logs",
+     "ruta": "C4/P24/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 6d723e777d5c",
+    "X-Request-ID 07316e0e90ba",
+    "X-Request-ID 7d754a712750",
+    "X-Request-ID 08e541cfa4af",
+    "X-Request-ID 6e1ed74ad22a"
+   ]
+  },
+  {
+   "id": "P25",
+   "ca": "CA25",
+   "titulo": "Despacho avanza el pedido pagado",
+   "recorrido": null,
+   "flujos": [
+    "F10"
+   ],
+   "requisitos": [
+    "R02",
+    "R13"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P25",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:50:23+00:00",
+   "fin": "2026-11-28T17:50:26+00:00",
+   "duracion_ms": 2475,
+   "estado": "aprobada",
+   "esperado": "Tres PUT /status 200; el pedido sale de la lista al quedar Entregado; historial en orders",
+   "observado": [
+    {
+     "descripcion": "El pedido pagado aparece en la lista",
+     "ok": true,
+     "detalle": "ORD-BF9EE529, ORD-AA552546, ORD-2A5B3F55"
+    },
+    {
+     "descripcion": "En Listo (retiro) no se ofrece \"en camino\"",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Tres PUT /status 200",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Al quedar Entregado sale de la lista",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "orders.pedidos: ENTREGADO con el historial completo",
+     "ok": true,
+     "detalle": "PENDIENTE_PAGO > PAGADO > EN_PREPARACION > LISTO > ENTREGADO"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P25-01",
+     "tipo": "captura",
+     "ruta": "C4/P25/01-listo.jpg",
+     "descripcion": "Pedido listo para retiro"
+    },
+    {
+     "id": "E-C4-P25-02",
+     "tipo": "red",
+     "ruta": "C4/P25/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P25-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P25/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P25-04",
+     "tipo": "logs",
+     "ruta": "C4/P25/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-BF9EE529",
+    "X-Request-ID 894a910c2c97",
+    "X-Request-ID c4006950ccf3",
+    "X-Request-ID 7381ace2086b",
+    "X-Request-ID 7fabf1d8a277",
+    "X-Request-ID 89befa71ba7c",
+    "X-Request-ID b848d3d6759f",
+    "X-Request-ID d25ee176f564",
+    "X-Request-ID 5d83f433abd2",
+    "X-Request-ID f6439befafca"
+   ]
+  },
+  {
+   "id": "P26",
+   "ca": "CA26",
+   "titulo": "Ventas de la caja web",
+   "recorrido": null,
+   "flujos": [
+    "F11"
+   ],
+   "requisitos": [
+    "R04"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P26",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:50:26+00:00",
+   "fin": "2026-11-28T17:50:28+00:00",
+   "duracion_ms": 2147,
+   "estado": "aprobada",
+   "esperado": "GET /admin/sales 200; fila con el folio y el total del pedido de P09",
+   "observado": [
+    {
+     "descripcion": "Fila con el folio de P09 y total $9.200",
+     "ok": true,
+     "detalle": "B-000001ORD-BF9EE52928-11-26, 2:48 p. m.$9.200Entregado"
+    },
+    {
+     "descripcion": "GET /admin/sales responde 200",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P26-01",
+     "tipo": "captura",
+     "ruta": "C4/P26/01-ventas.jpg",
+     "descripcion": "Ventas de la caja web"
+    },
+    {
+     "id": "E-C4-P26-02",
+     "tipo": "red",
+     "ruta": "C4/P26/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P26-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P26/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P26-04",
+     "tipo": "logs",
+     "ruta": "C4/P26/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 3160f2edeb26",
+    "X-Request-ID 00582eab52e8",
+    "X-Request-ID df169758a1f6"
+   ]
+  },
+  {
+   "id": "P27",
+   "ca": "CA27",
+   "titulo": "Reporte de ventas actualizado",
+   "recorrido": null,
+   "flujos": [
+    "F12"
+   ],
+   "requisitos": [
+    "R09"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P27",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:50:28+00:00",
+   "fin": "2026-11-28T17:50:35+00:00",
+   "duracion_ms": 6130,
+   "estado": "aprobada",
+   "esperado": "GET /admin/reports/sales 200; pedidos pagados aumenta en 1 y el total en el monto del pedido",
+   "observado": [
+    {
+     "descripcion": "Pedidos pagados aumenta en 1 al actualizar",
+     "ok": true,
+     "detalle": "3 -> 4"
+    },
+    {
+     "descripcion": "Total vendido aumenta en $3.500 (Cold Brew)",
+     "ok": true,
+     "detalle": "$14.500 -> $18.000"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P27-01",
+     "tipo": "captura",
+     "ruta": "C4/P27/01-reporte.jpg",
+     "descripcion": "Reporte actualizado"
+    },
+    {
+     "id": "E-C4-P27-02",
+     "tipo": "red",
+     "ruta": "C4/P27/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P27-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P27/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P27-04",
+     "tipo": "logs",
+     "ruta": "C4/P27/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-167D37DB",
+    "X-Request-ID ad64848c4585",
+    "X-Request-ID f332590da9dc",
+    "X-Request-ID 7df789b00a8a",
+    "X-Request-ID f140f80bd6c3",
+    "X-Request-ID 45ae9bf00959",
+    "X-Request-ID 785f7cb53624",
+    "X-Request-ID 0bdc7c4343e6",
+    "X-Request-ID 91862a0009a0",
+    "X-Request-ID 3e46848a3989"
+   ]
+  },
+  {
+   "id": "P28",
+   "ca": "CA28",
+   "titulo": "Analítica detenida y recuperación",
+   "recorrido": null,
+   "flujos": [
+    "F12"
+   ],
+   "requisitos": [
+    "R09",
+    "R17"
+   ],
+   "escenario": "fallo y recuperación",
+   "run": "RUN-C4-P28",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:50:35+00:00",
+   "fin": "2026-11-28T17:51:15+00:00",
+   "duracion_ms": 40255,
+   "estado": "aprobada",
+   "esperado": "Pago aprobado; Reportes muestra un error mientras analítica esta detenida; después de iniciarla, el reporte incluye la venta",
+   "observado": [
+    {
+     "descripcion": "Con analítica detenida el pago se confirma (Pagado)",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "Reportes informa el error mientras analítica está detenida",
+     "ok": true,
+     "detalle": "Un servicio del sistema no está disponible. Intenta de nuevo en unos segundos. Reintentar"
+    },
+    {
+     "descripcion": "orders guarda el aviso como pendiente",
+     "ok": true,
+     "detalle": "{\"_id\":\"ORD-358A2AFD\",\"estado\":\"PAGADO\",\"avisos_enviados\":false}"
+    },
+    {
+     "descripcion": "Al volver analítica, la venta se registra (reintento de orders)",
+     "ok": true,
+     "detalle": "4 -> 5 en 14 s"
+    },
+    {
+     "descripcion": "Reintentar en Reportes muestra el reporte con la venta",
+     "ok": true,
+     "detalle": "5"
+    }
+   ],
+   "notas": [
+    "La venta llegó a analítica 14 s después de iniciarla (orders reintenta cada 30 s)"
+   ],
+   "evidencias": [
+    {
+     "id": "E-C4-P28-01",
+     "tipo": "captura",
+     "ruta": "C4/P28/01-analitica-detenida.jpg",
+     "descripcion": "Reportes con analítica detenida"
+    },
+    {
+     "id": "E-C4-P28-02",
+     "tipo": "captura",
+     "ruta": "C4/P28/02-recuperado.jpg",
+     "descripcion": "Reporte después de la recuperación"
+    },
+    {
+     "id": "E-C4-P28-03",
+     "tipo": "red",
+     "ruta": "C4/P28/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P28-04",
+     "tipo": "persistencia",
+     "ruta": "C4/P28/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P28-05",
+     "tipo": "logs",
+     "ruta": "C4/P28/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "pedido ORD-358A2AFD",
+    "X-Request-ID e68273a5c2ea",
+    "X-Request-ID d434181e3b26",
+    "X-Request-ID c9fd8be0d1dd",
+    "X-Request-ID 1765d8c60bd9",
+    "X-Request-ID d4a13d1af62e",
+    "X-Request-ID 0c2914ad2c08",
+    "X-Request-ID 1ee43f51d490",
+    "X-Request-ID 48fca73e269c",
+    "X-Request-ID ab962ffb9f8b"
+   ]
+  },
+  {
+   "id": "P29",
+   "ca": "CA29",
+   "titulo": "Administración de usuarios y clientes",
+   "recorrido": null,
+   "flujos": [
+    "F13"
+   ],
+   "requisitos": [
+    "R06",
+    "R10",
+    "R12"
+   ],
+   "escenario": "éxito y rechazo",
+   "run": "RUN-C4-P29",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:51:15+00:00",
+   "fin": "2026-11-28T17:51:18+00:00",
+   "duracion_ms": 3174,
+   "estado": "aprobada",
+   "esperado": "POST /admin/users 201; PUT /role 200; PUT del propio perfil 409; POST /admin/clients 201",
+   "observado": [
+    {
+     "descripcion": "Cambiar el propio perfil: \"No puedes cambiar tu propio perfil\"",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "POST /admin/users 201, PUT /role 200, PUT propio 409 y POST /admin/clients 201",
+     "ok": true,
+     "detalle": "200,409"
+    },
+    {
+     "descripcion": "auth.usuarios: funcionario con perfil despacho, admin sin cambio y cliente sin verificar",
+     "ok": true,
+     "detalle": "[{\"_id\":\"USR-001\",\"email\":\"admin@aromaycafe.test\",\"rol\":\"admin\",\"correo_verificado\":true},{\"_id\":\"USR-CBFFEA72\",\"email\":\"cajero.c4.1795888276866@aromaycafe.test\",\"rol\":\"despacho\",\"correo_verificado\":true},{\"_id\":\"USR-D98ECDD3\",\"email\":\"luis.c4.1795888276866@correo.cl\",\"rol\":\"cliente\",\"correo_verificado\":false}]"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P29-01",
+     "tipo": "captura",
+     "ruta": "C4/P29/01-administracion.jpg",
+     "descripcion": "Administración de usuarios"
+    },
+    {
+     "id": "E-C4-P29-02",
+     "tipo": "red",
+     "ruta": "C4/P29/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P29-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P29/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P29-04",
+     "tipo": "logs",
+     "ruta": "C4/P29/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 69da6a07b26d",
+    "X-Request-ID 48ad22bcdc7d",
+    "X-Request-ID 20c6d9b37acd",
+    "X-Request-ID fcb9cb9b8e09",
+    "X-Request-ID c806ce8c4bbe",
+    "X-Request-ID 562b4ba660eb",
+    "X-Request-ID 44e79dd86a44",
+    "X-Request-ID beefb66ce573",
+    "X-Request-ID 9acea64aa960",
+    "X-Request-ID 88b02bc8d7dc",
+    "X-Request-ID edfa9dcc8332"
+   ]
+  },
+  {
+   "id": "P30",
+   "ca": "CA30",
+   "titulo": "Formulario de contacto",
+   "recorrido": null,
+   "flujos": [
+    "F14"
+   ],
+   "requisitos": [
+    "R14"
+   ],
+   "escenario": "éxito",
+   "run": "RUN-C4-P30",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:51:19+00:00",
+   "fin": "2026-11-28T17:51:21+00:00",
+   "duracion_ms": 2416,
+   "estado": "aprobada",
+   "esperado": "POST /contact 201 y aviso de gracias; el mensaje aparece en la tabla del admin",
+   "observado": [
+    {
+     "descripcion": "Aviso de gracias y POST /contact 201",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "El admin ve el mensaje en Administración",
+     "ok": true,
+     "detalle": ""
+    },
+    {
+     "descripcion": "clients.contacto: mensaje guardado",
+     "ok": true,
+     "detalle": ""
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P30-01",
+     "tipo": "captura",
+     "ruta": "C4/P30/01-contacto.jpg",
+     "descripcion": "Mensaje de contacto enviado"
+    },
+    {
+     "id": "E-C4-P30-02",
+     "tipo": "red",
+     "ruta": "C4/P30/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P30-03",
+     "tipo": "persistencia",
+     "ruta": "C4/P30/persistencia.json",
+     "descripcion": "Inspección de MongoDB dentro del contenedor de cada servicio"
+    },
+    {
+     "id": "E-C4-P30-04",
+     "tipo": "logs",
+     "ruta": "C4/P30/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID d4402ab10332",
+    "X-Request-ID bc76ca91159d",
+    "X-Request-ID 8e2b322e4fa2"
+   ]
+  },
+  {
+   "id": "P31",
+   "ca": "CA31",
+   "titulo": "Servicio llamado sin el secreto del gateway",
+   "recorrido": null,
+   "flujos": [],
+   "requisitos": [
+    "R15"
+   ],
+   "escenario": "control de backend",
+   "run": "RUN-C4-P31",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:51:21+00:00",
+   "fin": "2026-11-28T17:51:22+00:00",
+   "duracion_ms": 277,
+   "estado": "aprobada",
+   "esperado": "403 sin secreto y 403 con secreto falso; dos lineas 'llamada RECHAZADA' en inventory",
+   "observado": [
+    {
+     "descripcion": "Sin secreto y con secreto falso: 403",
+     "ok": true,
+     "detalle": "Sin secreto: inventory respondio 403 Forbidden\nHaciendose pasar por el gateway con un secreto falso: inventory respondio 403 Forbidden"
+    }
+   ],
+   "notas": [],
+   "evidencias": [
+    {
+     "id": "E-C4-P31-01",
+     "tipo": "salida",
+     "ruta": "C4/P31/salida.txt",
+     "descripcion": "Salida de llamada_sin_secreto.py"
+    },
+    {
+     "id": "E-C4-P31-02",
+     "tipo": "red",
+     "ruta": "C4/P31/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P31-03",
+     "tipo": "logs",
+     "ruta": "C4/P31/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": []
+  },
+  {
+   "id": "P32",
+   "ca": "CA32",
+   "titulo": "Páginas sin desborde horizontal",
+   "recorrido": null,
+   "flujos": [
+    "F01",
+    "F03",
+    "F04",
+    "F05",
+    "F06",
+    "F07"
+   ],
+   "requisitos": [
+    "R18"
+   ],
+   "escenario": "responsivo",
+   "run": "RUN-C4-P32",
+   "campana": "C4",
+   "inicio": "2026-11-28T17:51:22+00:00",
+   "fin": "2026-11-28T17:51:26+00:00",
+   "duracion_ms": 4339,
+   "estado": "aprobada",
+   "esperado": "En cada página el ancho del documento no supera el del viewport",
+   "observado": [
+    {
+     "descripcion": "index.php: sin desborde horizontal",
+     "ok": true,
+     "detalle": "412 <= 412"
+    },
+    {
+     "descripcion": "catalogo.php: sin desborde horizontal",
+     "ok": true,
+     "detalle": "412 <= 412"
+    },
+    {
+     "descripcion": "carrito.php: sin desborde horizontal",
+     "ok": true,
+     "detalle": "412 <= 412"
+    },
+    {
+     "descripcion": "cuenta.php: sin desborde horizontal",
+     "ok": true,
+     "detalle": "412 <= 412"
+    },
+    {
+     "descripcion": "mis-pedidos.php: sin desborde horizontal",
+     "ok": true,
+     "detalle": "412 <= 412"
+    },
+    {
+     "descripcion": "Contacto.php: sin desborde horizontal",
+     "ok": true,
+     "detalle": "412 <= 412"
+    },
+    {
+     "descripcion": "pedido.php?id=ORD-BF9EE529: sin desborde horizontal",
+     "ok": true,
+     "detalle": "412 <= 412"
+    }
+   ],
+   "notas": [
+    "Viewport 412x839 (Pixel 7, emulado)"
+   ],
+   "evidencias": [
+    {
+     "id": "E-C4-P32-01",
+     "tipo": "captura",
+     "ruta": "C4/P32/01-mis-pedidos.jpg",
+     "descripcion": "Mis pedidos en este viewport"
+    },
+    {
+     "id": "E-C4-P32-02",
+     "tipo": "red",
+     "ruta": "C4/P32/red.json",
+     "descripcion": "Solicitudes y respuestas del navegador al gateway (con X-Request-ID; claves y tokens enmascarados)"
+    },
+    {
+     "id": "E-C4-P32-03",
+     "tipo": "logs",
+     "ruta": "C4/P32/logs.txt",
+     "descripcion": "Logs de los contenedores con los X-Request-ID de esta ejecución"
+    }
+   ],
+   "vinculacion": [
+    "X-Request-ID 21f06c6ca467",
+    "X-Request-ID 8179b8a3681c",
+    "X-Request-ID c64550a83ff9",
+    "X-Request-ID 2264aedc2e75",
+    "X-Request-ID fd04a639174b",
+    "X-Request-ID c861d8775677",
+    "X-Request-ID ee11fdb87937"
+   ]
+  }
+ ]
+}

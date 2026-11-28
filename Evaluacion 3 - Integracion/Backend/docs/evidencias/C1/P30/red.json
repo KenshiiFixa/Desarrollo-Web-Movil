@@ -1,0 +1,38 @@
+[
+ {
+  "hora": "2026-11-28T17:38:32+00:00",
+  "metodo": "POST",
+  "url": "/api/v1/contact",
+  "estado": 201,
+  "request_id": "8c8e6d9bfd1e",
+  "origin": "http://localhost:8080",
+  "authorization": null,
+  "cors": "http://localhost:8080",
+  "solicitud": "{\"email\":\"visita@correo.cl\",\"nombre\":\"Visita C1 12281\",\"telefono\":null,\"motivo\":\"sugerencia\",\"mensaje\":\"Me gustaria que tuvieran leche de avena\"}",
+  "respuesta": "{\"message\":\"Mensaje recibido\"}"
+ },
+ {
+  "hora": "2026-11-28T17:38:33+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/contact",
+  "estado": 200,
+  "request_id": "5d5b139cecad",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"nombre\":\"Visita C1 12281\",\"email\":\"visita@correo.cl\",\"telefono\":null,\"motivo\":\"sugerencia\",\"mensaje\":\"Me gustaria que tuvieran leche de avena\",\"creado_en\":\"2026-11-28T17:38:32+00:00\",\"id\":\"6b0b119857331e81fcd601ab\"}]"
+ },
+ {
+  "hora": "2026-11-28T17:38:33+00:00",
+  "metodo": "GET",
+  "url": "/api/v1/admin/users",
+  "estado": 200,
+  "request_id": "ac0054ad67a6",
+  "origin": "http://localhost:8080",
+  "authorization": "Bearer ***",
+  "cors": "http://localhost:8080",
+  "solicitud": "",
+  "respuesta": "[{\"user_id\":\"USR-001\",\"email\":\"admin@aromaycafe.test\",\"rol\":\"admin\",\"correo_verificado\":true},{\"user_id\":\"USR-002\",\"email\":\"despacho@aromaycafe.test\",\"rol\":\"despacho\",\"correo_verificado\":true},{\"user_id\":\"USR-003\",\"email\":\"ana@aromaycafe.test\",\"rol\":\"cliente\",\"correo_verificado\":true},{\"user_id\":\"USR-004\",\"email\":\"pedro@aromaycafe.test\",\"rol\":\"cliente\",\"correo_verificado\":true},{\"user_id\":\"USR-005\",\"email\":\"dueno@aromaycafe.test\",\"rol\":\"dueno\",\"correo_verificado\":true},{\"user_id\":\"USR-006\",\"email\":\"cajero@aromaycafe.test\",\"rol\":\"cajero\",\"correo_verificado\":true},{\"user_id\":\"USR-0D202022\",\"email\":\"camila.c1.1795887446112@correo.cl\",\"rol\":\"cliente\",\"correo_verificado\":true},{\"user_id\":\"USR-199E111C\",\"email\":\"cajero.c1.1795887509951@aromaycafe.test\",\"rol\":\"despacho\",\"correo_verificado\":true},{\"user_id\":\"USR-2CB793B4\",\"email\":\"luis.c1.1795887509951@correo.cl\",\"rol\":\"cliente\",\"correo_verificado\":false}]"
+ }
+]

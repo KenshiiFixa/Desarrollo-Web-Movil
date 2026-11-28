@@ -1,0 +1,18 @@
+[
+ {
+  "descripcion": "Venta en analítica",
+  "hora": "2026-11-28T17:41:58+00:00",
+  "servicio": "analitica",
+  "coleccion": "ventas",
+  "filtro": {
+   "_id": "ORD-C7D5DD46"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-C7D5DD46",
+    "total": 3500
+   }
+  ]
+ }
+]

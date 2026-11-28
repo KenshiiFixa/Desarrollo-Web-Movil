@@ -1,0 +1,48 @@
+[
+ {
+  "descripcion": "Stock de Espresso",
+  "hora": "2026-11-28T17:49:22+00:00",
+  "servicio": "inventory",
+  "coleccion": "productos",
+  "filtro": {
+   "_id": "espresso-doble"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "espresso-doble",
+    "stock": 39
+   }
+  ]
+ },
+ {
+  "descripcion": "Pedido anulado",
+  "hora": "2026-11-28T17:49:26+00:00",
+  "servicio": "orders",
+  "coleccion": "pedidos",
+  "filtro": {
+   "_id": "ORD-EE4EB7FA"
+  },
+  "total": 1,
+  "resultado": [
+   {
+    "_id": "ORD-EE4EB7FA",
+    "estado": "ANULADO",
+    "historial": [
+     {
+      "estado": "PENDIENTE_PAGO",
+      "por": "USR-003",
+      "en": "2026-11-28T17:49:18+00:00"
+     },
+     {
+      "estado": "ANULADO",
+      "por": "USR-003",
+      "motivo": "Me equivoque de producto",
+      "en": "2026-11-28T17:49:19+00:00"
+     }
+    ],
+    "motivo_anulacion": "Me equivoque de producto"
+   }
+  ]
+ }
+]

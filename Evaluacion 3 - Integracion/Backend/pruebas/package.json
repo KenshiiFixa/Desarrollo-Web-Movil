@@ -1,9 +1,12 @@
 {
-  "name": "aroma-cafe-prueba-frontend",
+  "name": "aroma-cafe-suite-integracion",
   "private": true,
-  "description": "Node.js solo como herramienta: Playwright recorre el frontend en Chromium contra el sistema en Docker",
+  "description": "Node.js solo como herramienta: Playwright ejecuta la suite de integracion desde el frontend contra el sistema en Docker",
   "scripts": {
-    "test": "node prueba_frontend.js"
+    "C1": "node suite_integracion.js C1",
+    "C2": "node suite_integracion.js C2",
+    "C3": "node suite_integracion.js C3",
+    "C4": "node suite_integracion.js C4"
   },
   "devDependencies": {
     "playwright": "1.63.0"
