@@ -4,7 +4,7 @@
 
 ## Reglas comunes
 
-- **Entorno:** sistema completo en Docker (`docker compose up -d` en `Backend/`), frontend en `http://localhost:8080`, gateway en `https://127.0.0.1:8000`. Versión: el commit indicado en cada ejecución.
+- **Entorno:** sistema completo en Docker (`docker compose up -d` en `Backend/`), frontend en `http://localhost:8080`, gateway en `https://127.0.0.1:8000`. Versión: la del incremento I7 (2026-11-28).
 - **Estado inicial controlado:** cada campaña parte de la base vacía (`docker compose down -v` y `docker compose up -d`); los servicios crean los datos ficticios de prueba (8 productos con stock 40 y 6 cuentas, una por perfil).
 - **Cuentas:** `ana@` y `pedro@` (cliente), `dueno@`, `admin@`, `despacho@` y `cajero@` (`@aromaycafe.test`), clave = `SEED_PASSWORD` del `.env`.
 - **Campañas:** C1 y C3 en escritorio (1366×768); C2 y C4 en móvil emulado (perfil Pixel 7 de Playwright: viewport 412×839, pantalla 412×915, táctil). Cada prueba se ejecuta en las cuatro.

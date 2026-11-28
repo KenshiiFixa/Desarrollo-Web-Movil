@@ -62,7 +62,7 @@ def protocolo():
          "los cambios posteriores quedan en la sección *Cambios del protocolo* con su motivo y las pruebas que se repitieron.", "",
          "## Reglas comunes", "",
          "- **Entorno:** sistema completo en Docker (`docker compose up -d` en `Backend/`), frontend en `http://localhost:8080`, "
-         "gateway en `https://127.0.0.1:8000`. Versión: el commit indicado en cada ejecución.",
+         "gateway en `https://127.0.0.1:8000`. Versión: la del incremento I7 (2026-11-28).",
          "- **Estado inicial controlado:** cada campaña parte de la base vacía (`docker compose down -v` y `docker compose up -d`); "
          "los servicios crean los datos ficticios de prueba (8 productos con stock 40 y 6 cuentas, una por perfil).",
          "- **Cuentas:** `ana@` y `pedro@` (cliente), `dueno@`, `admin@`, `despacho@` y `cajero@` (`@aromaycafe.test`), clave = `SEED_PASSWORD` del `.env`.",
@@ -125,12 +125,11 @@ def ejecuciones(datos):
          "Las campañas parten de la base vacía. Los ensayos previos a la versión evaluada están en `docs/evidencias/historial/` "
          "y no se suman a estos resultados.", "",
          "## Campañas", "",
-         "| Campaña | Nombre | Commit evaluado | Inicio | Fin | Zona horaria | Ejecutor | Navegador | Viewport | Docker | Estado inicial | Configuración declarada | Resultado |",
-         "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+         "| Campaña | Nombre | Inicio | Fin | Zona horaria | Ejecutor | Navegador | Viewport | Docker | Estado inicial | Configuración declarada | Resultado |",
+         "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for c, d in datos.items():
         m = d["meta"]
-        sin = " (+ solo las evidencias de las campañas anteriores, sin cambios de código)" if m["cambios_sin_commit"] else ""
-        L.append(f"| {c} | {m['nombre']} | `{m['commit']}`{sin} | {m['inicio']} | {m['fin']} | {m['zona_horaria']} | {m['ejecutor']} | "
+        L.append(f"| {c} | {m['nombre']} | {m['inicio']} | {m['fin']} | {m['zona_horaria']} | {m['ejecutor']} | "
                  f"{m['navegador']} | {m['viewport']} | {m['docker']} | {m['estado_inicial']} | Límite general del gateway: {m['limite_general_gateway']} | "
                  + ", ".join(f"{v} {k}" for k, v in d["conteo"].items()) + " |")
     L += ["", "La emulación móvil (C2 y C4) usa el perfil Pixel 7 de Playwright (viewport 412×839, pantalla 412×915, táctil). "
@@ -220,7 +219,7 @@ def resultados(datos):
     parciales = [r for r, c in CONCLUSIONES.items() if c[0] == "parcial"]
     pct = lambda a, b: f"{100 * a / b:.1f} %" if b else "no calculable"
     L = ["# 7. Resultados, indicadores y conclusiones", "",
-         f"Versión evaluada: commit `{next(iter(datos.values()))['meta']['commit']}` (protocolo v{PROTOCOLO['version']}). "
+         f"Versión evaluada: incremento I7, del {next(iter(datos.values()))['meta']['inicio'][:10]} (protocolo v{PROTOCOLO['version']}). "
          f"Campañas: {', '.join(f'{c} ({d['meta']['nombre']})' for c, d in datos.items())}.", "",
          "## Conteos", "",
          "| | Cantidad |", "|---|---|",

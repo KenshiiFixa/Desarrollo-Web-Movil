@@ -4,7 +4,7 @@
 |---|---|
 | Caso | N° 4 – Cafetería "Aroma & Café" (basado en el Caso 19) |
 | Integrantes | Ian Arroyo · Alejandro Martínez (NRC 8479) |
-| Versión evaluada | Commit `61efbab` (repositorio de trabajo), protocolo de pruebas v1.1 |
+| Versión evaluada | Incremento I7, del 2026-11-28; protocolo de pruebas v1.1 |
 | Resultado principal | 32 pruebas distintas × 4 campañas = **128 ejecuciones, 128 aprobadas**; 14 de 19 requisitos demostrados y 5 parcialmente demostrados |
 
 ## Índice
@@ -44,7 +44,7 @@ Detalle en [inventario de flujos](Expediente/02_inventario_flujos.md).
 
 ## 2. Línea base
 
-El frontend inicial (Solemne 2, commit `c51e899`) **no llamaba al backend**. Lo medimos con `pruebas/linea_base.js`, sin hacer cambios:
+El frontend inicial (Solemne 2, commit `c51e899` del 2026-11-09) **no llamaba al backend**. Lo medimos con `pruebas/linea_base.js`, sin hacer cambios:
 - la carta estaba escrita a mano en el HTML;
 - los botones de sesión tenían `href="#"`;
 - "Pagar pedido" solo borraba el carrito del navegador;
@@ -57,7 +57,7 @@ dependencias en [línea base](Expediente/01_linea_base.md).
 ## 3. Criterios y protocolos
 
 Cada prueba tiene un criterio de aceptación observable, precondiciones, procedimiento, resultado esperado, verificación y restauración
-([protocolo](Expediente/03_protocolo_pruebas.md)). Los criterios se escribieron y se subieron al repositorio **antes** de ejecutar (commit `17fafb2`).
+([protocolo](Expediente/03_protocolo_pruebas.md)). Los criterios se escribieron y se fijaron **antes** de ejecutar (protocolo v1.0, 2026-11-28).
 
 Cada recorrido crítico tiene al menos un escenario exitoso, uno de rechazo o fallo y uno de límite o recuperación. La verificación no depende de la
 pantalla que ejecutó la acción: se inspecciona MongoDB dentro del contenedor de cada servicio (`inspeccionar.py`) o se vuelve a leer en una sesión
@@ -72,7 +72,7 @@ No se fijaron objetivos de rendimiento, así que **no se sacan conclusiones de r
 
 Primero se integró un flujo de solo lectura (la carta), después el despliegue en Docker, la autenticación y las operaciones protegidas, y por último
 los cambios de estado críticos (pedido y pago), GraphQL y los paneles. Antes de cada incremento se repitieron las pruebas ya existentes. Cada
-incremento, con su commit y las diferencias de contrato que encontró (DC01–DC09), está en la [bitácora](Expediente/04_bitacora.md).
+incremento, con su fecha y las diferencias de contrato que encontró (DC01–DC09), está en la [bitácora](Expediente/04_bitacora.md).
 
 Cambios de arquitectura:
 - todo el sistema en contenedores, con solo el frontend y el gateway publicados en 127.0.0.1;
@@ -151,7 +151,7 @@ en [trazabilidad.csv](Expediente/trazabilidad.csv).
 **Otros flujos:** registro con verificación, inventario del dueño, despacho, ventas, reportes, administración y contacto operan desde la interfaz
 contra los servicios reales, con una prueba cada uno en las 4 campañas (ver la matriz de conclusiones).
 
-**Conclusión global:** en el entorno evaluado (Docker en un equipo, datos ficticios, versión `61efbab`), los 14 flujos del caso funcionan de punta
+**Conclusión global:** en el entorno evaluado (Docker en un equipo, datos ficticios, versión del 2026-11-28), los 14 flujos del caso funcionan de punta
 a punta desde el frontend hasta los servicios reales, con persistencia, permisos, agregación GraphQL, gRPC y analítica verificables, en
 escritorio y en móvil emulado.
 
@@ -218,7 +218,7 @@ navegador de escritorio y en un celular.
 | [01 Línea base](Expediente/01_linea_base.md) | Estado inicial, componentes reales y simulados, ficha del entorno, inicio y restauración |
 | [02 Inventario de flujos](Expediente/02_inventario_flujos.md) | Requisitos, flujos con riesgo y recorridos críticos |
 | [03 Protocolo](Expediente/03_protocolo_pruebas.md) | Criterios de aceptación y fichas de prueba (v1.1) |
-| [04 Bitácora](Expediente/04_bitacora.md) | Incrementos, diferencias de contrato y commits |
+| [04 Bitácora](Expediente/04_bitacora.md) | Incrementos por fecha, diferencias de contrato y subidas al repositorio |
 | [05 Ejecuciones](Expediente/05_ejecuciones.md) | Registro de las 128 ejecuciones |
 | [06 Incidencias](Expediente/06_incidencias.md) | Incidencias, causas, correcciones y revalidación |
 | [07 Resultados](Expediente/07_resultados.md) | Conteos, indicadores, evolución y matriz de conclusiones |

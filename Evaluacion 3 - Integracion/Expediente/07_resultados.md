@@ -1,6 +1,6 @@
 # 7. Resultados, indicadores y conclusiones
 
-Versión evaluada: commit `61efbab` (protocolo v1.1). Campañas: C1 (Escritorio, ejecución 1), C2 (Móvil, ejecución 1), C3 (Escritorio, ejecución 2), C4 (Móvil, ejecución 2).
+Versión evaluada: incremento I7, del 2026-11-28 (protocolo v1.1). Campañas: C1 (Escritorio, ejecución 1), C2 (Móvil, ejecución 1), C3 (Escritorio, ejecución 2), C4 (Móvil, ejecución 2).
 
 ## Conteos
 

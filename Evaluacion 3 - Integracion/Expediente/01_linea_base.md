@@ -8,11 +8,11 @@
 | Integrantes | Ian Arroyo · Alejandro Martínez (NRC 8479) |
 | Frontend inicial | `Solemne 2/Frontend` del repositorio `Desarrollo-Web-Movil`, commit `c51e899` ("Evaluacion 2 - Frontend y Backend", 2026-11-09) |
 | Backend inicial | `Solemne 2/Backend` del mismo commit: backend seguro de la Unidad 2 (gateway, Auth, Vault, GraphQL, inventory, orders, clients, payments, analítica, notificaciones, gRPC) |
-| Versión evaluada | Carpeta `Evaluacion 3 - Integracion`, commit `61efbab` (ver [registro de ejecuciones](05_ejecuciones.md)) |
+| Versión evaluada | Carpeta `Evaluacion 3 - Integracion`, incremento I7, del 2026-11-28 (ver [registro de ejecuciones](05_ejecuciones.md)) |
 
 ## Estado inicial (registrado con evidencia)
 
-La línea base se midió con `Backend/pruebas/linea_base.js` sobre el frontend del commit `c51e899`, servido sin cambios
+La línea base se midió con `Backend/pruebas/linea_base.js` sobre el frontend de la Solemne 2, servido sin cambios
 (evidencias en [`docs/evidencias/LB`](../Backend/docs/evidencias/LB/resultados.json)).
 
 | ID | Qué se comprobó | Observado | Solicitudes al backend |

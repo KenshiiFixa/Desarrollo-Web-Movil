@@ -1026,12 +1026,10 @@ const PRUEBAS = {
 // ---------------------------------------------------------------- Ejecucion
 (async () => {
   fs.mkdirSync(SALIDA, { recursive: true });
-  const git = (...a) => spawnSync('git', a, { cwd: RAIZ, encoding: 'utf8' }).stdout.trim();
   if (!SIN_REINICIO) await reiniciarSistema();
   navegador = await chromium.launch();
   const meta = {
     campana: CAMPANA, nombre: CONF.nombre, protocolo: PROTOCOLO.version,
-    commit: git('rev-parse', '--short', 'HEAD'), cambios_sin_commit: git('status', '--porcelain', '--', '.') !== '',
     inicio: fechaLocal(), zona_horaria: Intl.DateTimeFormat().resolvedOptions().timeZone,
     ejecutor: process.env.EJECUTOR || os.userInfo().username, sistema: `${os.type()} ${os.release()}`,
     navegador: `Chromium ${navegador.version()} (Playwright ${require('playwright/package.json').version})`,
@@ -1040,7 +1038,7 @@ const PRUEBAS = {
     estado_inicial: SIN_REINICIO ? 'sin reinicio (base existente)' : 'base vacía (docker compose down -v / up -d)',
     limite_general_gateway: `${LIMITE_GENERAL} solicitudes por minuto (login: 10 por minuto, sin cambios)`,
   };
-  console.log(`Campaña ${CAMPANA} (${meta.nombre}) · commit ${meta.commit}${meta.cambios_sin_commit ? ' + cambios sin commit' : ''} · ${meta.viewport}`);
+  console.log(`Campaña ${CAMPANA} (${meta.nombre}) · ${meta.viewport}`);
   const resultados = [];
   for (const def of PROTOCOLO.pruebas) {
     if (SOLO.length && !SOLO.includes(def.id)) continue;
